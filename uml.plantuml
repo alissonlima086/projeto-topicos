@@ -17,12 +17,18 @@
 
     class Person{
         - name: String
+        - cpf: String
     }
 
-    class Individual{
-        - cpf: String
+    class User{
+        - username: String
         - email: String
-        - sex: Sex
+        - senha: String
+    }
+
+    class Phone{
+        - areaCode: String
+        - number: String
     }
 
     class Author{
@@ -32,6 +38,11 @@
     enum Type{
         - MANGA: int
         - COMIC: int
+    }
+
+    enum UserType{
+        - ADMIN: int
+        - USER: int
     }
 
     class Comic{
@@ -51,6 +62,34 @@
         - addressComplement: String
     }
 
+    class Purchase{
+        - data: LocalDateTime
+    }
+
+    class ItemPurchase{
+        - preco: Double
+        - quantidade: Integer
+    }
+
+    class PurchaseStatus{
+        date: LocalDateTime
+    }
+
+    enum Status{
+        awaitingPayment: int
+        verifyingPayment: int
+        paymentComplete: int
+        shipping: int
+        shipped: int
+        arrived: int
+        completed: int
+        canceled: int
+    }
+
+
+    Purchase "1" *--> "*" ItemPurchase
+    Purchase "*" --> "1" User
+    ItemPurchase "*" --> "1" Comic
 
 
     Comic -up-> Product
@@ -59,11 +98,16 @@
     Comic "*" --> "1" Publisher
     Comic "*" --> "*" Author
 
-    Individual -up-> Person
-    Author -up-> Individual
+    User "1" --> "*" Phone
+    User "1" --> "*" Address
+    User "1" --> "1" UserType
 
-    Individual "1" --> "*" Address
+    Author -up-> Person
 
+    User "1" --> Comic: listaDesejo
+
+    Purchase "1" --> "1" PurchaseStatus
+    PurchaseStatus "1" --> "*" Status
 
 
 @enduml
