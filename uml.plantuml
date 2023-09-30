@@ -23,7 +23,7 @@
     class User{
         - username: String
         - email: String
-        - senha: String
+        - password: String
     }
 
     class Phone{

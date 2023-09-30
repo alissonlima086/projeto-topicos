@@ -3,7 +3,7 @@ package br.unitins.topicos1.model;
 import jakarta.persistence.Entity;
 
 @Entity
-public class User {
+public class User extends DefaultEntity{
     private String username;
     private String email;
     private String password;
