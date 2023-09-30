@@ -1,0 +1,69 @@
+@startuml
+
+    class Product{
+        - name: String
+        - price: Double
+        - inventory: Integer
+    }
+
+    enum Binding{
+        - HARDCOVER: int
+        - PAPERBACK: int
+    }
+
+    class Publisher{
+        - name: String
+    }
+
+    class Person{
+        - name: String
+    }
+
+    class Individual{
+        - cpf: String
+        - email: String
+        - sex: Sex
+    }
+
+    class Author{
+        - comics: Comic
+    }
+
+    enum Type{
+        - MANGA: int
+        - COMIC: int
+    }
+
+    class Comic{
+        - numPages: Integer
+        - binding: Binding
+        - publisher: Publisher
+        - author: Author
+        - type: Type
+    }
+
+    class Address{
+        - state: State
+        - city: City
+        - zipCode: String
+        - phoneNumber: Phone
+        - address: String
+        - addressComplement: String
+    }
+
+
+
+    Comic -up-> Product
+    Comic "*" --> "1" Binding
+    Comic "*" --> "1" Type
+    Comic "*" --> "1" Publisher
+    Comic "*" --> "*" Author
+
+    Individual -up-> Person
+    Author -up-> Individual
+
+    Individual "1" --> "*" Address
+
+
+
+@enduml
