@@ -14,7 +14,7 @@ public interface UserService {
 
     public UserResponseDTO findById(long id);
 
-    public List<UserResponseDTO> findByNome(String nome);
+    public List<UserResponseDTO> findByUsername(String username);
 
     public List<UserResponseDTO> findAll();
     

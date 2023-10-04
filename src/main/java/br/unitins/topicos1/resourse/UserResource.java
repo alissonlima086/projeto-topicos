@@ -57,9 +57,9 @@ public class UserResource {
     }
 
     @GET
-    @Path("/search/nome/{nome}")
-    public Response findByNome(@PathParam("nome") String nome){
-        return Response.ok(service.findByNome(nome)).build();
+    @Path("/search/nome/{username}")
+    public Response findByUsername(@PathParam("username") String username){
+        return Response.ok(service.findByUsername(username)).build();
     }
     
 }

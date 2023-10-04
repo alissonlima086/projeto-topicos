@@ -55,8 +55,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDTO> findByNome(String nome) {
-        return repository.findByNome(nome).stream().map(e -> UserResponseDTO.valueOf(e)).toList();
+    public List<UserResponseDTO> findByUsername(String username) {
+        return repository.findByUsername(username).stream().map(e -> UserResponseDTO.valueOf(e)).toList();
     }
 
     @Override
