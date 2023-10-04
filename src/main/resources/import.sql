@@ -4,3 +4,6 @@
 -- insert into myentity (id, field) values(2, 'field-2');
 -- insert into myentity (id, field) values(3, 'field-3');
 -- alter sequence myentity_seq restart with 4;
+
+insert into user_table (username, email, `password`) values('Alisson', 'alisson@mail.com', '12345');
+insert into user_table (username, email, `password`) values('Frederico', 'fred@wetmail.com', '54321');
