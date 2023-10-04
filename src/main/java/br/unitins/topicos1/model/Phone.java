@@ -1,5 +1,8 @@
 package br.unitins.topicos1.model;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class Phone extends DefaultEntity {
     private String areaCode;
     private String number;

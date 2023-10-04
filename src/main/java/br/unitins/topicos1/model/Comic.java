@@ -1,12 +1,20 @@
 package br.unitins.topicos1.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Comic extends Product {
     private Integer numPages;
     private Binding binding;
+
+    @ManyToOne
+    @JoinColumn(name = "publisher")
     private Publisher publisher;
+
+    @ManyToOne
+    @JoinColumn(name = "author")
     private Author author;
 
     public Integer getNumPages() {

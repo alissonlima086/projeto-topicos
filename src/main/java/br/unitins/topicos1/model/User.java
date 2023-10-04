@@ -1,13 +1,21 @@
 package br.unitins.topicos1.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
-public class User extends DefaultEntity{
+@Table(name = "user")
+public class User extends DefaultEntity {
     private String username;
     private String email;
     private String password;
-    private Person person;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Phone> phoneList;
 
     public String getUsername() {
         return username;
@@ -33,12 +41,12 @@ public class User extends DefaultEntity{
         this.password = password;
     }
 
-    public Person getPerson() {
-        return person;
+    public List<Phone> getPhoneList() {
+        return phoneList;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPhoneList(List<Phone> phoneList) {
+        this.phoneList = phoneList;
     }
 
 }
