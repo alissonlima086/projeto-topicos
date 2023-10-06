@@ -7,3 +7,9 @@
 
 insert into user_table (username, email, `password`) values('Alisson', 'alisson@mail.com', '12345');
 insert into user_table (username, email, `password`) values('Frederico', 'fred@wetmail.com', '54321');
+
+insert into genre(`name`) values('Romance');
+insert into genre(`name`) values('Fantasia');
+insert into genre(`name`) values('Ficção');
+insert into genre(`name`) values('Ficção Cientifica');
+insert into genre(`name`) values('Yaoi');

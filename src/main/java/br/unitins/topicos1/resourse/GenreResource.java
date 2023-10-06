@@ -1,6 +1,8 @@
 package br.unitins.topicos1.resourse;
 
-import br.unitins.topicos1.dto.UserDTO;
+import br.unitins.topicos1.dto.GenreDTO;
+import br.unitins.topicos1.dto.GenreResponseDTO;
+import br.unitins.topicos1.service.GenreService;
 import br.unitins.topicos1.service.UserService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -16,23 +18,23 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/Users")
+@Path("/Genres")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class UserResource {
+public class GenreResource {
 
     @Inject
-    UserService service;
+    GenreService service;
 
     @POST
-    public Response insert(UserDTO dto){
+    public Response insert(GenreDTO dto){
         return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, UserDTO dto){
+    public Response update(@PathParam("id") Long id, GenreDTO dto){
         service.update(id, dto);
         return Response.noContent().build();
     }
@@ -57,9 +59,10 @@ public class UserResource {
     }
 
     @GET
-    @Path("/search/nome/{username}")
-    public Response findByUsername(@PathParam("username") String username){
-        return Response.ok(service.findByUsername(username)).build();
+    @Path("/search/nome/{name}")
+    public Response findByName(@PathParam("name") String name){
+        return Response.ok(service.findByName(name)).build();
     }
+
     
 }
