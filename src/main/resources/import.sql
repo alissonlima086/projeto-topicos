@@ -13,3 +13,13 @@ insert into genre(`name`) values('Fantasia');
 insert into genre(`name`) values('Ficção');
 insert into genre(`name`) values('Ficção Cientifica');
 insert into genre(`name`) values('Yaoi');
+
+insert into `state`(`name`, abbreviation) values('Tocantins', 'TO');
+insert into `state`(`name`, abbreviation) values('São Paulo', 'SP');
+insert into `state`(`name`, abbreviation) values('Rio De Janeiro', 'RJ');
+insert into `state`(`name`, abbreviation) values('Acre', 'AC');
+
+insert into city(`name`, `id_state`) values('Palmas', 1);
+insert into city(`name`, `id_state`) values('Araguaína', 1);
+insert into city(`name`, `id_state`) values('Caraguatatuba', 2);
+insert into city(`name`, `id_state`) values('São Paulo', 2);

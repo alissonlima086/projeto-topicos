@@ -13,7 +13,6 @@ import br.unitins.topicos1.service.GenreService;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @QuarkusTest

@@ -6,7 +6,7 @@ public record GenreResponseDTO (
     Long id,
     String name
 ){
-    public static GenreResponseDTO valueOf (Genre genre){
+    public static GenreResponseDTO valueOf(Genre genre){
         return new GenreResponseDTO(genre.getId(), genre.getName());
     }
 }
