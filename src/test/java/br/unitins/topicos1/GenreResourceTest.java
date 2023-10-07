@@ -37,7 +37,7 @@ public class GenreResourceTest {
     }
 
     @Test
-    public void testFindByNome(){
+    public void testFindByName(){
         GenreDTO dto = new GenreDTO("Romance");
 
         GenreResponseDTO genreTest = service.insert(dto);
@@ -78,7 +78,5 @@ public class GenreResourceTest {
         RestAssured.given().when().delete("/genres/"+id).then().statusCode(204);
 
     }
-    
-
 
 }

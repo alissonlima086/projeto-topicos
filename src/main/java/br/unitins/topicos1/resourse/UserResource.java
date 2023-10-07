@@ -48,7 +48,7 @@ public class UserResource {
 
     @POST
     @Transactional
-    @Path("/{id}/phone/insert")
+    @Path("/phone/insert/{id}")
     public Response insertPhone(@PathParam("id") Long id, PhoneDTO dto){
         return Response.status(Status.CREATED).entity(service.insertPhone(id, dto)).build();
     }
@@ -56,7 +56,7 @@ public class UserResource {
 
     @PUT
     @Transactional
-    @Path("/{id}/phone/update")
+    @Path("/phone/update/{id}")
     public Response updatePhone(@PathParam("id") Long id, PhoneDTO dto){
         service.updatePhone(id, dto);
         return Response.noContent().build();
