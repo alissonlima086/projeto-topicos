@@ -3,11 +3,15 @@ package br.unitins.topicos1.service;
 import java.util.List;
 
 import br.unitins.topicos1.dto.AddressResponseDTO;
+import br.unitins.topicos1.dto.PhoneDTO;
+import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
 import br.unitins.topicos1.model.Address;
+import br.unitins.topicos1.model.Phone;
 import br.unitins.topicos1.model.User;
 import br.unitins.topicos1.repository.AddressRepository;
+import br.unitins.topicos1.repository.PhoneRepository;
 import br.unitins.topicos1.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -22,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     AddressRepository addressRepository;
+
+    @Inject
+    PhoneRepository phoneRepository;
 
     @Override
     @Transactional
@@ -53,6 +60,36 @@ public class UserServiceImpl implements UserService {
         if(!repository.deleteById(id)){
             throw new NotFoundException();
         }
+    }
+
+    @Override
+    @Transactional
+    public PhoneResponseDTO insertPhone(Long id, PhoneDTO dto){
+        Phone phone = new Phone();
+        
+        phone.setAreaCode(dto.areaCode());
+        phone.setNumber(dto.number());
+        phone.setUser(repository.findById(id));
+
+        phoneRepository.persist(phone);
+
+        return PhoneResponseDTO.valueOf(phone);
+    }
+
+    @Override
+    @Transactional
+    public PhoneResponseDTO updatePhone(Long id, PhoneDTO dto){
+        Phone phone = phoneRepository.findById(id);
+        
+        phone.setAreaCode(dto.areaCode());
+        phone.setNumber(dto.number());
+
+        return PhoneResponseDTO.valueOf(phone);
+    }
+
+    @Override
+    public List<PhoneResponseDTO> findAllPhones() {
+        return phoneRepository.listAll().stream().map(e -> PhoneResponseDTO.valueOf(e)).toList();
     }
 
     @Override

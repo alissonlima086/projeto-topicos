@@ -1,5 +1,6 @@
 package br.unitins.topicos1.resourse;
 
+import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.service.UserService;
 import jakarta.inject.Inject;
@@ -43,6 +44,28 @@ public class UserResource {
     public Response delete(@PathParam("id") Long id){
         service.delete(id);
         return Response.noContent().build();
+    }
+
+    @POST
+    @Transactional
+    @Path("/{id}/phone/insert")
+    public Response insertPhone(@PathParam("id") Long id, PhoneDTO dto){
+        return Response.status(Status.CREATED).entity(service.insertPhone(id, dto)).build();
+    }
+
+
+    @PUT
+    @Transactional
+    @Path("/{id}/phone/update")
+    public Response updatePhone(@PathParam("id") Long id, PhoneDTO dto){
+        service.updatePhone(id, dto);
+        return Response.noContent().build();
+    }
+
+    @GET
+    @Path("/{id}/phone")
+    public Response findAllPhones(){
+        return Response.ok(service.findAllPhones()).build();
     }
 
     @GET
