@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.unitins.topicos1.dto.AddressDTO;
 import br.unitins.topicos1.dto.AddressResponseDTO;
+import br.unitins.topicos1.dto.UserResponseDTO;
 
 public interface AddressService {
 

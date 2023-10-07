@@ -2,9 +2,12 @@ package br.unitins.topicos1.service;
 
 import java.util.List;
 
+import br.unitins.topicos1.dto.AddressResponseDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
+import br.unitins.topicos1.model.Address;
 import br.unitins.topicos1.model.User;
+import br.unitins.topicos1.repository.AddressRepository;
 import br.unitins.topicos1.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -16,6 +19,9 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     UserRepository repository;
+
+    @Inject
+    AddressRepository addressRepository;
 
     @Override
     @Transactional

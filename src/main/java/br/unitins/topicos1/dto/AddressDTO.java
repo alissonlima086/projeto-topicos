@@ -7,7 +7,8 @@ public record AddressDTO (
     String postalCode,
     String address,
     String complement,
-    Long city
+    Long city,
+    Long user
 ){
 
     

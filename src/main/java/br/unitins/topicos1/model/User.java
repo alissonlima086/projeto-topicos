@@ -4,6 +4,8 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -13,9 +15,6 @@ public class User extends DefaultEntity {
     private String username;
     private String email;
     private String password;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Phone> phoneList;
 
     public String getUsername() {
         return username;
@@ -40,13 +39,4 @@ public class User extends DefaultEntity {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public List<Phone> getPhoneList() {
-        return phoneList;
-    }
-
-    public void setPhoneList(List<Phone> phoneList) {
-        this.phoneList = phoneList;
-    }
-
 }
