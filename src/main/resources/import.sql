@@ -28,3 +28,14 @@ insert into `address`(`name`, postalCode, `address`, complement, id_city, id_use
 insert into `address`(`name`, postalCode, `address`, complement, id_city, id_user) values('Trabalho', '11111111', 'Rua almeida, predio 12', 'sede tal', 1, 1);
 
 insert into `address`(`name`, postalCode, `address`, complement, id_city, id_user) values('Casa', '55555440', 'Avenida santa hora ap 22b', 'condominio tal', 1, 2);
+
+
+insert into publisher (`name`) values('DC');
+insert into publisher (`name`) values('Marvel');
+
+insert into author_table (authorName, email) values('Frederic Vertman', 'Emaildecontato@gmail.com');
+insert into author_table (authorName, email) values('Arison Limão', 'contateaqui@yahoo.com');
+
+-- insert into comic (numPages, `binding`, publisher, author) values('120', 1, 1, 1);
+-- insert into comic (numPages, `binding`, publisher, author) values('200', 2, 2, 2);
+
