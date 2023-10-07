@@ -6,6 +6,7 @@ import br.unitins.topicos1.model.Comic;
 import br.unitins.topicos1.model.Publisher;
 
 public record ComicResponseDTO (
+    Long id,
     String name,
     Double price,
     Integer inventory,
@@ -15,7 +16,7 @@ public record ComicResponseDTO (
     Author author
 ){
     public static ComicResponseDTO valueOf(Comic comic){
-        return new ComicResponseDTO(comic.getName(), comic.getPrice(), comic.getInventory(), comic.getNumPages(), comic.getBinding(), comic.getPublisher(), comic.getAuthor());
+        return new ComicResponseDTO(comic.getId(), comic.getName(), comic.getPrice(), comic.getInventory(), comic.getNumPages(), comic.getBinding(), comic.getPublisher(), comic.getAuthor());
     }
     
 }

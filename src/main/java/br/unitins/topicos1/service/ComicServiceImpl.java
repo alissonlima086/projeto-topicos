@@ -41,8 +41,6 @@ public class ComicServiceImpl implements ComicService{
 
         comic.setAuthor(authorRepository.findById(dto.author()));
 
-        repository.persist(comic);
-
         return ComicResponseDTO.valueOf(comic);
 
     }
@@ -50,7 +48,7 @@ public class ComicServiceImpl implements ComicService{
     @Override
     @Transactional
     public ComicResponseDTO update(Long id, ComicDTO dto) {
-        Comic comic = new Comic();
+        Comic comic = repository.findById(id);
 
         comic.setName(dto.name());
         comic.setPrice(dto.price());
@@ -79,5 +77,9 @@ public class ComicServiceImpl implements ComicService{
         return repository.listAll().stream().map(e -> ComicResponseDTO.valueOf(e)).toList();
     }
 
-    
+    @Override
+    public ComicResponseDTO findById(Long id) {
+        return ComicResponseDTO.valueOf(repository.findById(id));
+    }
+
 }

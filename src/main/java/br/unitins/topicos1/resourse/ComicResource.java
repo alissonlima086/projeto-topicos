@@ -49,4 +49,10 @@ public class ComicResource {
     public Response findAll(){
         return Response.ok(service.findAll()).build();
     }
+
+    @GET
+    @Path("/{id}")
+    public Response findById(@PathParam("id") Long id){
+        return Response.ok(service.findById(id)).build();
+    }
 }

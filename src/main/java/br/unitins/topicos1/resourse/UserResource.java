@@ -63,7 +63,7 @@ public class UserResource {
     }
 
     @GET
-    @Path("/{id}/phone")
+    @Path("/phone")
     public Response findAllPhones(){
         return Response.ok(service.findAllPhones()).build();
     }
@@ -80,7 +80,7 @@ public class UserResource {
     }
 
     @GET
-    @Path("/search/nome/{username}")
+    @Path("/search/name/{username}")
     public Response findByUsername(@PathParam("username") String username){
         return Response.ok(service.findByUsername(username)).build();
     }

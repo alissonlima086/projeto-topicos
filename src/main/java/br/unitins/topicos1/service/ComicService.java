@@ -14,5 +14,7 @@ public interface ComicService {
     public void delete(Long id);
 
     public List<ComicResponseDTO> findAll();
+
+    public ComicResponseDTO findById(Long id);
     
 }

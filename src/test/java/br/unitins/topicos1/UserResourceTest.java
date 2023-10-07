@@ -7,6 +7,8 @@ import jakarta.inject.Inject;
 
 import org.junit.jupiter.api.Test;
 
+import br.unitins.topicos1.dto.GenreDTO;
+import br.unitins.topicos1.dto.GenreResponseDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UserDTO;
@@ -93,6 +95,29 @@ public class UserResourceTest {
         given().contentType(ContentType.JSON).body(phoneUpdate).when().put("/users/phone/update/"+idPhone).then().statusCode(204);
     }
 
+    @Test
+    public void testFindAllPhones(){
+        given().when().get("/users/phone").then().statusCode(200);
+    }
 
+    @Test
+    public void testFindByName(){
+        UserDTO userDTO = new UserDTO("marquinho", "marcos@mail.com", "123456");
+
+        UserResponseDTO userTest = service.insert(userDTO);
+        String name = userTest.username();
+
+        given().when().get("/users/search/name/"+name).then().statusCode(200);
+    }
+
+    @Test
+    public void testFindById(){
+        UserDTO userDTO = new UserDTO("marquinho", "marcos@mail.com", "123456");
+
+        UserResponseDTO userTest = service.insert(userDTO);
+        Long id = userTest.id();
+
+        given().when().get("/users/"+id).then().statusCode(200);
+    }
     
 }
