@@ -8,6 +8,9 @@
 insert into user_table (username, email, `password`) values('Alisson', 'alisson@mail.com', '12345');
 insert into user_table (username, email, `password`) values('Frederico', 'fred@wetmail.com', '54321');
 
+insert into phone(areaCode, `number`, id_user) values('63', '2222222', 1);
+insert into phone(areaCode, `number`, id_user) values('63', '777567575', 2);
+
 insert into genre(`name`) values('Romance');
 insert into genre(`name`) values('Fantasia');
 insert into genre(`name`) values('Ficção');
@@ -36,10 +39,10 @@ insert into publisher (`name`) values('Marvel');
 insert into author_table (`name`, email) values('Frederic Vertman', 'Emaildecontato@gmail.com');
 insert into author_table (`name`, email) values('Arison Limão', 'contateaqui@yahoo.com');
 
-insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 1', 30, 100, 200, 2, 1, 1);
+insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 1', 30, 100, 200, 0, 1, 1);
 insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 2', 60, 50, 300, 1, 2, 2);
 insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 3', 60, 50, 300, 1, 2, 2);
-insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 4', 60, 50, 300, 2, 2, 2);
+insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 4', 60, 50, 300, 0, 2, 2);
 insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 5', 60, 50, 300, 1, 2, 2);
 
 
