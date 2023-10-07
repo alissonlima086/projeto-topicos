@@ -7,14 +7,15 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Comic extends Product {
     private Integer numPages;
+
     private Binding binding;
 
     @ManyToOne
-    @JoinColumn(name = "publisher")
+    @JoinColumn(name = "id_publisher")
     private Publisher publisher;
 
     @ManyToOne
-    @JoinColumn(name = "author")
+    @JoinColumn(name = "id_author")
     private Author author;
 
     public Integer getNumPages() {

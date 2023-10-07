@@ -22,7 +22,7 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorResponseDTO insert(AuthorDTO dto) {
         Author newAuthor = new Author();
 
-        newAuthor.setAuthorName(dto.authorName());
+        newAuthor.setName(dto.name());
         newAuthor.setEmail(dto.email());
 
         repository.persistAndFlush(newAuthor);
@@ -34,7 +34,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional
     public AuthorResponseDTO update(Long id, AuthorDTO dto) {
         Author Author = repository.findById(id);
-        Author.setAuthorName(dto.authorName());
+        Author.setName(dto.name());
         Author.setEmail(dto.email());
 
         return AuthorResponseDTO.valueOf(Author);
@@ -54,8 +54,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorResponseDTO> findByAuthorName(String authorName) {
-        return repository.findByName(authorName).stream().map(e -> AuthorResponseDTO.valueOf(e)).toList();
+    public List<AuthorResponseDTO> findByName(String name) {
+        return repository.findByName(name).stream().map(e -> AuthorResponseDTO.valueOf(e)).toList();
     }
 
     @Override

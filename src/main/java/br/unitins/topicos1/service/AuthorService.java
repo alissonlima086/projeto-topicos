@@ -14,7 +14,7 @@ public interface AuthorService {
 
     public AuthorResponseDTO findById(long id);
 
-    public List<AuthorResponseDTO> findByAuthorName(String authorName);
+    public List<AuthorResponseDTO> findByName(String name);
 
     public List<AuthorResponseDTO> findAll();
     

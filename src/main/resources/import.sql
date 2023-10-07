@@ -33,9 +33,13 @@ insert into `address`(`name`, postalCode, `address`, complement, id_city, id_use
 insert into publisher (`name`) values('DC');
 insert into publisher (`name`) values('Marvel');
 
-insert into author_table (authorName, email) values('Frederic Vertman', 'Emaildecontato@gmail.com');
-insert into author_table (authorName, email) values('Arison Limão', 'contateaqui@yahoo.com');
+insert into author_table (`name`, email) values('Frederic Vertman', 'Emaildecontato@gmail.com');
+insert into author_table (`name`, email) values('Arison Limão', 'contateaqui@yahoo.com');
 
--- insert into comic (numPages, `binding`, publisher, author) values('120', 1, 1, 1);
--- insert into comic (numPages, `binding`, publisher, author) values('200', 2, 2, 2);
+insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 1', 30, 100, 200, 2, 1, 1);
+insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 2', 60, 50, 300, 1, 2, 2);
+insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 3', 60, 50, 300, 1, 2, 2);
+insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 4', 60, 50, 300, 2, 2, 2);
+insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 5', 60, 50, 300, 1, 2, 2);
+
 

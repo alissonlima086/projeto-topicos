@@ -59,7 +59,7 @@ public class AuthorResource {
     @GET
     @Path("/search/nome/{AuthorName}")
     public Response findByAuthorName(@PathParam("AuthorName") String authorName){
-        return Response.ok(service.findByAuthorName(authorName)).build();
+        return Response.ok(service.findByName(authorName)).build();
     }
     
 }

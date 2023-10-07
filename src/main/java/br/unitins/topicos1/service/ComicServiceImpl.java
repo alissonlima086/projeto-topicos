@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.unitins.topicos1.dto.ComicDTO;
 import br.unitins.topicos1.dto.ComicResponseDTO;
+import br.unitins.topicos1.model.Binding;
 import br.unitins.topicos1.model.Comic;
 import br.unitins.topicos1.repository.ComicRepository;
 import br.unitins.topicos1.repository.PublisherRepository;
@@ -28,35 +29,41 @@ public class ComicServiceImpl implements ComicService{
     @Override
     @Transactional
     public ComicResponseDTO insert(ComicDTO dto) {
-        Comic Comic = new Comic();
+        Comic comic = new Comic();
+
+        comic.setName(dto.name());
+        comic.setPrice(dto.price());
+        comic.setInventory(dto.inventory());
+        comic.setNumPages(dto.numPages());
+        comic.setBinding(Binding.valueOf(dto.binding()));
         
+        comic.setPublisher(publisherRepository.findById(dto.publisher()));
 
-        Comic.setNumPages(dto.numPages());
-        Comic.setBinding(dto.binding());
-        
-        Comic.setPublisher(publisherRepository.findById(dto.publisher()));
+        comic.setAuthor(authorRepository.findById(dto.author()));
 
-        Comic.setAuthor(authorRepository.findById(dto.author()));
+        repository.persist(comic);
 
-        repository.persist(Comic);
-
-        return ComicResponseDTO.valueOf(Comic);
+        return ComicResponseDTO.valueOf(comic);
 
     }
 
     @Override
     @Transactional
     public ComicResponseDTO update(Long id, ComicDTO dto) {
-        Comic Comic = repository.findById(id);
+        Comic comic = new Comic();
 
-        Comic.setNumPages(dto.numPages());
-        Comic.setBinding(dto.binding());
+        comic.setName(dto.name());
+        comic.setPrice(dto.price());
+        comic.setInventory(dto.inventory());
+        comic.setNumPages(dto.numPages());
         
-        Comic.setPublisher(publisherRepository.findById(dto.publisher()));
+        comic.setBinding(Binding.valueOf(dto.binding()));
+        
+        comic.setPublisher(publisherRepository.findById(dto.publisher()));
 
-        Comic.setAuthor(authorRepository.findById(dto.author()));
+        comic.setAuthor(authorRepository.findById(dto.author()));
 
-        return ComicResponseDTO.valueOf(Comic);
+        return ComicResponseDTO.valueOf(comic);
     }
 
     @Override

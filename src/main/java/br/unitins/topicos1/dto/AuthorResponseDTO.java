@@ -4,11 +4,11 @@ import br.unitins.topicos1.model.Author;
 
 public record AuthorResponseDTO (
     Long id,
-    String Authorname,
+    String name,
     String email
 ){
     public static AuthorResponseDTO valueOf(Author Author){
-        return new AuthorResponseDTO(Author.getId(), Author.getAuthorName(), Author.getEmail());
+        return new AuthorResponseDTO(Author.getId(), Author.getName(), Author.getEmail());
     }
     
 }
