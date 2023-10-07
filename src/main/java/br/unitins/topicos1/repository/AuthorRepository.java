@@ -8,7 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class AuthorRepository implements PanacheRepository<Author>{
-    public List<Author> findByName(String authorName) {
-        return find("UPPER(Authorname) LIKE UPPER(?1) ", "%"+authorName+"%").list();
+    public List<Author> findByName(String name) {
+        return find("UPPER(name) LIKE UPPER(?1) ", "%"+name+"%").list();
     }
 }
