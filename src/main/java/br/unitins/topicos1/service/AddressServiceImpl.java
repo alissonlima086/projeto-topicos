@@ -4,11 +4,7 @@ import java.util.List;
 
 import br.unitins.topicos1.dto.AddressDTO;
 import br.unitins.topicos1.dto.AddressResponseDTO;
-import br.unitins.topicos1.dto.GenreResponseDTO;
-import br.unitins.topicos1.dto.UserResponseDTO;
 import br.unitins.topicos1.model.Address;
-import br.unitins.topicos1.model.City;
-import br.unitins.topicos1.model.User;
 import br.unitins.topicos1.repository.AddressRepository;
 import br.unitins.topicos1.repository.CityRepository;
 import br.unitins.topicos1.repository.UserRepository;

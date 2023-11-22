@@ -7,13 +7,10 @@ import jakarta.inject.Inject;
 
 import org.junit.jupiter.api.Test;
 
-import br.unitins.topicos1.dto.GenreDTO;
-import br.unitins.topicos1.dto.GenreResponseDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
-import br.unitins.topicos1.model.Phone;
 import br.unitins.topicos1.service.UserService;
 
 import static io.restassured.RestAssured.given;

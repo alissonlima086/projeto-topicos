@@ -29,17 +29,15 @@ public class CityResourceTest {
         given().when().get("/cities").then().statusCode(200);
     }
 
-    /*
-    @Test
-    public void testFindByName(){
-        CityDTO city = new CityDTO("Cidade", 1);
+    // @Test
+    // public void testFindByName(){
+    //     CityDTO dto = new CityDTO("Palmas", "Tocantins");
 
-        CityResponseDTO cityTest = service.insert(dto);
+    //     CityResponseDTO cityTest = service.insert(dto);
         
-        String name = cityTest.name();
+    //     String name = cityTest.name();
 
-        given().when().get("/genres/search/nome/"+name).then().statusCode(200);
-    }
-     */
+    //     given().when().get("/genres/search/nome/"+name).then().statusCode(200);
+    // }
 
 }

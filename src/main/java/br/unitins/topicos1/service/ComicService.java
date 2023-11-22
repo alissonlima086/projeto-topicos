@@ -15,6 +15,8 @@ public interface ComicService {
 
     public List<ComicResponseDTO> findAll();
 
+    public List<ComicResponseDTO> findByName(String name);
+
     public ComicResponseDTO findById(Long id);
     
 }

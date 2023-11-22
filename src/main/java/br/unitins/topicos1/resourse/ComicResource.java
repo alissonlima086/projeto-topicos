@@ -55,4 +55,10 @@ public class ComicResource {
     public Response findById(@PathParam("id") Long id){
         return Response.ok(service.findById(id)).build();
     }
+
+    @GET
+    @Path("/search/nome/{name}")
+    public Response findByName(@PathParam("name") String name){
+        return Response.ok(service.findByName(name)).build();
+    }
 }

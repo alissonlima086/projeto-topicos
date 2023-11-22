@@ -38,11 +38,11 @@ public class ComicServiceImpl implements ComicService{
         comic.setBinding(Binding.valueOf(dto.binding()));
         
         comic.setPublisher(publisherRepository.findById(dto.publisher()));
-
         comic.setAuthor(authorRepository.findById(dto.author()));
 
-        return ComicResponseDTO.valueOf(comic);
+        repository.persist(comic);
 
+        return ComicResponseDTO.valueOf(comic);
     }
 
     @Override
@@ -80,6 +80,12 @@ public class ComicServiceImpl implements ComicService{
     @Override
     public ComicResponseDTO findById(Long id) {
         return ComicResponseDTO.valueOf(repository.findById(id));
+    }
+
+    @Override
+    public List<ComicResponseDTO> findByName(String name) {
+        // TODO Auto-generated method stub
+        return repository.findByName(name).stream().map(e -> ComicResponseDTO.valueOf(e)).toList();
     }
 
 }

@@ -1,9 +1,7 @@
 package br.unitins.topicos1.resourse;
 
 import br.unitins.topicos1.dto.GenreDTO;
-import br.unitins.topicos1.dto.GenreResponseDTO;
 import br.unitins.topicos1.service.GenreService;
-import br.unitins.topicos1.service.UserService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;

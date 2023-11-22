@@ -23,7 +23,7 @@ public class PublisherResourceTest {
 
     @Test
     public void testFindAll(){
-        given().when().get("/Publishers").then().statusCode(200);
+        given().when().get("/publishers").then().statusCode(200);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class PublisherResourceTest {
         PublisherResponseDTO publisherTest = service.insert(dto);
         Long id = publisherTest.id();
 
-        given().when().get("/Publishers/"+id).then().statusCode(200);
+        given().when().get("/publishers/"+id).then().statusCode(200);
     }
 
     @Test
@@ -43,14 +43,14 @@ public class PublisherResourceTest {
         PublisherResponseDTO publisherTest = service.insert(dto);
         String name = publisherTest.name();
 
-        given().when().get("/Publishers/search/nome/"+name).then().statusCode(200);
+        given().when().get("/publishers/search/nome/"+name).then().statusCode(200);
     }
 
     @Test
     public void testInsert(){
         PublisherDTO dto = new PublisherDTO("Square Enix");
 
-        given().contentType(ContentType.JSON).body(dto).when().post("/Publishers").then().statusCode(201);
+        given().contentType(ContentType.JSON).body(dto).when().post("/publishers").then().statusCode(201);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class PublisherResourceTest {
 
         PublisherDTO dtoUpdate = new PublisherDTO("Ohta Publishing");
 
-        given().contentType(ContentType.JSON).body(dtoUpdate).when().put("/Publishers/"+id).then().statusCode(204);
+        given().contentType(ContentType.JSON).body(dtoUpdate).when().put("/publishers/"+id).then().statusCode(204);
 
         PublisherResponseDTO gen = service.findById(id);
         assertThat(gen.name(), is("Ohta Publishing"));
@@ -75,7 +75,7 @@ public class PublisherResourceTest {
         PublisherResponseDTO publisherTest = service.insert(dto);
         Long id = publisherTest.id();
 
-        RestAssured.given().when().delete("/Publishers/"+id).then().statusCode(204);
+        RestAssured.given().when().delete("/publishers/"+id).then().statusCode(204);
 
     }
 }

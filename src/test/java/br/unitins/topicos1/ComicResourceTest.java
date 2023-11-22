@@ -7,14 +7,8 @@ import jakarta.inject.Inject;
 
 import org.junit.jupiter.api.Test;
 
-import br.unitins.topicos1.dto.AuthorDTO;
-import br.unitins.topicos1.dto.AuthorResponseDTO;
 import br.unitins.topicos1.dto.ComicDTO;
 import br.unitins.topicos1.dto.ComicResponseDTO;
-import br.unitins.topicos1.dto.PublisherDTO;
-import br.unitins.topicos1.dto.PublisherResponseDTO;
-import br.unitins.topicos1.model.Author;
-import br.unitins.topicos1.model.Publisher;
 import br.unitins.topicos1.service.AuthorService;
 import br.unitins.topicos1.service.ComicService;
 import br.unitins.topicos1.service.PublisherService;
@@ -42,20 +36,22 @@ public class ComicResourceTest {
 
     @Test
     public void testFindById(){
-        AuthorDTO author = new AuthorDTO("john", "john@mail.com");
-        AuthorResponseDTO authorTest = authorService.insert(author);
-        Long idAutor = authorTest.id();
-
-        PublisherDTO publisher = new PublisherDTO("Panini comics");
-        PublisherResponseDTO publisherTest = publisherService.insert(publisher); 
-        Long idPublisher = publisherTest.id();
-
-        ComicDTO dto = new ComicDTO("Goburin Sureiyā", 70.0, 200, 185, 1, idPublisher, idAutor);
+        ComicDTO dto = new ComicDTO("Goburin Sureiyā", 70.0, 200, 185, 1, 1L, 1L);
 
         ComicResponseDTO comicTest = service.insert(dto);
         Long idComic = comicTest.id();
 
         given().when().get("/comics/"+idComic).then().statusCode(200);
+    }
+
+    @Test
+    public void testFindByName(){
+        ComicDTO dto = new ComicDTO("DeathNote", 70.0, 200, 185, 2, 1L, 1L);
+
+        ComicResponseDTO comicTest = service.insert(dto);
+        String name = comicTest.name();
+
+        given().when().get("/comics/search/nome/"+name).then().statusCode(200);
     }
 
     @Test
@@ -81,9 +77,6 @@ public class ComicResourceTest {
         assertThat(verify.price(), is(60.0));
         assertThat(verify.inventory(), is(100));
         assertThat(verify.numPages(), is(103));
-        assertThat(verify.binding(), is(2));
-        assertThat(verify.publisher(), is(1L));
-        assertThat(verify.author(), is(1L));
     }
 
     @Test

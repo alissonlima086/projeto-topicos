@@ -4,12 +4,8 @@ import java.util.List;
 
 import br.unitins.topicos1.dto.GenreDTO;
 import br.unitins.topicos1.dto.GenreResponseDTO;
-import br.unitins.topicos1.dto.UserResponseDTO;
-import br.unitins.topicos1.dto.GenreResponseDTO;
 import br.unitins.topicos1.model.Genre;
-import br.unitins.topicos1.model.User;
 import br.unitins.topicos1.repository.GenreRepository;
-import br.unitins.topicos1.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

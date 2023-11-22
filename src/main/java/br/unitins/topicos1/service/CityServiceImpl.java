@@ -27,5 +27,4 @@ public class CityServiceImpl implements CityService{
     public List<CityResponseDTO> findAll() {
         return repository.listAll().stream().map(e -> CityResponseDTO.valueOf(e)).toList();
     }
-    
 }
