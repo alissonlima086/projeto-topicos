@@ -10,6 +10,10 @@ public class User extends DefaultEntity {
     private String email;
     private String password;
 
+    private Profile profile;
+
+    private String imageName;
+
     public String getUsername() {
         return username;
     }
@@ -33,4 +37,22 @@ public class User extends DefaultEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    
 }
