@@ -1,7 +1,7 @@
-package br.unitins.topicos1.resourse;
+package br.unitins.topicos1.resource;
 
-import br.unitins.topicos1.dto.ComicDTO;
-import br.unitins.topicos1.service.ComicService;
+import br.unitins.topicos1.dto.PublisherDTO;
+import br.unitins.topicos1.service.PublisherService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -16,23 +16,23 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/comics")
+@Path("/publishers")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ComicResource {
+public class PublisherResource {
 
     @Inject
-    ComicService service;
+    PublisherService service;
 
     @POST
-    public Response insert(ComicDTO dto){
+    public Response insert(PublisherDTO dto){
         return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, ComicDTO dto){
+    public Response update(@PathParam("id") Long id, PublisherDTO dto){
         service.update(id, dto);
         return Response.noContent().build();
     }
@@ -61,4 +61,6 @@ public class ComicResource {
     public Response findByName(@PathParam("name") String name){
         return Response.ok(service.findByName(name)).build();
     }
+
+    
 }

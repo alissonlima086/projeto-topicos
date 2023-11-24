@@ -11,6 +11,7 @@ import br.unitins.topicos1.model.User;
 import br.unitins.topicos1.repository.AddressRepository;
 import br.unitins.topicos1.repository.PhoneRepository;
 import br.unitins.topicos1.repository.UserRepository;
+import br.unitins.topicos1.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -27,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     PhoneRepository phoneRepository;
+
+    @Inject
+    HashService hashService;
 
     @Override
     @Transactional
@@ -103,6 +107,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponseDTO> findAll() {
         return repository.listAll().stream().map(e -> UserResponseDTO.valueOf(e)).toList();
+    }
+
+    @Override
+    public UserResponseDTO findByEmailAndPassword(String email, String password) {
+        User user = repository.findByEmailAndPassword(email, password);
+        if (user == null) 
+            throw new ValidationException("login", "Login ou senha inválido");
+        
+        return UserResponseDTO.valueOf(user);
     }
     
 }

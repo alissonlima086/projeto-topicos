@@ -1,7 +1,7 @@
-package br.unitins.topicos1.resourse;
+package br.unitins.topicos1.resource;
 
-import br.unitins.topicos1.dto.PublisherDTO;
-import br.unitins.topicos1.service.PublisherService;
+import br.unitins.topicos1.dto.GenreDTO;
+import br.unitins.topicos1.service.GenreService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -16,23 +16,23 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/publishers")
+@Path("/genres")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class PublisherResource {
+public class GenreResource {
 
     @Inject
-    PublisherService service;
+    GenreService service;
 
     @POST
-    public Response insert(PublisherDTO dto){
+    public Response insert(GenreDTO dto){
         return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, PublisherDTO dto){
+    public Response update(@PathParam("id") Long id, GenreDTO dto){
         service.update(id, dto);
         return Response.noContent().build();
     }

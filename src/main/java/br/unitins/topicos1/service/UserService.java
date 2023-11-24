@@ -24,6 +24,8 @@ public interface UserService {
 
     public List<UserResponseDTO> findByUsername(String username);
 
+    public UserResponseDTO findByEmailAndPassword(String email, String Password);
+
     public List<UserResponseDTO> findAll();
     
 }

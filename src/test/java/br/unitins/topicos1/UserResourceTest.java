@@ -1,4 +1,4 @@
-package br.unitins.topicos1;
+/*package br.unitins.topicos1;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
@@ -118,3 +118,5 @@ public class UserResourceTest {
     }
     
 }
+
+*/

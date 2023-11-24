@@ -1,4 +1,4 @@
-package br.unitins.topicos1.resourse;
+package br.unitins.topicos1.resource;
 
 import br.unitins.topicos1.dto.AddressDTO;
 import br.unitins.topicos1.service.AddressService;

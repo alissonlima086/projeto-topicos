@@ -1,7 +1,8 @@
-package br.unitins.topicos1.resourse;
+package br.unitins.topicos1.resource;
 
-import br.unitins.topicos1.dto.AuthorDTO;
-import br.unitins.topicos1.service.AuthorService;
+import br.unitins.topicos1.dto.PhoneDTO;
+import br.unitins.topicos1.dto.UserDTO;
+import br.unitins.topicos1.service.UserService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -16,23 +17,23 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/Authors")
+@Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class AuthorResource {
+public class UserResource {
 
     @Inject
-    AuthorService service;
+    UserService service;
 
     @POST
-    public Response insert(AuthorDTO dto){
+    public Response insert(UserDTO dto){
         return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, AuthorDTO dto){
+    public Response update(@PathParam("id") Long id, UserDTO dto){
         service.update(id, dto);
         return Response.noContent().build();
     }
@@ -43,6 +44,28 @@ public class AuthorResource {
     public Response delete(@PathParam("id") Long id){
         service.delete(id);
         return Response.noContent().build();
+    }
+
+    @POST
+    @Transactional
+    @Path("/phone/insert/{id}")
+    public Response insertPhone(@PathParam("id") Long id, PhoneDTO dto){
+        return Response.status(Status.CREATED).entity(service.insertPhone(id, dto)).build();
+    }
+
+
+    @PUT
+    @Transactional
+    @Path("/phone/update/{id}")
+    public Response updatePhone(@PathParam("id") Long id, PhoneDTO dto){
+        service.updatePhone(id, dto);
+        return Response.noContent().build();
+    }
+
+    @GET
+    @Path("/phone")
+    public Response findAllPhones(){
+        return Response.ok(service.findAllPhones()).build();
     }
 
     @GET
@@ -57,9 +80,9 @@ public class AuthorResource {
     }
 
     @GET
-    @Path("/search/nome/{AuthorName}")
-    public Response findByAuthorName(@PathParam("AuthorName") String authorName){
-        return Response.ok(service.findByName(authorName)).build();
+    @Path("/search/name/{username}")
+    public Response findByUsername(@PathParam("username") String username){
+        return Response.ok(service.findByUsername(username)).build();
     }
     
 }
