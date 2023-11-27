@@ -1,5 +1,7 @@
 package br.unitins.topicos1.resource;
 
+import org.jboss.logging.Logger;
+
 import br.unitins.topicos1.dto.AddressDTO;
 import br.unitins.topicos1.service.AddressService;
 import jakarta.inject.Inject;

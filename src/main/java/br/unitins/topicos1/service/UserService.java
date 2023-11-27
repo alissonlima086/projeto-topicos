@@ -20,6 +20,8 @@ public interface UserService {
 
     public List<PhoneResponseDTO> findAllPhones();
 
+    public List<PhoneResponseDTO> findPhoneByUserId(Long id);
+
     public UserResponseDTO findById(long id);
 
     public List<UserResponseDTO> findByUsername(String username);

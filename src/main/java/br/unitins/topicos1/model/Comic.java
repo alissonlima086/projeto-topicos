@@ -1,5 +1,7 @@
 package br.unitins.topicos1.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -9,6 +11,8 @@ public class Comic extends Product {
     private Integer numPages;
 
     private Binding binding;
+
+    private List<String> imageComic;
 
     @ManyToOne
     @JoinColumn(name = "id_publisher")
@@ -48,6 +52,14 @@ public class Comic extends Product {
 
     public void setAuthor(Author author) {
         this.author = author;
+    }
+
+    public List<String> getImageComic() {
+        return imageComic;
+    }
+
+    public void setImageComic(List<String> imageComic) {
+        this.imageComic = imageComic;
     }
 
 }

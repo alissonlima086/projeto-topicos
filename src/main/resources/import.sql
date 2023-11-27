@@ -5,11 +5,17 @@
 -- insert into myentity (id, field) values(3, 'field-3');
 -- alter sequence myentity_seq restart with 4;
 
-insert into user_table (username, email, `password`) values('Alisson', 'alisson@mail.com', '12345');
-insert into user_table (username, email, `password`) values('Frederico', 'fred@wetmail.com', '54321');
+insert into user_table (username, email, `password`, `profile`) values('Alisson', 'alisson@mail.com', '12345', 2);
+insert into user_table (username, email, `password`, `profile`) values('Frederico', 'fred@wetmail.com', '54321', 2);
+insert into user_table (username, email, `password`, `profile`) values('Joao', 'joao@mail.com', '12345678', 1);
 
 insert into phone(areaCode, `number`, id_user) values('63', '2222222', 1);
 insert into phone(areaCode, `number`, id_user) values('63', '777567575', 2);
+insert into phone(areaCode, `number`, id_user) values('63', '2232535', 3);
+
+insert into phone(areaCode, `number`, id_user) values('63', '75594748', 1);
+insert into phone(areaCode, `number`, id_user) values('63', '5353535353', 2);
+
 
 insert into genre(`name`) values('Romance');
 insert into genre(`name`) values('Fantasia');

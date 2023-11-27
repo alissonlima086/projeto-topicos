@@ -1,5 +1,8 @@
 package br.unitins.topicos1.resource;
 
+
+import org.jboss.logging.Logger;
+
 import br.unitins.topicos1.dto.LoginDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
 import br.unitins.topicos1.service.HashService;
@@ -28,14 +31,30 @@ public class AuthResource {
     @Inject
     JwtService jwtService;
 
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
+
     @POST
     public Response login(@Valid LoginDTO dto) {
 
+        LOG.infof("Iniciando a autenticação do %s", dto.email());
+
         String hashSenha = hashService.getHashPassword(dto.password());
+
+        LOG.info("Hash da senha gerado.");
+
+        LOG.debug(hashSenha);
 
         UserResponseDTO result = service.findByEmailAndPassword(dto.email(), hashSenha);
 
+        if(result != null){
+            LOG.info("Login e senha corretos.");
+        }else{
+            LOG.info("Login ou senha incorretos.");
+        }
+
         String token = jwtService.generateJwt(result);
+
+        LOG.info("Finalizando o processo de login");
 
         return Response.ok().header("Authorization", token).build();
     }

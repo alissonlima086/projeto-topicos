@@ -69,6 +69,12 @@ public class UserResource {
     }
 
     @GET
+    @Path("/phone/{id}")
+    public Response findPhoneByUserId(@PathParam("id") Long id){
+        return Response.ok(service.findPhoneByUserId(id)).build();
+    }
+
+    @GET
     public Response findAll(){
         return Response.ok(service.findAll()).build();
     }

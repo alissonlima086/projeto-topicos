@@ -117,5 +117,10 @@ public class UserServiceImpl implements UserService {
         
         return UserResponseDTO.valueOf(user);
     }
+
+    @Override
+    public List<PhoneResponseDTO> findPhoneByUserId(Long id) {
+        return phoneRepository.findPhoneByUserId(id).stream().map(e -> PhoneResponseDTO.valueOf(e)).toList();
+    }
     
 }
