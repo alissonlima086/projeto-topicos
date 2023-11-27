@@ -39,4 +39,11 @@ public interface UserService {
 
     public List<UserResponseDTO> findAll();
     
+    //Updates
+
+    public UserResponseDTO updateEmail(String login, String newEmail);
+
+    public UserResponseDTO updatePassword(String login, String newPassword);
+
+    public UserResponseDTO updateUsername(String login, String newUsername);
 }

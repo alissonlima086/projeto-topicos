@@ -64,6 +64,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    // ---------- PHONE ----------
+
     @Override
     @Transactional
     public PhoneResponseDTO insertPhone(Long id, PhoneDTO dto){
@@ -78,6 +80,7 @@ public class UserServiceImpl implements UserService {
         return PhoneResponseDTO.valueOf(phone);
     }
 
+
     @Override
     @Transactional
     public PhoneResponseDTO updatePhone(Long id, PhoneDTO dto){
@@ -88,6 +91,44 @@ public class UserServiceImpl implements UserService {
 
         return PhoneResponseDTO.valueOf(phone);
     }
+
+     // ---------- UPDATE ----------
+
+    @Override
+    public UserResponseDTO updateImageName(Long id, String imageName) {
+        User user = repository.findById(id);
+        user.setImageName(imageName);
+        return UserResponseDTO.valueOf(user);
+    }
+
+    @Override
+    public UserResponseDTO updateEmail(String login, String newEmail) {
+
+
+        User user = repository.findByEmail(login);
+
+        user.setEmail(newEmail);
+
+        return UserResponseDTO.valueOf(user);
+
+    }
+
+    @Override
+    public UserResponseDTO updatePassword(String login, String newPassword) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updatePassword'");
+    }
+
+    @Override
+    public UserResponseDTO updateUsername(String login, String newUsername) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateUsername'");
+    }
+
+
+
+
+    // ---------- FIND ----------
 
     @Override
     public List<PhoneResponseDTO> findAllPhones() {
@@ -132,12 +173,6 @@ public class UserServiceImpl implements UserService {
 
         return UserResponseDTO.valueOf(user);
     }
-
-    @Override
-    public UserResponseDTO updateImageName(Long id, String imageName) {
-        User user = repository.findById(id);
-        user.setImageName(imageName);
-        return UserResponseDTO.valueOf(user);
-    }
+    
     
 }

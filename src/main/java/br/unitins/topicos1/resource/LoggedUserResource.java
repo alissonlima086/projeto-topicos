@@ -48,6 +48,11 @@ public class LoggedUserResource {
 
     }
 
+
+
+
+    // ---------- Image ----------
+
     @PATCH
     @Path("/upload/image")
     @RolesAllowed({ "User", "Admin" })
@@ -78,6 +83,26 @@ public class LoggedUserResource {
         ResponseBuilder response = Response.ok(fileService.getFile(imageName));
         response.header("Content-Disposition", "attachment;filename="+imageName);
         return response.build();
+    }
+
+
+    // ---------- Updates ----------
+
+    @PATCH
+    @Path("/update/email")
+    @RolesAllowed({"User", "Admin"})
+    public Response updateEmail(String newEmail){
+
+        String login = jwt.getSubject();
+
+        try{
+            UserResponseDTO userDTO = userService.updateEmail(login, newEmail);
+            return Response.ok(userDTO).build();
+        } catch(Exception e){
+            e.printStackTrace();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
+        }
     }
 
 }
