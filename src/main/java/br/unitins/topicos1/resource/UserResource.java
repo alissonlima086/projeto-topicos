@@ -3,6 +3,7 @@ package br.unitins.topicos1.resource;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.service.UserService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;

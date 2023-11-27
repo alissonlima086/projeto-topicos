@@ -1,6 +1,7 @@
 package br.unitins.topicos1.resource;
 
 import br.unitins.topicos1.service.CityService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;

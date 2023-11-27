@@ -2,6 +2,7 @@ package br.unitins.topicos1.resource;
 
 import br.unitins.topicos1.dto.AuthorDTO;
 import br.unitins.topicos1.service.AuthorService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -25,6 +26,7 @@ public class AuthorResource {
     AuthorService service;
 
     @POST
+    @RolesAllowed({"Admin"})
     public Response insert(AuthorDTO dto){
         return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
@@ -32,6 +34,7 @@ public class AuthorResource {
     @PUT
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response update(@PathParam("id") Long id, AuthorDTO dto){
         service.update(id, dto);
         return Response.noContent().build();
@@ -40,6 +43,7 @@ public class AuthorResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response delete(@PathParam("id") Long id){
         service.delete(id);
         return Response.noContent().build();
