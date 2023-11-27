@@ -2,6 +2,8 @@ package br.unitins.topicos1.service;
 
 import java.util.List;
 
+import org.jboss.logging.Logger;
+
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UserDTO;
@@ -11,6 +13,7 @@ import br.unitins.topicos1.model.User;
 import br.unitins.topicos1.repository.AddressRepository;
 import br.unitins.topicos1.repository.PhoneRepository;
 import br.unitins.topicos1.repository.UserRepository;
+import br.unitins.topicos1.resource.AuthResource;
 import br.unitins.topicos1.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -31,6 +34,8 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     HashService hashService;
+
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @Override
     @Transactional
@@ -102,15 +107,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponseDTO updateEmail(String login, String newEmail) {
-
+        
+        LOG.info("Iniciando update do email");
 
         User user = repository.findByEmail(login);
 
+        LOG.info("Usuario encontrado");
+
         user.setEmail(newEmail);
 
-        return UserResponseDTO.valueOf(user);
+        LOG.info("Usuario persistido");
 
+        LOG.info("atualização do email concluida");
+
+        return UserResponseDTO.valueOf(user);
     }
 
     @Override
