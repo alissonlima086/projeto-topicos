@@ -5,9 +5,9 @@
 -- insert into myentity (id, field) values(3, 'field-3');
 -- alter sequence myentity_seq restart with 4;
 
-insert into user_table (username, email, `password`, `profile`) values('Alisson', 'alisson@mail.com', '12345', 2);
-insert into user_table (username, email, `password`, `profile`) values('Frederico', 'fred@wetmail.com', '54321', 2);
-insert into user_table (username, email, `password`, `profile`) values('Joao', 'joao@mail.com', '12345678', 1);
+insert into user_table (username, email, `password`, `profile`) values('Alisson', 'alisson@mail.com', 'NuCgY6/GPMQTMdNiush/UNx86FJs4rFVBcCfuzRRIREuEbf42eMqkc+ex10zbq4TK4fvrcJUpNH85V1+nUEcJg==', 2);
+insert into user_table (username, email, `password`, `profile`) values('Frederico', 'fred@wetmail.com', 'NuCgY6/GPMQTMdNiush/UNx86FJs4rFVBcCfuzRRIREuEbf42eMqkc+ex10zbq4TK4fvrcJUpNH85V1+nUEcJg==', 2);
+insert into user_table (username, email, `password`, `profile`) values('Joao', 'joao@mail.com', 'NuCgY6/GPMQTMdNiush/UNx86FJs4rFVBcCfuzRRIREuEbf42eMqkc+ex10zbq4TK4fvrcJUpNH85V1+nUEcJg==', 1);
 
 insert into phone(areaCode, `number`, id_user) values('63', '2222222', 1);
 insert into phone(areaCode, `number`, id_user) values('63', '777567575', 2);
