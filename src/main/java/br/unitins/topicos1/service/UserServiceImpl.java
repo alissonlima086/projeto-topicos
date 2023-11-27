@@ -122,5 +122,22 @@ public class UserServiceImpl implements UserService {
     public List<PhoneResponseDTO> findPhoneByUserId(Long id) {
         return phoneRepository.findPhoneByUserId(id).stream().map(e -> PhoneResponseDTO.valueOf(e)).toList();
     }
+
+    @Override
+    public UserResponseDTO findByEmail(String email) {
+        User user = repository.findByEmail(email);
+        if(email == null){
+            throw new ValidationException("email", "Email invalido");
+        }
+
+        return UserResponseDTO.valueOf(user);
+    }
+
+    @Override
+    public UserResponseDTO updateImageName(Long id, String imageName) {
+        User user = repository.findById(id);
+        user.setImageName(imageName);
+        return UserResponseDTO.valueOf(user);
+    }
     
 }

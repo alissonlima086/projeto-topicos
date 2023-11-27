@@ -14,6 +14,15 @@ public class UserRepository implements PanacheRepository<User>{
         return find("UPPER(username) LIKE UPPER(?1) ", "%"+username+"%").list();
     }
 
+    public User findByEmail(String email){
+        try{
+            return find("email = ?1", email).singleResult();
+        } catch(NoResultException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public User findByEmailAndPassword(String email, String password) {
         try {
             return find("email = ?1 AND password = ?2 ", email, password).singleResult();

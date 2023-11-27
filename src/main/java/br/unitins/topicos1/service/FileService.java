@@ -5,8 +5,8 @@ import java.io.IOException;
 
 public interface FileService {
 
-    String salvar(String nomeArquivo, byte[] arquivo) throws IOException;
+    String save(String fileName, byte[] file) throws IOException;
 
-    File obter(String nomeArquivo); 
+    File getFile(String fileName); 
     
 }

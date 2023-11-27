@@ -21,53 +21,52 @@ public class UserFileService implements FileService {
         File.separator + "images" +
         File.separator + "usuario" +  File.separator;
     
-    private static final List<String> SUPPORTED_MIME_TYPES = 
-        Arrays.asList("image/jpeg", "image/jpg", "image/png", "image/gif");
+    private static final List<String> SUPPORTED_MIME_TYPES = Arrays.asList("image/jpeg", "image/jpg", "image/png", "image/gif");
 
     private static final int MAX_FILE_SIZE = 1024 * 1024 * 10; // 10mb 
 
     @Override
-    public String salvar(String nomeArquivo, byte[] arquivo) throws IOException {
-        verificarTamanhoImagem(arquivo);
+    public String save(String fileName, byte[] file) throws IOException {
+        verifyImageSize(file);
 
-        verificarTipoImagem(nomeArquivo);
+        verifyImageType(fileName);
 
         // criar diretorio caso nao exista
         Path diretorio = Paths.get(PATH_USER);
         Files.createDirectories(diretorio);
 
-        // criando o nome do arquivo randomico
-        String mimeType = Files.probeContentType(Paths.get(nomeArquivo));
+        // criando o nome do file randomico
+        String mimeType = Files.probeContentType(Paths.get(fileName));
         String extensao = mimeType.substring(mimeType.lastIndexOf('/') + 1);
-        String novoNomeArquivo = UUID.randomUUID() + "." + extensao;
+        String novoFileName = UUID.randomUUID() + "." + extensao;
 
-        // defindo o caminho completo do arquivo
-        Path filePath = diretorio.resolve(novoNomeArquivo);
+        // defindo o caminho completo do file
+        Path filePath = diretorio.resolve(novoFileName);
 
         if (filePath.toFile().exists()) 
-            throw new IOException("Nome de arquivo ja existe. Os alunos vão buscar uma melhor solucao.");
+            throw new IOException("Nome de file ja existe. Os alunos vão buscar uma melhor solucao.");
 
-        // salvar arquivo
+        // salvar file
         try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
-            fos.write(arquivo);
+            fos.write(file);
         }
 
         return filePath.toFile().getName();
     }
 
     @Override
-    public File obter(String nomeArquivo) {
-        File file = new File(PATH_USER+nomeArquivo);
+    public File getFile(String fileName) {
+        File file = new File(PATH_USER+fileName);
         return file;
     }
 
-    private void verificarTamanhoImagem(byte[] arquivo) throws IOException {
-        if (arquivo.length > MAX_FILE_SIZE) 
-            throw new IOException("Arquivo maior que 10mb.");
+    private void verifyImageSize(byte[] file) throws IOException {
+        if (file.length > MAX_FILE_SIZE) 
+            throw new IOException("File maior que 10mb.");
     }
 
-    private void verificarTipoImagem(String nomeArquivo) throws IOException {
-        String mimeType = Files.probeContentType(Paths.get(nomeArquivo));
+    private void verifyImageType(String fileName) throws IOException {
+        String mimeType = Files.probeContentType(Paths.get(fileName));
         if (!SUPPORTED_MIME_TYPES.contains(mimeType)) 
             throw new IOException("Tipo de imagem não suportada.");
   
