@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
+import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
 
@@ -43,7 +44,7 @@ public interface UserService {
 
     public UserResponseDTO updateEmail(String login, String newEmail);
 
-    public UserResponseDTO updatePassword(String login, String newPassword);
+    public UserResponseDTO updatePassword(String login, UpdatePasswordDTO updatePassword);
 
     public UserResponseDTO updateUsername(String login, String newUsername);
 }

@@ -6,6 +6,7 @@ import org.jboss.logging.Logger;
 
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
+import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
 import br.unitins.topicos1.model.Phone;
@@ -143,9 +144,12 @@ public class UserServiceImpl implements UserService {
 
         User user = repository.findByEmail(login);
 
-        LOG.info("Usuario encontrado");
-
-        user.setEmail(newEmail);
+        if(user != null){
+            LOG.info("Usuario encontrado");
+            user.setEmail(newEmail);
+        } else{
+            LOG.info("Usuario nao encontrado");
+        }
 
         LOG.info("Update do email concluido");
 
@@ -153,9 +157,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO updatePassword(String login, String newPassword) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updatePassword'");
+    @Transactional
+    public UserResponseDTO updatePassword(String login, UpdatePasswordDTO updatePassword) {
+
+        LOG.info("Iniciando update password");
+
+        User user = repository.findByEmail(login);
+
+        if(user != null) {
+            LOG.info("Usuario encontrado");
+
+            if(hashService.getHashPassword(updatePassword.currentPassword()).equals(user.getPassword())){
+                user.setPassword(hashService.getHashPassword(updatePassword.newPassword()));
+                LOG.info("Update Password concluido");
+            }
+
+        } else{
+            LOG.info("Usuario nao encontrado");
+        }
+
+
+        return UserResponseDTO.valueOf(user);
     }
 
 

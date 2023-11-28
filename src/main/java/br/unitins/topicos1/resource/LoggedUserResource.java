@@ -8,6 +8,7 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import br.unitins.topicos1.service.UserFileService;
 import br.unitins.topicos1.service.UserService;
 import br.unitins.topicos1.application.Error;
+import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
 import br.unitins.topicos1.form.UserImageForm;
 import jakarta.annotation.security.RolesAllowed;
@@ -114,6 +115,23 @@ public class LoggedUserResource {
 
         try{
             UserResponseDTO userDTO = userService.updateUsername(login, newUsername);
+            return Response.ok(userDTO).build();
+        } catch(Exception e){
+            e.printStackTrace();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
+        }
+    }
+
+    @PATCH
+    @Path("/update/password")
+    @RolesAllowed({"User", "Admin"})
+    public Response updatePassword(UpdatePasswordDTO updatePassword){
+
+        String login = jwt.getSubject();
+
+        try{
+            UserResponseDTO userDTO = userService.updatePassword(login, updatePassword);
             return Response.ok(userDTO).build();
         } catch(Exception e){
             e.printStackTrace();
