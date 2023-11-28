@@ -8,9 +8,12 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import br.unitins.topicos1.service.UserFileService;
 import br.unitins.topicos1.service.UserService;
 import br.unitins.topicos1.application.Error;
+import br.unitins.topicos1.dto.PhoneDTO;
+import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
 import br.unitins.topicos1.form.UserImageForm;
+import br.unitins.topicos1.model.User;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -84,6 +87,30 @@ public class LoggedUserResource {
         ResponseBuilder response = Response.ok(fileService.getFile(imageName));
         response.header("Content-Disposition", "attachment;filename="+imageName);
         return response.build();
+    }
+
+    // ---------- phones ----------
+
+    @PATCH
+    @Path("/insert/phone")
+    @RolesAllowed({"User", "Admin"})
+    public Response insertPhone(PhoneDTO phone){
+
+        String login = jwt.getSubject();
+
+        UserResponseDTO user = userService.findByEmail(login);
+
+        Long id = user.id();
+
+        try{
+            PhoneResponseDTO phoneDTO = userService.insertPhone(id, phone);
+            return Response.ok(phoneDTO).build();
+        } catch(Exception e){
+            e.printStackTrace();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
+        }
+        
     }
 
 
