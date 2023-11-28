@@ -23,8 +23,10 @@ public interface UserService {
 
     //Complete User
     public List<CompleteUserResponseDTO> findAllCompleteUsers();
+
     public CompleteUserResponseDTO findCompleteUserByEmail(String email);
-    public CompleteUserResponseDTO completeUser(Long id, CompleteUserDTO dto);
+
+    public CompleteUserResponseDTO completeUser(String email, CompleteUserDTO dto);
 
     //Phone
     public PhoneResponseDTO insertPhone(Long id, PhoneDTO dto);

@@ -8,6 +8,8 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import br.unitins.topicos1.service.UserFileService;
 import br.unitins.topicos1.service.UserService;
 import br.unitins.topicos1.application.Error;
+import br.unitins.topicos1.dto.CompleteUserDTO;
+import br.unitins.topicos1.dto.CompleteUserResponseDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
@@ -18,8 +20,11 @@ import br.unitins.topicos1.repository.PhoneRepository;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -95,7 +100,7 @@ public class LoggedUserResource {
 
     // ---------- phones ----------
 
-    @PATCH
+    @POST
     @Path("/insert/phone")
     @RolesAllowed({"User", "Admin"})
     public Response insertPhone(PhoneDTO phone){
@@ -116,7 +121,7 @@ public class LoggedUserResource {
         }
     }
 
-    @PATCH
+    @PUT
     @Path("/update/phone/{id}")
     @RolesAllowed({"User", "Admin"})
     public Response updatePhone(@PathParam("id") Long id, PhoneDTO phone){
@@ -131,7 +136,7 @@ public class LoggedUserResource {
         }
     }
 
-    @PATCH
+    @DELETE
     @Path("/delete/phone/{id}")
     @RolesAllowed({"User", "Admin"})
     public Response deletePhone(@PathParam("id") Long id, PhoneDTO phone){
@@ -145,10 +150,37 @@ public class LoggedUserResource {
         }
     }
 
+    // ---------- dados completos ----------
+
+    @GET
+    @Path("/find/completeUser")
+    @RolesAllowed({"User", "Admin"})
+    public Response getCompleteUserByEmail(){
+        String login = jwt.getSubject();
+
+        return Response.ok(userService.findCompleteUserByEmail(login)).build();
+    }
+
+    @PUT
+    @Path("/complete/user")
+    @RolesAllowed({"User", "Admin"})
+    public Response completeUser(CompleteUserDTO dto){
+
+        String login = jwt.getSubject();
+
+        try{
+            CompleteUserResponseDTO completeUserDTO = userService.completeUser(login, dto);
+            return Response.noContent().build();
+        } catch(Exception e){
+            e.printStackTrace();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
+        }
+    }
 
     // ---------- Updates ----------
 
-    @PATCH
+    @PUT
     @Path("/update/email")
     @RolesAllowed({"User", "Admin"})
     public Response updateEmail(String newEmail){
@@ -165,7 +197,7 @@ public class LoggedUserResource {
         }
     }
 
-    @PATCH
+    @PUT
     @Path("/update/username")
     @RolesAllowed({"User", "Admin"})
     public Response updateUsername(String newUsername){
@@ -182,7 +214,7 @@ public class LoggedUserResource {
         }
     }
 
-    @PATCH
+    @PUT
     @Path("/update/password")
     @RolesAllowed({"User", "Admin"})
     public Response updatePassword(UpdatePasswordDTO updatePassword){

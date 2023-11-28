@@ -144,18 +144,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CompleteUserResponseDTO findCompleteUserByEmail(String email) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findCompleteUserByEmail'");
+        return CompleteUserResponseDTO.valueOf(repository.findByEmail(email));
     }
 
 
     @Override
-    public CompleteUserResponseDTO completeUser(Long id, CompleteUserDTO dto) {
+    @Transactional
+    public CompleteUserResponseDTO completeUser(String email, CompleteUserDTO dto) {
         
-        User user = repository.findById(id);
+        User user = repository.findByEmail(email);
 
         if(user.getFullName() == null && user.getCpf() == null){
-            user.setFullName(dto.fullName());
+            //user.setFullName(dto.fullName());
+            user.setFullName(dto.fullName().replaceAll("\\s", ""));
             user.setCpf(dto.cpf());
         }
 
