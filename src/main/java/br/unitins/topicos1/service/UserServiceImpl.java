@@ -84,7 +84,10 @@ public class UserServiceImpl implements UserService {
         
         phone.setAreaCode(dto.areaCode());
         phone.setNumber(dto.number());
-        phone.setUser(repository.findById(id));
+        
+        User user = repository.findById(id);
+        
+        user.getPhones().add(phone);
 
         phoneRepository.persist(phone);
 

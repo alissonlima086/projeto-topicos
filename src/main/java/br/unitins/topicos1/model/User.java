@@ -1,6 +1,13 @@
 package br.unitins.topicos1.model;
 
+
+
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,6 +20,14 @@ public class User extends DefaultEntity {
     private Profile profile;
 
     private String imageName;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "id_phone")
+    private List<Phone> phones;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "id_address")
+    private List<Address> addresses;
 
     public String getUsername() {
         return username;
@@ -54,5 +69,21 @@ public class User extends DefaultEntity {
         this.profile = profile;
     }
 
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+    
     
 }
