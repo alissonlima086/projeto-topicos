@@ -24,6 +24,8 @@ public interface UserService {
 
     public PhoneResponseDTO updatePhone(Long id, PhoneDTO dto);
 
+    public void deletePhone(Long id);
+
     public List<PhoneResponseDTO> findAllPhones();
 
     public List<PhoneResponseDTO> findPhoneByUserId(Long id);

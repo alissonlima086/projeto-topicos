@@ -37,7 +37,6 @@ public class AddressServiceImpl implements AddressService{
         address.setComplement(dto.complement());
         
         address.setCity(cityRepository.findById(dto.city()));
-        address.setUser(userRepository.findById(dto.user()));
 
         repository.persist(address);
 

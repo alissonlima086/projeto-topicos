@@ -80,16 +80,25 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public PhoneResponseDTO insertPhone(Long id, PhoneDTO dto){
+
+        LOG.info("Inserindo Phone");
+
         Phone phone = new Phone();
         
         phone.setAreaCode(dto.areaCode());
         phone.setNumber(dto.number());
         
         User user = repository.findById(id);
+
+        phone.setUser(user);
         
         user.getPhones().add(phone);
 
+        LOG.info("Phone inserido na lista de usuario");
+
         phoneRepository.persist(phone);
+
+        LOG.info("Phone inserido");
 
         return PhoneResponseDTO.valueOf(phone);
     }
@@ -98,12 +107,29 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public PhoneResponseDTO updatePhone(Long id, PhoneDTO dto){
+
+        LOG.info("Iniciando update de phone");
+
         Phone phone = phoneRepository.findById(id);
-        
-        phone.setAreaCode(dto.areaCode());
-        phone.setNumber(dto.number());
+
+        if(phone != null){
+            LOG.info("Phone encontrado");
+            phone.setAreaCode(dto.areaCode());
+            phone.setNumber(dto.number());
+
+            LOG.info("Phone atualizado");
+        } else{
+            LOG.info("Phone não encontrado");
+        }
 
         return PhoneResponseDTO.valueOf(phone);
+    }
+
+    @Override
+    public void deletePhone(Long id){
+        if(!phoneRepository.deleteById(id)){
+            throw new NotFoundException();
+        }
     }
 
      // ---------- UPDATE ----------

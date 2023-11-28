@@ -21,8 +21,7 @@ public class User extends DefaultEntity {
 
     private String imageName;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "id_phone")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Phone> phones;
 
     @OneToMany(cascade = CascadeType.REMOVE)

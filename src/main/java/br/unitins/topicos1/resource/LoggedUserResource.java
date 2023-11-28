@@ -14,6 +14,7 @@ import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
 import br.unitins.topicos1.form.UserImageForm;
 import br.unitins.topicos1.model.User;
+import br.unitins.topicos1.repository.PhoneRepository;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -40,6 +41,9 @@ public class LoggedUserResource {
 
     @Inject
     UserFileService fileService;
+
+    @Inject
+    PhoneRepository phoneRepository;
 
     @GET
     @RolesAllowed({ "User", "Admin" })
@@ -110,7 +114,25 @@ public class LoggedUserResource {
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
         }
+    }
+
+    @PATCH
+    @Path("/update/phone/{id}")
+    @RolesAllowed({"User", "Admin"})
+    public Response updatePhone(@PathParam("id") Long id, PhoneDTO phone){
         
+        String login = jwt.getSubject();
+
+        try{
+            PhoneResponseDTO phoneDTO = userService.updatePhone(id, phone);
+            return Response.ok(phoneDTO).build();
+        } catch(Exception e){
+            e.printStackTrace();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
+        }
+
+
     }
 
 

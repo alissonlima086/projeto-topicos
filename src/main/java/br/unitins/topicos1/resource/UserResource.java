@@ -63,6 +63,14 @@ public class UserResource {
         return Response.noContent().build();
     }
 
+    @DELETE
+    @Transactional
+    @Path("/phone/delete/{id}")
+    public Response deletePhone(@PathParam("id") Long id){
+        service.deletePhone(id);
+        return Response.noContent().build();
+    }
+
     @GET
     @Path("/phone")
     public Response findAllPhones(){
