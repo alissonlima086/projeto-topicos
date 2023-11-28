@@ -5,15 +5,15 @@ import br.unitins.topicos1.model.City;
 import br.unitins.topicos1.model.User;
 
 public record AddressResponseDTO (
+    String user,
     String name,
     String postalCode,
     String address,
     String complement,
-    City city,
-    User user
+    City city
 ){
     public static AddressResponseDTO valueOf(Address address){
-        return new AddressResponseDTO(address.getName(), address.getPostalCode(), address.getAddress(), address.getComplement(), address.getCity(), address.getUser());
+        return new AddressResponseDTO(address.getUser().getEmail(), address.getName(), address.getPostalCode(), address.getAddress(), address.getComplement(), address.getCity());
     }
     
 }

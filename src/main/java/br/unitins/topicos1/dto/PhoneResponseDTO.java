@@ -6,9 +6,10 @@ import br.unitins.topicos1.model.User;
 public record PhoneResponseDTO (
     Long id,
     String areaCode,
-    String number
+    String number,
+    String user
 ){
     public static PhoneResponseDTO valueOf (Phone phone) {
-        return new PhoneResponseDTO(phone.getId(), phone.getAreaCode(), phone.getNumber());
+        return new PhoneResponseDTO(phone.getId(), phone.getAreaCode(), phone.getNumber(), phone.getUser().getEmail());
     }
 }

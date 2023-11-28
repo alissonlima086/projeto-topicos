@@ -1,6 +1,5 @@
 package br.unitins.topicos1.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -15,6 +14,10 @@ public class Address extends DefaultEntity {
     @ManyToOne
     @JoinColumn(name = "id_city")
     private City city;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
 
 
     public String getName() {
@@ -56,4 +59,13 @@ public class Address extends DefaultEntity {
     public void setCity(City city) {
         this.city = city;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
 }
