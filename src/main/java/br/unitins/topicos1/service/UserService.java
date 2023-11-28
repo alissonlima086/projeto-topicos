@@ -2,6 +2,8 @@ package br.unitins.topicos1.service;
 
 import java.util.List;
 
+import br.unitins.topicos1.dto.CompleteUserDTO;
+import br.unitins.topicos1.dto.CompleteUserResponseDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
@@ -18,6 +20,11 @@ public interface UserService {
     public UserResponseDTO updateImageName(Long id, String imageName);
 
     public void delete(long id);
+
+    //Complete User
+    public List<CompleteUserResponseDTO> findAllCompleteUsers();
+    public CompleteUserResponseDTO findCompleteUserByEmail(String email);
+    public CompleteUserResponseDTO completeUser(Long id, CompleteUserDTO dto);
 
     //Phone
     public PhoneResponseDTO insertPhone(Long id, PhoneDTO dto);

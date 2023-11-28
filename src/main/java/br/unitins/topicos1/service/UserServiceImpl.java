@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.jboss.logging.Logger;
 
+import br.unitins.topicos1.dto.CompleteUserDTO;
+import br.unitins.topicos1.dto.CompleteUserResponseDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
@@ -132,6 +134,34 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
+    // ---------- dados completos ----------
+
+    @Override
+    public List<CompleteUserResponseDTO> findAllCompleteUsers() {
+        return repository.listAll().stream().map(e -> CompleteUserResponseDTO.valueOf(e)).toList();
+    }
+
+    @Override
+    public CompleteUserResponseDTO findCompleteUserByEmail(String email) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findCompleteUserByEmail'");
+    }
+
+
+    @Override
+    public CompleteUserResponseDTO completeUser(Long id, CompleteUserDTO dto) {
+        
+        User user = repository.findById(id);
+
+        if(user.getFullName() == null && user.getCpf() == null){
+            user.setFullName(dto.fullName());
+            user.setCpf(dto.cpf());
+        }
+
+        return  CompleteUserResponseDTO.valueOf(user);
+    }
+
      // ---------- UPDATE ----------
 
     @Override
@@ -256,6 +286,7 @@ public class UserServiceImpl implements UserService {
 
         return UserResponseDTO.valueOf(user);
     }
+
     
     
 }
