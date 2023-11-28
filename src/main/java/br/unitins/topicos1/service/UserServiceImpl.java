@@ -35,6 +35,9 @@ public class UserServiceImpl implements UserService {
     @Inject
     HashService hashService;
 
+    @Inject
+    JwtService jwtService;
+
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @Override
@@ -44,7 +47,8 @@ public class UserServiceImpl implements UserService {
 
         newUser.setUsername(dto.username());
         newUser.setEmail(dto.email());
-        newUser.setPassword(dto.password());
+
+        newUser.setPassword(hashService.getHashPassword(dto.password()));
 
         repository.persistAndFlush(newUser);
 
@@ -57,6 +61,7 @@ public class UserServiceImpl implements UserService {
         User user = repository.findById(id);
         user.setUsername(dto.username());
         user.setEmail(dto.email());
+        user.setPassword(hashService.getHashPassword(dto.password()));
 
         return UserResponseDTO.valueOf(user);
     }
@@ -108,9 +113,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public UserResponseDTO updateUsername(String login, String newUsername) {
+
+        LOG.info("Iniciando update do username");
+
+        newUsername = newUsername.replaceAll("^\"|\"$", "");
+
+        User user = repository.findByEmail(login);
+
+        if(user != null){
+            LOG.info("Usuario encontrado");
+            user.setUsername(newUsername);
+        } else{
+            LOG.info("Usuario nao encontrado");
+        }
+
+        LOG.info("Update do username concluido");
+
+        return UserResponseDTO.valueOf(user);
+    }
+
+    @Override
+    @Transactional
     public UserResponseDTO updateEmail(String login, String newEmail) {
         
         LOG.info("Iniciando update do email");
+
+        newEmail = newEmail.replaceAll("^\"|\"$", "");
 
         User user = repository.findByEmail(login);
 
@@ -118,9 +147,7 @@ public class UserServiceImpl implements UserService {
 
         user.setEmail(newEmail);
 
-        LOG.info("Usuario persistido");
-
-        LOG.info("atualização do email concluida");
+        LOG.info("Update do email concluido");
 
         return UserResponseDTO.valueOf(user);
     }
@@ -130,13 +157,6 @@ public class UserServiceImpl implements UserService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updatePassword'");
     }
-
-    @Override
-    public UserResponseDTO updateUsername(String login, String newUsername) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateUsername'");
-    }
-
 
 
 
@@ -153,8 +173,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDTO> findByUsername(String username) {
-        return repository.findByUsername(username).stream().map(e -> UserResponseDTO.valueOf(e)).toList();
+    public UserResponseDTO findByUsername(String username) {
+        return UserResponseDTO.valueOf(repository.findByUsername(username));
     }
 
     @Override

@@ -31,7 +31,7 @@ public interface UserService {
     //Find
     public UserResponseDTO findById(long id);
 
-    public List<UserResponseDTO> findByUsername(String username);
+    public UserResponseDTO findByUsername(String username);
 
     public UserResponseDTO findByEmail(String email);
 

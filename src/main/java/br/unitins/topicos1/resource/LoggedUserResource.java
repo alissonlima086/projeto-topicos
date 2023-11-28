@@ -105,4 +105,21 @@ public class LoggedUserResource {
         }
     }
 
+    @PATCH
+    @Path("/update/username")
+    @RolesAllowed({"User", "Admin"})
+    public Response updateUsername(String newUsername){
+
+        String login = jwt.getSubject();
+
+        try{
+            UserResponseDTO userDTO = userService.updateUsername(login, newUsername);
+            return Response.ok(userDTO).build();
+        } catch(Exception e){
+            e.printStackTrace();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
+        }
+    }
+
 }
