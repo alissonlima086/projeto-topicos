@@ -21,6 +21,9 @@ public class User extends DefaultEntity {
 
     private String imageName;
 
+    private String fullName;
+    private String cpf;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Phone> phones;
 
@@ -82,6 +85,22 @@ public class User extends DefaultEntity {
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
     
     
