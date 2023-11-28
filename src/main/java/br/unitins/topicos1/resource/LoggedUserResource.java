@@ -120,19 +120,29 @@ public class LoggedUserResource {
     @Path("/update/phone/{id}")
     @RolesAllowed({"User", "Admin"})
     public Response updatePhone(@PathParam("id") Long id, PhoneDTO phone){
-        
-        String login = jwt.getSubject();
 
         try{
             PhoneResponseDTO phoneDTO = userService.updatePhone(id, phone);
-            return Response.ok(phoneDTO).build();
+            return Response.noContent().build();
         } catch(Exception e){
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
         }
+    }
 
-
+    @PATCH
+    @Path("/delete/phone/{id}")
+    @RolesAllowed({"User", "Admin"})
+    public Response deletePhone(@PathParam("id") Long id, PhoneDTO phone){
+        try{
+            userService.deletePhone(id);
+            return Response.noContent().build();
+        } catch(Exception e){
+            e.printStackTrace();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
+        }
     }
 
 
