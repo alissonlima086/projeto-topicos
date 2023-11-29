@@ -67,7 +67,7 @@ public class LoggedUserResource {
     // ---------- Image ----------
 
     @PATCH
-    @Path("/upload/image")
+    @Path("/upload/image/")
     @RolesAllowed({ "User", "Admin" })
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response saveimage(@MultipartForm UserImageForm form){
@@ -101,7 +101,7 @@ public class LoggedUserResource {
     // ---------- phones ----------
 
     @POST
-    @Path("/insert/phone")
+    @Path("/insert/phone/")
     @RolesAllowed({"User", "Admin"})
     public Response insertPhone(PhoneDTO phone){
 
@@ -153,7 +153,7 @@ public class LoggedUserResource {
     // ---------- dados completos ----------
 
     @GET
-    @Path("/find/completeUser")
+    @Path("/find/completeUser/")
     @RolesAllowed({"User", "Admin"})
     public Response getCompleteUserByEmail(){
         String login = jwt.getSubject();
@@ -161,7 +161,7 @@ public class LoggedUserResource {
     }
 
     @PUT
-    @Path("/complete/register")
+    @Path("/complete/register/")
     @RolesAllowed({"User", "Admin"})
     public Response completeUser(CompleteUserDTO dto){
 
@@ -184,7 +184,7 @@ public class LoggedUserResource {
     // ---------- Updates ----------
 
     @PUT
-    @Path("/update/email")
+    @Path("/update/email/")
     @RolesAllowed({"User", "Admin"})
     public Response updateEmail(String newEmail){
 
@@ -192,7 +192,7 @@ public class LoggedUserResource {
 
         try{
             UserResponseDTO userDTO = userService.updateEmail(login, newEmail);
-            return Response.ok(userDTO).build();
+            return Response.noContent().build();
         } catch(Exception e){
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
@@ -201,7 +201,7 @@ public class LoggedUserResource {
     }
 
     @PUT
-    @Path("/update/username")
+    @Path("/update/username/")
     @RolesAllowed({"User", "Admin"})
     public Response updateUsername(String newUsername){
 
@@ -209,7 +209,7 @@ public class LoggedUserResource {
 
         try{
             UserResponseDTO userDTO = userService.updateUsername(login, newUsername);
-            return Response.ok(userDTO).build();
+            return Response.noContent().build();
         } catch(Exception e){
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
@@ -218,7 +218,7 @@ public class LoggedUserResource {
     }
 
     @PUT
-    @Path("/update/password")
+    @Path("/update/password/")
     @RolesAllowed({"User", "Admin"})
     public Response updatePassword(UpdatePasswordDTO updatePassword){
 
@@ -226,7 +226,7 @@ public class LoggedUserResource {
 
         try{
             UserResponseDTO userDTO = userService.updatePassword(login, updatePassword);
-            return Response.ok(userDTO).build();
+            return Response.noContent().build();
         } catch(Exception e){
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
