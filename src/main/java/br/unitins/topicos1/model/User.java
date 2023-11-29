@@ -8,6 +8,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,6 +31,10 @@ public class User extends DefaultEntity {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_address")
     private List<Address> addresses;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "id_physicalPerson")
+    private PhysicalPerson physicalPerson;
 
     public String getUsername() {
         return username;
@@ -102,6 +107,12 @@ public class User extends DefaultEntity {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-    
-    
+
+    public PhysicalPerson getPhysicalPerson() {
+        return physicalPerson;
+    }
+
+    public void setPhysicalPerson(PhysicalPerson physicalPerson) {
+        this.physicalPerson = physicalPerson;
+    }
 }

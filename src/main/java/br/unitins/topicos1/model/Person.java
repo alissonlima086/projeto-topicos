@@ -1,11 +1,13 @@
 package br.unitins.topicos1.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.MappedSuperclass;
 
-@Entity
+@MappedSuperclass
 public class Person extends DefaultEntity {
     private String name;
-    private String cpf;
 
     public String getName() {
         return name;
@@ -13,14 +15,6 @@ public class Person extends DefaultEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 
 }

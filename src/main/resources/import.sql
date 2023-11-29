@@ -5,9 +5,17 @@
 -- insert into myentity (id, field) values(3, 'field-3');
 -- alter sequence myentity_seq restart with 4;
 
-insert into user_table (username, email, `password`, `profile`) values('Alisson', 'alisson@mail.com', 'NuCgY6/GPMQTMdNiush/UNx86FJs4rFVBcCfuzRRIREuEbf42eMqkc+ex10zbq4TK4fvrcJUpNH85V1+nUEcJg==', 2);
-insert into user_table (username, email, `password`, `profile`) values('Frederico', 'fred@wetmail.com', 'NuCgY6/GPMQTMdNiush/UNx86FJs4rFVBcCfuzRRIREuEbf42eMqkc+ex10zbq4TK4fvrcJUpNH85V1+nUEcJg==', 2);
-insert into user_table (username, email, `password`, `profile`) values('Joao', 'joao@mail.com', 'NuCgY6/GPMQTMdNiush/UNx86FJs4rFVBcCfuzRRIREuEbf42eMqkc+ex10zbq4TK4fvrcJUpNH85V1+nUEcJg==', 1);
+insert into physicalPerson (cpf, gender) values('4852169852', 1);
+insert into physicalPerson (cpf, gender) values('5165561651', 1);
+insert into physicalPerson (cpf, gender) values('4852146852', 2);
+
+insert into user_table (username, email, `password`, `profile`, id_physicalPerson) values('Alisson', 'alisson@mail.com', 'NuCgY6/GPMQTMdNiush/UNx86FJs4rFVBcCfuzRRIREuEbf42eMqkc+ex10zbq4TK4fvrcJUpNH85V1+nUEcJg==', 2, 2);
+insert into user_table (username, email, `password`, `profile`, id_physicalPerson) values('Frederico', 'fred@wetmail.com', 'NuCgY6/GPMQTMdNiush/UNx86FJs4rFVBcCfuzRRIREuEbf42eMqkc+ex10zbq4TK4fvrcJUpNH85V1+nUEcJg==', 2, 1);
+insert into user_table (username, email, `password`, `profile`, id_physicalPerson) values('Joao', 'joao@mail.com', 'NuCgY6/GPMQTMdNiush/UNx86FJs4rFVBcCfuzRRIREuEbf42eMqkc+ex10zbq4TK4fvrcJUpNH85V1+nUEcJg==', 1, 3);
+
+insert into person(`name`) values ('Frederico Santos');
+insert into person(`name`) values ('Alisson Luís');
+insert into person(`name`) values ('André Pagode');
 
 insert into phone(areaCode, `number`, id_user) values('63', '2222222', 1);
 insert into phone(areaCode, `number`, id_user) values('63', '777567575', 2);
@@ -49,5 +57,13 @@ insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, i
 insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 3', 60, 50, 300, 2, 2, 2);
 insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 4', 60, 50, 300, 1, 2, 2);
 insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, id_author) values('Comic teste 5', 60, 50, 300, 2, 2, 2);
+
+insert into payment(`value`, confirmationPayment, dateConfimationPayment) values(0, true, '2023-05-22');
+insert into pix(id, `name`, cpf, dateExpirationTokenPix) values (1,'Joao', '5165561651', '2023-05-22');
+
+insert into order_table(totalOrder, id_address, id_user, id_payment) values(0, 1, 2, 1);
+
+insert into itemOrder(id_order, quantity, totalItem, idBuyed, id_user, id_product) values (1, 5, 12.50, true , 1, 1);
+insert into itemOrder(id_order, quantity, totalItem, idBuyed, id_user, id_product) values (1, 5, 12.50, false , 2, 2);
 
 
