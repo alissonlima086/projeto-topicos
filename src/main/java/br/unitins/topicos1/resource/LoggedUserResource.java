@@ -33,7 +33,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/usuariologado")
+@Path("/loggedUser")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class LoggedUserResource {
@@ -52,7 +52,7 @@ public class LoggedUserResource {
 
     @GET
     @RolesAllowed({ "User", "Admin" })
-    public Response getUsuario() {
+    public Response getUser() {
 
         // obtendo o login pelo token jwt
         String login = jwt.getSubject();
@@ -161,7 +161,7 @@ public class LoggedUserResource {
     }
 
     @PUT
-    @Path("/complete/user")
+    @Path("/complete/register")
     @RolesAllowed({"User", "Admin"})
     public Response completeUser(CompleteUserDTO dto){
 

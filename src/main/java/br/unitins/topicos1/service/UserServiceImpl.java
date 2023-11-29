@@ -16,6 +16,7 @@ import br.unitins.topicos1.dto.UserResponseDTO;
 import br.unitins.topicos1.model.Gender;
 import br.unitins.topicos1.model.Phone;
 import br.unitins.topicos1.model.PhysicalPerson;
+import br.unitins.topicos1.model.Profile;
 import br.unitins.topicos1.model.User;
 import br.unitins.topicos1.repository.AddressRepository;
 import br.unitins.topicos1.repository.PhoneRepository;
@@ -62,9 +63,11 @@ public class UserServiceImpl implements UserService {
         newUser.setUsername(dto.username());
         newUser.setEmail(dto.email());
 
+        newUser.setProfile(Profile.valueOf(dto.profile()));
+
         newUser.setPassword(hashService.getHashPassword(dto.password()));
 
-        repository.persistAndFlush(newUser);
+        repository.persist(newUser);
 
         return UserResponseDTO.valueOf(newUser);
     }
@@ -169,7 +172,7 @@ public class UserServiceImpl implements UserService {
 
         person.setName(dto.fullName().replaceAll("\\s", ""));
         person.setCpf(dto.cpf());
-        //person.setGender(CompleteUserResponseDTO.valueOf(dto));
+        person.setGender(Gender.valueOf(dto.gender()));
         person.setUser(user);
 
         personRepository.persist(person);

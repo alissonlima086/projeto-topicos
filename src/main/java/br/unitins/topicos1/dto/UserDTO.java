@@ -8,7 +8,8 @@ public record UserDTO (
     @Size(min = 2, max = 30, message = "Username must between 2 and 30 characters") 
     String username,
     String email,
-    String password
+    String password,
+    Integer profile
 ){
     
 }
