@@ -168,7 +168,7 @@ public class UserServiceImpl implements UserService {
 
         person.setName(dto.fullName().replaceAll("\\s", ""));
         person.setCpf(dto.cpf());
-        person.setGender(CompleteUserResponseDTO.valueOf(user).gender());
+        //person.setGender(CompleteUserResponseDTO.valueOf(dto.gender());
         person.setUser(user);
 
         personRepository.persist(person);
