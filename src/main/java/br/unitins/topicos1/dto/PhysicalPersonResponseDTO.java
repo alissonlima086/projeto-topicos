@@ -7,8 +7,8 @@ public record PhysicalPersonResponseDTO(
         Long id,
         String name,
         String cpf,
-        Gender gender) {
+        String gender) {
     public static PhysicalPersonResponseDTO valueOf(PhysicalPerson physicalPerson) {
-        return new PhysicalPersonResponseDTO(physicalPerson.getId(), physicalPerson.getName(), physicalPerson.getCpf(), physicalPerson.getGender());
+        return new PhysicalPersonResponseDTO(physicalPerson.getId(), physicalPerson.getName(), physicalPerson.getCpf(), physicalPerson.getGender().getLabel());
     }
 }

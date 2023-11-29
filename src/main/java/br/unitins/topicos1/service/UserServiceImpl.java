@@ -13,6 +13,7 @@ import br.unitins.topicos1.dto.PhysicalPersonResponseDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
+import br.unitins.topicos1.model.Gender;
 import br.unitins.topicos1.model.Phone;
 import br.unitins.topicos1.model.PhysicalPerson;
 import br.unitins.topicos1.model.User;
@@ -168,7 +169,7 @@ public class UserServiceImpl implements UserService {
 
         person.setName(dto.fullName().replaceAll("\\s", ""));
         person.setCpf(dto.cpf());
-        //person.setGender(CompleteUserResponseDTO.valueOf(dto.gender());
+        //person.setGender(CompleteUserResponseDTO.valueOf(dto));
         person.setUser(user);
 
         personRepository.persist(person);
