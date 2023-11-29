@@ -201,9 +201,9 @@ public class LoggedUserResource {
     }
 
     @PUT
-    @Path("/update/username/")
+    @Path("/update/username/{newUsername}")
     @RolesAllowed({"User", "Admin"})
-    public Response updateUsername(String newUsername){
+    public Response updateUsername(@PathParam("id") String newUsername){
 
         String login = jwt.getSubject();
 

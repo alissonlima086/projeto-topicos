@@ -59,9 +59,7 @@ public class LoggedUserResourceTest {
         String token = jwtService.generateJwt(userService.findByEmail("fulano@mail.com"));
 
         //given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body("teo").when().patch("/update/username/").then().statusCode(201);
-        //given().header("Authorization", "Bearer " + token)
-        //.contentType(ContentType.JSON).body("teo")
-        //.when().put("/update/username/").then().statusCode(204);
+        //given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(newUsername).when().put("/update/username/" + newUsername).then().statusCode(204);
 
         UserResponseDTO user = userService.findByEmail("fulano@mail.com");
 
