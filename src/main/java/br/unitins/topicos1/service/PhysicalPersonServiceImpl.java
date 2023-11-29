@@ -30,7 +30,7 @@ public class PhysicalPersonServiceImpl implements PhysicalPersonService {
     @Override
     public List<PhysicalPersonResponseDTO> findAll() {
         List<PhysicalPerson> list = physicalPersonRepository.listAll();
-        return list.stream().map(PhysicalPersonResponseDTO::new).collect(Collectors.toList());
+        return physicalPersonRepository.listAll().stream().map(e -> PhysicalPersonResponseDTO.valueOf(e)).toList();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class PhysicalPersonServiceImpl implements PhysicalPersonService {
         PhysicalPerson physicalPerson = physicalPersonRepository.findById(id);
         if (physicalPerson == null)
             throw new NotFoundException("Pessoa Fisica não encontrado.");
-        return new PhysicalPersonResponseDTO(physicalPerson);
+        return PhysicalPersonResponseDTO.valueOf(physicalPerson);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class PhysicalPersonServiceImpl implements PhysicalPersonService {
 
         physicalPersonRepository.persist(entity);
 
-        return new PhysicalPersonResponseDTO(entity);
+        return PhysicalPersonResponseDTO.valueOf(entity);
     }
 
     public PhysicalPerson createPhysicalPerson(PhysicalPersonDTO physicalPersonDto) throws ConstraintViolationException {
@@ -81,7 +81,7 @@ public class PhysicalPersonServiceImpl implements PhysicalPersonService {
         entity.setCpf(physicalPersonDto.cpf());
         entity.setGender(Gender.valueOf(physicalPersonDto.gender()));
 
-        return new PhysicalPersonResponseDTO(entity);
+        return PhysicalPersonResponseDTO.valueOf(entity);
     }
 
     private void validar(PhysicalPersonDTO physicalPersonDto) throws ConstraintViolationException {
@@ -100,7 +100,7 @@ public class PhysicalPersonServiceImpl implements PhysicalPersonService {
     @Override
     public List<PhysicalPersonResponseDTO> findByName(String name) {
         List<PhysicalPerson> list = physicalPersonRepository.findByName(name);
-        return list.stream().map(PhysicalPersonResponseDTO::new).collect(Collectors.toList());
+        return physicalPersonRepository.findByName(name).stream().map(e -> PhysicalPersonResponseDTO.valueOf(e)).toList();
     }
 
     @Override

@@ -26,7 +26,7 @@ public interface UserService {
 
     public CompleteUserResponseDTO findCompleteUserByEmail(String email);
 
-    public CompleteUserResponseDTO completeUser(String email, CompleteUserDTO dto);
+    public CompleteUserResponseDTO completeUser(Long id, CompleteUserDTO dto);
 
     //Phone
     public PhoneResponseDTO insertPhone(Long id, PhoneDTO dto);

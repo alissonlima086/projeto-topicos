@@ -157,7 +157,6 @@ public class LoggedUserResource {
     @RolesAllowed({"User", "Admin"})
     public Response getCompleteUserByEmail(){
         String login = jwt.getSubject();
-
         return Response.ok(userService.findCompleteUserByEmail(login)).build();
     }
 
@@ -168,8 +167,12 @@ public class LoggedUserResource {
 
         String login = jwt.getSubject();
 
+        UserResponseDTO user = userService.findByEmail(login);
+
+        Long id = user.id();
+
         try{
-            CompleteUserResponseDTO completeUserDTO = userService.completeUser(login, dto);
+            CompleteUserResponseDTO completeUserDTO = userService.completeUser(id, dto);
             return Response.noContent().build();
         } catch(Exception e){
             e.printStackTrace();

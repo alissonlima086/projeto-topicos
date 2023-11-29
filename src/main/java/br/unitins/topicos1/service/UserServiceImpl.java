@@ -8,13 +8,17 @@ import br.unitins.topicos1.dto.CompleteUserDTO;
 import br.unitins.topicos1.dto.CompleteUserResponseDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
+import br.unitins.topicos1.dto.PhysicalPersonDTO;
+import br.unitins.topicos1.dto.PhysicalPersonResponseDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
 import br.unitins.topicos1.model.Phone;
+import br.unitins.topicos1.model.PhysicalPerson;
 import br.unitins.topicos1.model.User;
 import br.unitins.topicos1.repository.AddressRepository;
 import br.unitins.topicos1.repository.PhoneRepository;
+import br.unitins.topicos1.repository.PhysicalPersonRepository;
 import br.unitins.topicos1.repository.UserRepository;
 import br.unitins.topicos1.resource.AuthResource;
 import br.unitins.topicos1.validation.ValidationException;
@@ -37,6 +41,12 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     HashService hashService;
+
+    @Inject
+    PhysicalPersonService personService;
+
+    @Inject
+    PhysicalPersonRepository personRepository;
 
     @Inject
     JwtService jwtService;
@@ -150,16 +160,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public CompleteUserResponseDTO completeUser(String email, CompleteUserDTO dto) {
+    public CompleteUserResponseDTO completeUser(Long id, CompleteUserDTO dto) {
+
+        User user = repository.findById(id);
         
-        User user = repository.findByEmail(email);
+        PhysicalPerson person = new PhysicalPerson();
 
-        if(user.getFullName() == null && user.getCpf() == null){
-            //user.setFullName(dto.fullName());
-            user.setFullName(dto.fullName().replaceAll("\\s", ""));
-            user.setCpf(dto.cpf());
-        }
+        person.setName(dto.fullName().replaceAll("\\s", ""));
+        person.setCpf(dto.cpf());
+        person.setGender(CompleteUserResponseDTO.valueOf(user).gender());
+        person.setUser(user);
 
+        personRepository.persist(person);
+
+        user.setPhysicalPerson(person);
+        
         return  CompleteUserResponseDTO.valueOf(user);
     }
 
