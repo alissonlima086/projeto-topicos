@@ -16,6 +16,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.jboss.logging.Logger;
 import org.jose4j.http.Get;
 
+import br.unitins.topicos1.dto.CompleteUserDTO;
+import br.unitins.topicos1.dto.CompleteUserResponseDTO;
 import br.unitins.topicos1.dto.EmailDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
@@ -210,6 +212,61 @@ public class LoggedUserResourceTest {
         given().header("Authorization", "Bearer " + token).when().get("/loggedUser/find/completeUser/").then().statusCode(200);
     }
     
+    @Test
+    public void testCompleteUser(){
+        //Inserindo novo usuario
+        UserDTO dto = new UserDTO("ciclano", "ciclano@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-    
+        //Completando Dados
+        CompleteUserDTO userDTO = new CompleteUserDTO("Nome Aleatorio", "5555433432", 1);
+        
+        Long idUser = userService.findByEmail("ciclano@mail.com").id();
+
+        //gerando token para autorização
+        String token = jwtService.generateJwt(userService.findById(idUser));
+
+        //Testando status code
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(userDTO).when().put("/loggedUser/complete/register/").then().statusCode(204);
+    }
+
+    @Test
+    public void testCompleteUserNotLogged(){
+        //Inserindo novo usuario
+        UserDTO dto = new UserDTO("ciclano", "ciclano1@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        //Completando Dados
+        CompleteUserDTO userDTO = new CompleteUserDTO("Nome Aleatorio", "5555433432", 1);
+        
+        Long idUser = userService.findByEmail("ciclano1@mail.com").id();
+
+        //gerando token para autorização
+        String token = jwtService.generateJwt(userService.findById(idUser));
+
+        //Testando status code
+        given().contentType(ContentType.JSON).body(userDTO).when().put("/loggedUser/complete/register/").then().statusCode(401);
+    }
+
+    @Test
+    public void testCompleteUserAlreadyRegistered(){
+        //Inserindo novo usuario
+        UserDTO dto = new UserDTO("ciclano", "ciclano2@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        //Completando Dados
+        CompleteUserDTO userDTO = new CompleteUserDTO("Nome Aleatorio", "5555433432", 1);
+        CompleteUserDTO userDTO2 = new CompleteUserDTO("Nome Aleatorio 2", "55554df33432", 1);
+        
+        //pegando o id
+        Long idUser = userService.findByEmail("ciclano2@mail.com").id();
+
+        CompleteUserResponseDTO userTest2 = userService.completeUser(idUser, userDTO);
+
+        //gerando token para autorização
+        String token = jwtService.generateJwt(userService.findById(idUser));
+
+        //Testando status code
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(userDTO2).when().put("/loggedUser/complete/register/").then().statusCode(400);
+    }
 }

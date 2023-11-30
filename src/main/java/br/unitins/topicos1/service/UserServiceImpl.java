@@ -183,6 +183,10 @@ public class UserServiceImpl implements UserService {
     public CompleteUserResponseDTO completeUser(Long id, CompleteUserDTO dto) {
 
         User user = repository.findById(id);
+
+        if(user.getPhysicalPerson() != null){
+            throw new IllegalArgumentException("Estes dados não podem ser alterados");
+        }
         
         PhysicalPerson person = new PhysicalPerson();
 
