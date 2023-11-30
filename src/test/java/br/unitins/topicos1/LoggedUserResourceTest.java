@@ -269,4 +269,26 @@ public class LoggedUserResourceTest {
         //Testando status code
         given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(userDTO2).when().put("/loggedUser/complete/register/").then().statusCode(400);
     }
+
+    @Test
+    public void testGetCompleteuserByEmailAfterRegister(){
+        //Inserindo novo usuario
+        UserDTO dto = new UserDTO("ciclano", "ciclano3@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        //Completando Dados
+        CompleteUserDTO userDTO = new CompleteUserDTO("Nome Aleatorio", "5555433432", 1);
+        CompleteUserDTO userDTO2 = new CompleteUserDTO("Nome Aleatorio 2", "55554df33432", 1);
+        
+        //pegando o id
+        Long idUser = userService.findByEmail("ciclano3@mail.com").id();
+
+        CompleteUserResponseDTO userTest2 = userService.completeUser(idUser, userDTO);
+
+        //gerando token para autorização
+        String token = jwtService.generateJwt(userService.findById(idUser));
+
+        //Testando status code
+        given().header("Authorization", "Bearer " + token).when().get("/loggedUser/find/completeUser/").then().statusCode(200);
+    }
 }
