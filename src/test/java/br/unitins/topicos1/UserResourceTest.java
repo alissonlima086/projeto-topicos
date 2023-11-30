@@ -46,14 +46,23 @@ public class UserResourceTest {
         given().header("Authorization", "Bearer " + token).when().get("/users").then().statusCode(200);
     }
 
+    @Test
+    public void testFindAllNotLogger(){
+        given().when().get("/users").then().statusCode(401);
+    }
+
     /*
     @Test
     public void testInsert(){
-        UserDTO dto = new UserDTO("marquinho", "marcos@mail.com", "123456");
+        UserDTO dto = new UserDTO("fulano", "fulano@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        given().contentType(ContentType.JSON).body(dto).when().post("/users").then().statusCode(201);
+        UserDTO dtoInsert = new UserDTO("fulano 2", "fulano2@mail.com", hashService.getHashPassword("12345"), 2);
+
+        String token = jwtService.generateJwt(userService.findByEmail("fulano@mail.com"));
+
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoInsert).when().post("/insert/user/").then().statusCode(201);
     }
-
     @Test
     public void testUpdate(){
         UserDTO dto = new UserDTO("marquinho", "marcos@mail.com", "123456");

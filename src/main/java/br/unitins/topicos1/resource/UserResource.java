@@ -35,6 +35,7 @@ public class UserResource {
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @POST
+    @Path("/insert/user/")
     @RolesAllowed({"Admin"})
     public Response insert(UserDTO dto){
         try{
