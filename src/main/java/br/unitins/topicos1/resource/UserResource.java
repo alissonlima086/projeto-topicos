@@ -70,7 +70,7 @@ public class UserResource {
 
     @DELETE
     @Transactional
-    @Path("/{id}")
+    @Path("/delete/user/{id}")
     @RolesAllowed({"Admin"})
     public Response delete(@PathParam("id") Long id){
 

@@ -75,24 +75,27 @@ public class UserResourceTest {
         //pegando Id do usuario
         Long idUser = userService.findByEmail("fulano2@mail.com").id();
 
-
-
         UserDTO dtoUpdate = new UserDTO("marcos", "marcos@mail.com", hashService.getHashPassword("12345"), 2);
 
         String token = jwtService.generateJwt(userService.findByEmail("fulano@mail.com"));
 
         given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoUpdate).when().put("/users/update/user/"+idUser).then().statusCode(204);
     }
-    /*
 
     @Test
     public void testDelete(){
-        UserDTO dto = new UserDTO("marquinho", "marcos@mail.com", "123456");
+        UserDTO dto = new UserDTO("fulano", "fulano@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        UserResponseDTO userTest = service.insert(dto);
-        Long id = userTest.id();
+        UserDTO dtoInsert = new UserDTO("fulano 2", "fulano2@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userInsert = userService.insert(dtoInsert);
 
-        RestAssured.given().when().delete("/users/"+id).then().statusCode(204);
+        //pegando Id do usuario
+        Long idUser = userService.findByEmail("fulano2@mail.com").id();
+
+        String token = jwtService.generateJwt(userService.findByEmail("fulano@mail.com"));
+
+        RestAssured.given().header("Authorization", "Bearer " + token).when().delete("/users/delete/user/"+idUser).then().statusCode(204);
     }
 
     /*
