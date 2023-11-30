@@ -29,9 +29,6 @@ public class UserResource {
     @Inject
     UserService service;
 
-    @Inject
-    JsonWebToken jwt;
-
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @POST
@@ -164,8 +161,8 @@ public class UserResource {
         } catch(Exception e) {
             LOG.info("Telefone não encontrado");
             e.printStackTrace();
-            Error error = new Error("404");
-            return Response.status(Status.NOT_FOUND).entity(error).build();
+            Error error = new Error("400");
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
         }
     }
 
@@ -179,7 +176,7 @@ public class UserResource {
             LOG.info("Usuarios não encontrados");
             e.printStackTrace();
             Error error = new Error("400");
-            return Response.status(Status.NOT_FOUND).entity(error).build();
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
         }
     }
 

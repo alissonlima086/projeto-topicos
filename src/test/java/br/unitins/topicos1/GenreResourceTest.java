@@ -3,24 +3,28 @@ package br.unitins.topicos1;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 
 import org.junit.jupiter.api.Test;
 
 import br.unitins.topicos1.dto.GenreDTO;
 import br.unitins.topicos1.dto.GenreResponseDTO;
+import br.unitins.topicos1.resource.AuthResource;
 import br.unitins.topicos1.service.GenreService;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.jboss.logging.Logger;
+
 @QuarkusTest
 public class GenreResourceTest {
 
     @Inject
     GenreService service;
-
+    
     @Test
     public void testFindAll(){
         given().when().get("/genres").then().statusCode(200);
