@@ -21,6 +21,8 @@ import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.util.List;
+
 @QuarkusTest
 public class UserResourceTest {
 
@@ -98,44 +100,58 @@ public class UserResourceTest {
         RestAssured.given().header("Authorization", "Bearer " + token).when().delete("/users/delete/user/"+idUser).then().statusCode(204);
     }
 
-    /*
     
     @Test
     public void testInsertPhone(){
-        UserDTO userDTO = new UserDTO("marquinho", "marcos@mail.com", "123456");
-        
-        UserResponseDTO userTest = service.insert(userDTO);
-        Long id = userTest.id();
+        //Inserindo novo usuario
+        UserDTO dto = new UserDTO("fulano", "fulano6@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        PhoneDTO dto = new PhoneDTO("63", "96666-6666");
-        given().contentType(ContentType.JSON).body(dto).when().post("/users/phone/insert/"+id).then().statusCode(201);
+        //pegando Id do usuario
+        Long idUser = userService.findByEmail("fulano6@mail.com").id();
+
+        //Passando o novo phone
+        PhoneDTO phone = new PhoneDTO("63", "777777777");
+
+        //gerando token para autorização
+        String token = jwtService.generateJwt(userService.findById(idUser));
+
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(phone).when().post("/users/phone/insert/"+ idUser).then().statusCode(201);
 
     }
     
-    /*
 
     @Test
     public void testUpdatePhone(){
-        UserDTO userDTO = new UserDTO("marquinho", "marcos@mail.com", "123456");
+        UserDTO dto = new UserDTO("fulano", "fulano6@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        UserResponseDTO userTest = service.insert(userDTO);
-        Long idUser = userTest.id();
+        //pegando Id do usuario
+        Long idUser = userService.findByEmail("fulano6@mail.com").id();
 
-        PhoneDTO dto = new PhoneDTO("63", "96666-6666");
+        //Passando o novo phone
+        PhoneDTO phone = new PhoneDTO("63", "777777777");
 
-        PhoneResponseDTO phoneTest = service.insertPhone(idUser, dto);
-        Long idPhone = phoneTest.id();
+        userService.insertPhone(idUser, phone);
+
+        //gerando token para autorização
+        String token = jwtService.generateJwt(userService.findById(idUser));
+
+        List<PhoneResponseDTO> idPhone = userService.findPhoneByUserId(idUser);
 
         PhoneDTO phoneUpdate = new PhoneDTO("63", "99999-9999");
 
-        given().contentType(ContentType.JSON).body(phoneUpdate).when().put("/users/phone/update/"+idPhone).then().statusCode(204);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(phoneUpdate).when().put("/users/phone/update/"+1).then().statusCode(204);
     }
-
-    /*
 
     @Test
     public void testFindAllPhones(){
-        given().when().get("/users/phone").then().statusCode(200);
+        UserDTO dto = new UserDTO("fulano", "fulano@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        String token = jwtService.generateJwt(userService.findByEmail("fulano@mail.com"));
+
+        given().header("Authorization", "Bearer " + token).given().when().get("/users/phone").then().statusCode(200);
     }
 
     /*
