@@ -10,8 +10,14 @@ import org.junit.jupiter.api.Test;
 
 import br.unitins.topicos1.dto.GenreDTO;
 import br.unitins.topicos1.dto.GenreResponseDTO;
+import br.unitins.topicos1.dto.UserDTO;
+import br.unitins.topicos1.dto.UserResponseDTO;
+import br.unitins.topicos1.repository.UserRepository;
 import br.unitins.topicos1.resource.AuthResource;
 import br.unitins.topicos1.service.GenreService;
+import br.unitins.topicos1.service.HashService;
+import br.unitins.topicos1.service.JwtService;
+import br.unitins.topicos1.service.UserService;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -23,64 +29,112 @@ import org.jboss.logging.Logger;
 public class GenreResourceTest {
 
     @Inject
-    GenreService service;
+    GenreService genreService;
+
+    @Inject
+    UserService userService;
+
+    @Inject
+    UserRepository userRepository;
+
+    @Inject
+    HashService hashService;
+
+    @Inject
+    JwtService jwtService;
     
     @Test
-    public void testFindAll(){
-        given().when().get("/genres").then().statusCode(200);
+    public void testFindAllNotLogged(){
+        given().when().get("/genres").then().statusCode(401);
     }
 
     @Test
-    public void testFindById(){
-        GenreDTO dto = new GenreDTO("Sci-Fi");
+    public void testFindAll(){
+        UserDTO dto = new UserDTO("ino", "ino@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        GenreResponseDTO genreTest = service.insert(dto);
+        String token = jwtService.generateJwt(userService.findByEmail("ino@mail.com"));
+        
+        given().header("Authorization", "Bearer " + token).when().get("/genres").then().statusCode(200);
+    }
+
+    
+    @Test
+    public void testFindById(){
+        UserDTO dto = new UserDTO("baiken", "baiken@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        String token = jwtService.generateJwt(userService.findByEmail("baiken@mail.com"));
+
+        GenreDTO genreDTO = new GenreDTO("Sci-Fi");
+
+        GenreResponseDTO genreTest = genreService.insert(genreDTO);
         Long id = genreTest.id();
 
-        given().when().get("/genres/"+id).then().statusCode(200);
+        given().header("Authorization", "Bearer " + token).when().get("/genres/search/"+id).then().statusCode(200);
     }
+
 
     @Test
     public void testFindByName(){
-        GenreDTO dto = new GenreDTO("Romance");
+        UserDTO dto = new UserDTO("ky", "ky@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        GenreResponseDTO genreTest = service.insert(dto);
+        String token = jwtService.generateJwt(userService.findByEmail("ky@mail.com"));
+
+        GenreDTO genreDTO = new GenreDTO("Adventure");
+
+        GenreResponseDTO genreTest = genreService.insert(genreDTO);
         String name = genreTest.name();
 
-        given().when().get("/genres/search/nome/"+name).then().statusCode(200);
+        given().header("Authorization", "Bearer " + token).when().get("/genres/search/name/"+name).then().statusCode(200);
     }
 
     @Test
     public void testInsert(){
-        GenreDTO dto = new GenreDTO("Sci-Fi");
+        UserDTO dto = new UserDTO("chipp", "chipp@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        given().contentType(ContentType.JSON).body(dto).when().post("/genres").then().statusCode(201);
+        String token = jwtService.generateJwt(userService.findByEmail("chipp@mail.com"));
+
+        GenreDTO genreDTO = new GenreDTO("Romance");
+
+        given().header("Authorization", "Bearer " + token).given().contentType(ContentType.JSON).body(genreDTO).when().post("/genres/insert/").then().statusCode(201);
     }
+
+    
 
     @Test
     public void testUpdate(){
-        GenreDTO dto = new GenreDTO("Sci-Fi");
+        UserDTO dto = new UserDTO("giovanna", "giovanna@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        GenreResponseDTO genreTest = service.insert(dto);
-        Long id = genreTest.id();
+        String token = jwtService.generateJwt(userService.findByEmail("giovanna@mail.com"));
 
-        GenreDTO dtoUpdate = new GenreDTO("Ficção Cientifica");
+        GenreDTO genreDTO = new GenreDTO("Dtama");
+        GenreResponseDTO insertGenre = genreService.insert(genreDTO);
+        Long id = insertGenre.id();
 
-        given().contentType(ContentType.JSON).body(dtoUpdate).when().put("/genres/"+id).then().statusCode(204);
+        GenreDTO updateGenre = new GenreDTO("Drama");
 
-        GenreResponseDTO gen = service.findById(id);
-        assertThat(gen.name(), is("Ficção Cientifica"));
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(updateGenre).when().put("/genres/update/"+id).then().statusCode(204);
+
+        GenreResponseDTO gen = genreService.findById(id);
+        assertThat(gen.name(), is("Drama"));
     }
 
     @Test
     public void testDelete(){
-        GenreDTO dto = new GenreDTO("Sci-Fi");
+        UserDTO dto = new UserDTO("faust", "faust@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        GenreResponseDTO genreTest = service.insert(dto);
-        Long id = genreTest.id();
+        String token = jwtService.generateJwt(userService.findByEmail("faust@mail.com"));
 
-        RestAssured.given().when().delete("/genres/"+id).then().statusCode(204);
+        GenreDTO genreDTO = new GenreDTO("Conto");
+        GenreResponseDTO insertGenre = genreService.insert(genreDTO);
+        Long id = insertGenre.id();
+
+        RestAssured.given().header("Authorization", "Bearer " + token).when().delete("/genres/delete/"+id).then().statusCode(204);
 
     }
-
 }

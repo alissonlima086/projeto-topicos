@@ -107,7 +107,7 @@ public class GenreResource {
     }
 
     @GET
-    @Path("/search/nome/{name}")
+    @Path("/search/name/{name}")
     @RolesAllowed({"Admin", "User"})
     public Response findByName(@PathParam("name") String name){
         try{
