@@ -158,5 +158,41 @@ public class LoggedUserResourceTest {
 
     }
 
+    @Test
+    public void testInsertUsername(){
+        //Inserindo novo usuario
+        UserDTO dto = new UserDTO(null, "fulano7@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        //pegando Id do usuario
+        Long idUser = userService.findByEmail("fulano7@mail.com").id();
+
+        //Passando o username
+        UsernameDTO username = new UsernameDTO("marcio");
+        
+        //gerando token para autorização
+        String token = jwtService.generateJwt(userService.findById(idUser));
+
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(username).when().put("/loggedUser/complete/username/").then().statusCode(200);
+    }
+
+    @Test
+    public void testInsertUsernameAlreadyExistent(){
+        //Inserindo novo usuario
+        UserDTO dto = new UserDTO("fulano", "fulano8@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        //pegando Id do usuario
+        Long idUser = userService.findByEmail("fulano8@mail.com").id();
+
+        //Passando o username
+        UsernameDTO username = new UsernameDTO("marcio");
+        
+        //gerando token para autorização
+        String token = jwtService.generateJwt(userService.findById(idUser));
+
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(username).when().put("/loggedUser/complete/username/").then().statusCode(400);
+    }
+
     
 }

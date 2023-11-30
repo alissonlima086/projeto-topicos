@@ -186,6 +186,28 @@ public class LoggedUserResource {
     }
 
     @PUT
+    @Path("/complete/username/")
+    @RolesAllowed({"User", "Admin"})
+    public Response insertUsername(UsernameDTO usernameDTO){
+
+        String login = jwt.getSubject();
+
+        UserResponseDTO user = userService.findByEmail(login);
+
+        Long id = user.id();
+
+        try{
+            UsernameDTO username = userService.insertUsername(id, usernameDTO);
+            return Response.ok(usernameDTO).build();
+        } catch(Exception e){
+            e.printStackTrace();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
+        }
+
+    }
+
+    @PUT
     @Path("/complete/register/")
     @RolesAllowed({"User", "Admin"})
     public Response completeUser(CompleteUserDTO dto){

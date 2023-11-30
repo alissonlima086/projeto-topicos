@@ -24,6 +24,8 @@ public interface UserService {
     public void delete(long id);
 
     //Complete User
+    public UsernameDTO insertUsername(Long id, UsernameDTO usernameDTO);
+
     public List<CompleteUserResponseDTO> findAllCompleteUsers();
 
     public CompleteUserResponseDTO findCompleteUserByEmail(String email);

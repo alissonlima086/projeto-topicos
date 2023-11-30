@@ -154,6 +154,20 @@ public class UserServiceImpl implements UserService {
     // ---------- dados completos ----------
 
     @Override
+    @Transactional
+    public UsernameDTO insertUsername(Long id, UsernameDTO usernameDTO){
+        User user = repository.findById(id);
+
+        if(user.getUsername() != null){
+            throw new IllegalArgumentException("O usuário já possui um nome, tente alterar o nome.");
+        }
+
+        user.setUsername(usernameDTO.username());
+
+        return UsernameDTO.valueOf(user);
+    }
+
+    @Override
     public List<CompleteUserResponseDTO> findAllCompleteUsers() {
         return repository.listAll().stream().map(e -> CompleteUserResponseDTO.valueOf(e)).toList();
     }
