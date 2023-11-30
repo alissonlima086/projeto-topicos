@@ -4,11 +4,13 @@ import java.util.List;
 
 import br.unitins.topicos1.dto.CompleteUserDTO;
 import br.unitins.topicos1.dto.CompleteUserResponseDTO;
+import br.unitins.topicos1.dto.EmailDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
+import br.unitins.topicos1.dto.UsernameDTO;
 
 public interface UserService {
 
@@ -53,9 +55,9 @@ public interface UserService {
     
     //Updates
 
-    public UserResponseDTO updateEmail(String login, String newEmail);
+    public UserResponseDTO updateEmail(String login, EmailDTO newEmail);
 
     public UserResponseDTO updatePassword(String login, UpdatePasswordDTO updatePassword);
 
-    public UserResponseDTO updateUsername(String login, String newUsername);
+    public UserResponseDTO updateUsername(String login, UsernameDTO newUsername);
 }

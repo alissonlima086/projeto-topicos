@@ -10,10 +10,12 @@ import br.unitins.topicos1.service.UserService;
 import br.unitins.topicos1.application.Error;
 import br.unitins.topicos1.dto.CompleteUserDTO;
 import br.unitins.topicos1.dto.CompleteUserResponseDTO;
+import br.unitins.topicos1.dto.EmailDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
+import br.unitins.topicos1.dto.UsernameDTO;
 import br.unitins.topicos1.form.UserImageForm;
 import br.unitins.topicos1.model.User;
 import br.unitins.topicos1.repository.PhoneRepository;
@@ -186,7 +188,7 @@ public class LoggedUserResource {
     @PUT
     @Path("/update/email/")
     @RolesAllowed({"User", "Admin"})
-    public Response updateEmail(String newEmail){
+    public Response updateEmail(EmailDTO newEmail){
 
         String login = jwt.getSubject();
 
@@ -201,9 +203,9 @@ public class LoggedUserResource {
     }
 
     @PUT
-    @Path("/update/username/{newUsername}")
+    @Path("/update/username/")
     @RolesAllowed({"User", "Admin"})
-    public Response updateUsername(@PathParam("id") String newUsername){
+    public Response updateUsername(UsernameDTO newUsername){
 
         String login = jwt.getSubject();
 

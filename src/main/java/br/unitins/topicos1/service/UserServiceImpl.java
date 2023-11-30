@@ -6,6 +6,7 @@ import org.jboss.logging.Logger;
 
 import br.unitins.topicos1.dto.CompleteUserDTO;
 import br.unitins.topicos1.dto.CompleteUserResponseDTO;
+import br.unitins.topicos1.dto.EmailDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.PhysicalPersonDTO;
@@ -13,6 +14,7 @@ import br.unitins.topicos1.dto.PhysicalPersonResponseDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
+import br.unitins.topicos1.dto.UsernameDTO;
 import br.unitins.topicos1.model.Gender;
 import br.unitins.topicos1.model.Phone;
 import br.unitins.topicos1.model.PhysicalPerson;
@@ -193,17 +195,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO updateUsername(String login, String newUsername) {
+    public UserResponseDTO updateUsername(String login, UsernameDTO newUsername) {
 
         LOG.info("Iniciando update do username");
-
-        newUsername = newUsername.replaceAll("^\"|\"$", "");
 
         User user = repository.findByEmail(login);
 
         if(user != null){
             LOG.info("Usuario encontrado");
-            user.setUsername(newUsername);
+            user.setUsername(newUsername.username().replaceAll("^\"|\"$", ""));
         } else{
             LOG.info("Usuario nao encontrado");
         }
@@ -215,17 +215,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO updateEmail(String login, String newEmail) {
+    public UserResponseDTO updateEmail(String login, EmailDTO newEmail) {
         
         LOG.info("Iniciando update do email");
-
-        newEmail = newEmail.replaceAll("^\"|\"$", "");
 
         User user = repository.findByEmail(login);
 
         if(user != null){
             LOG.info("Usuario encontrado");
-            user.setEmail(newEmail);
+            user.setEmail(newEmail.email().replaceAll("^\"|\"$", ""));
         } else{
             LOG.info("Usuario nao encontrado");
         }
