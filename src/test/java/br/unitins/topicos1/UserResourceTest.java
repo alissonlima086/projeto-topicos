@@ -86,14 +86,14 @@ public class UserResourceTest {
 
     @Test
     public void testDelete(){
-        UserDTO dto = new UserDTO("fulano", "mary@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("mary", "mary@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
-        UserDTO dtoInsert = new UserDTO("fulano 2", "fulano2@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dtoInsert = new UserDTO("min", "min@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userInsert = userService.insert(dtoInsert);
 
         //pegando Id do usuario
-        Long idUser = userService.findByEmail("fulano2@mail.com").id();
+        Long idUser = userService.findByEmail("min@mail.com").id();
 
         String token = jwtService.generateJwt(userService.findByEmail("mary@mail.com"));
 
@@ -104,11 +104,11 @@ public class UserResourceTest {
     @Test
     public void testInsertPhone(){
         //Inserindo novo usuario
-        UserDTO dto = new UserDTO("fulano", "fulano6@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("jose", "jose@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         //pegando Id do usuario
-        Long idUser = userService.findByEmail("fulano6@mail.com").id();
+        Long idUser = userService.findByEmail("jose@mail.com").id();
 
         //Passando o novo phone
         PhoneDTO phone = new PhoneDTO("63", "777777777");
