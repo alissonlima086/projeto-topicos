@@ -14,6 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.jboss.logging.Logger;
+import org.jose4j.http.Get;
 
 import br.unitins.topicos1.dto.EmailDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
@@ -193,6 +194,22 @@ public class LoggedUserResourceTest {
 
         given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(username).when().put("/loggedUser/complete/username/").then().statusCode(400);
     }
+
+    @Test
+    public void testGetCompleteUserByEmailNotLogged(){
+        given().when().get("/loggedUser/find/completeUser/").then().statusCode(401);
+    }
+
+    @Test
+    public void testGetCompleteuserByEmail(){
+        UserDTO dto = new UserDTO("fulano", "fulano9@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        String token = jwtService.generateJwt(userService.findByEmail("fulano9@mail.com"));
+
+        given().header("Authorization", "Bearer " + token).when().get("/loggedUser/find/completeUser/").then().statusCode(200);
+    }
+    
 
     
 }
