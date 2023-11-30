@@ -51,7 +51,6 @@ public class UserResourceTest {
         given().when().get("/users").then().statusCode(401);
     }
 
-    /*
     @Test
     public void testInsert(){
         UserDTO dto = new UserDTO("fulano", "fulano@mail.com", hashService.getHashPassword("12345"), 2);
@@ -61,23 +60,30 @@ public class UserResourceTest {
 
         String token = jwtService.generateJwt(userService.findByEmail("fulano@mail.com"));
 
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoInsert).when().post("/insert/user/").then().statusCode(201);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoInsert).when().post("/users/insert/user/").then().statusCode(201);
     }
+
+    
     @Test
     public void testUpdate(){
-        UserDTO dto = new UserDTO("marquinho", "marcos@mail.com", "123456");
-        
-        UserResponseDTO userTest = service.insert(dto);
-        Long id = userTest.id();
+        UserDTO dto = new UserDTO("fulano", "fulano@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        UserDTO dtoUpdate = new UserDTO("marcos", "marcos.m@mail.com", "123456");
+        UserDTO dtoInsert = new UserDTO("fulano 2", "fulano2@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userInsert = userService.insert(dtoInsert);
 
-        given().contentType(ContentType.JSON).body(dtoUpdate).when().put("/users/"+id).then().statusCode(204);
+        //pegando Id do usuario
+        Long idUser = userService.findByEmail("fulano2@mail.com").id();
 
-        UserResponseDTO verify = service.findById(id);
-        assertThat(verify.username(), is("marcos"));
-        assertThat(verify.email(), is("marcos.m@mail.com"));
+
+
+        UserDTO dtoUpdate = new UserDTO("marcos", "marcos@mail.com", hashService.getHashPassword("12345"), 2);
+
+        String token = jwtService.generateJwt(userService.findByEmail("fulano@mail.com"));
+
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoUpdate).when().put("/users/update/user/"+idUser).then().statusCode(204);
     }
+    /*
 
     @Test
     public void testDelete(){
@@ -89,7 +95,7 @@ public class UserResourceTest {
         RestAssured.given().when().delete("/users/"+id).then().statusCode(204);
     }
 
-    
+    /*
     
     @Test
     public void testInsertPhone(){
@@ -103,6 +109,8 @@ public class UserResourceTest {
 
     }
     
+    /*
+
     @Test
     public void testUpdatePhone(){
         UserDTO userDTO = new UserDTO("marquinho", "marcos@mail.com", "123456");
@@ -120,10 +128,14 @@ public class UserResourceTest {
         given().contentType(ContentType.JSON).body(phoneUpdate).when().put("/users/phone/update/"+idPhone).then().statusCode(204);
     }
 
+    /*
+
     @Test
     public void testFindAllPhones(){
         given().when().get("/users/phone").then().statusCode(200);
     }
+
+    /*
 
     @Test
     public void testFindByName(){
@@ -134,6 +146,8 @@ public class UserResourceTest {
 
         given().when().get("/users/search/name/"+name).then().statusCode(200);
     }
+
+    /*
 
     @Test
     public void testFindById(){

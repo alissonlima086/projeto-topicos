@@ -52,7 +52,7 @@ public class UserResource {
 
     @PUT
     @Transactional
-    @Path("/{id}")
+    @Path("/update/user/{id}")
     @RolesAllowed({"Admin"})
     public Response update(@PathParam("id") Long id, UserDTO dto){
 
