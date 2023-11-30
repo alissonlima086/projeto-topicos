@@ -1,6 +1,7 @@
 package br.unitins.topicos1.resource;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
@@ -101,6 +102,28 @@ public class LoggedUserResource {
     }
 
     // ---------- phones ----------
+
+    @GET
+    @Path("/phone/")
+    @RolesAllowed({"User", "Admin"})
+    public Response getPhone(){
+
+        String login = jwt.getSubject();
+
+        UserResponseDTO user = userService.findByEmail(login);
+
+        Long id = user.id();
+
+        try{
+            List<PhoneResponseDTO> phoneDTO = userService.findPhoneByUserId(id);
+            return Response.ok(phoneDTO).build();
+        } catch (Exception e){
+            e.printStackTrace();
+            Error error = new Error("404", e.getMessage());
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
+
+    }
 
     @POST
     @Path("/insert/phone/")

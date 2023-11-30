@@ -16,6 +16,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.jboss.logging.Logger;
 
 import br.unitins.topicos1.dto.EmailDTO;
+import br.unitins.topicos1.dto.PhoneDTO;
+import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
 import br.unitins.topicos1.dto.UsernameDTO;
@@ -49,10 +51,10 @@ public class LoggedUserResourceTest {
 
     @Test
     public void testGetUser(){
-        UserDTO dto = new UserDTO("fulano", "fulano@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulano", "fulano1@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
-        String token = jwtService.generateJwt(userService.findByEmail("fulano@mail.com"));
+        String token = jwtService.generateJwt(userService.findByEmail("fulano1@mail.com"));
 
         given().header("Authorization", "Bearer " + token).when().get("/loggedUser").then().statusCode(200);
     }
@@ -60,17 +62,17 @@ public class LoggedUserResourceTest {
     @Test
     public void testUpdateUsername(){
         //Inserindo novo usuario
-        UserDTO dto = new UserDTO("fulano", "fulano@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulano", "fulano2@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         //Inserindo o novo username
         UsernameDTO usernameDTO = new UsernameDTO("teo");
 
         //Pegando Id
-        Long idUser = userService.findByEmail("fulano@mail.com").id();
+        Long idUser = userService.findByEmail("fulano2@mail.com").id();
 
         //gerando token para autorização
-        String token = jwtService.generateJwt(userService.findByEmail("fulano@mail.com"));
+        String token = jwtService.generateJwt(userService.findById(idUser));
 
         //Testando status code
         given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(usernameDTO).when().put("/loggedUser/update/username/").then().statusCode(204);
@@ -84,13 +86,13 @@ public class LoggedUserResourceTest {
     @Test
     public void testUpdateEmail(){
         //Inserindo novo usuario
-        UserDTO dto = new UserDTO("fulano", "fulano@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulano", "fulano3@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
-        //Inserindo o novo username
+        //Inserindo o novo email
         EmailDTO emailDTO = new EmailDTO("novo@mail.com");
         
-        Long idUser = userService.findByEmail("fulano@mail.com").id();
+        Long idUser = userService.findByEmail("fulano3@mail.com").id();
 
         //gerando token para autorização
         String token = jwtService.generateJwt(userService.findById(idUser));
@@ -101,6 +103,59 @@ public class LoggedUserResourceTest {
         //verificando os dados
         UserResponseDTO user = userService.findById(idUser);
         //assertThat(usernameAtual, is(usernameDTO.username()));
+    }
+
+    @Test
+    public void testUpdatePassword(){
+        //Inserindo novo usuario
+        UserDTO dto = new UserDTO("fulano", "fulano4@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        //Inserindo a senha atual e a nova senha
+        UpdatePasswordDTO passwordDTO = new UpdatePasswordDTO(hashService.getHashPassword("12345"), "senhateste");
+
+        //pegando Id do usuario
+        Long idUser = userService.findByEmail("fulano4@mail.com").id();
+
+        //gerando token para autorização
+        String token = jwtService.generateJwt(userService.findById(idUser));
+
+        //Testando status code
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(passwordDTO).when().put("/loggedUser/update/password/").then().statusCode(204);
+
+        //verificando os dados
+        UserResponseDTO user = userService.findById(idUser);
+        //assertThat(usernameAtual, is(usernameDTO.username()));
+    }
+
+    @Test
+    public void testGetPhone(){
+        UserDTO dto = new UserDTO("fulano", "fulano5@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        String token = jwtService.generateJwt(userService.findByEmail("fulano5@mail.com"));
+
+        given().header("Authorization", "Bearer " + token).get("/loggedUser/phone/").then().statusCode(200);
+
+    }
+
+    @Test
+    public void testInsertPhone(){
+        //Inserindo novo usuario
+        UserDTO dto = new UserDTO("fulano", "fulano6@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        //pegando Id do usuario
+        Long idUser = userService.findByEmail("fulano6@mail.com").id();
+
+        //Passando o novo phone
+        PhoneDTO phone = new PhoneDTO("63", "777777777");
+
+        //gerando token para autorização
+        String token = jwtService.generateJwt(userService.findById(idUser));
+
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(phone).when().post("/loggedUser/insert/phone/").then().statusCode(200);
+
     }
 
     
