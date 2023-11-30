@@ -1,5 +1,8 @@
 package br.unitins.topicos1.resource;
 
+import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.jboss.logging.Logger;
+
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.service.UserService;
@@ -26,78 +29,186 @@ public class UserResource {
     @Inject
     UserService service;
 
+    @Inject
+    JsonWebToken jwt;
+
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
+
     @POST
+    @RolesAllowed({"Admin"})
     public Response insert(UserDTO dto){
-        return Response.status(Status.CREATED).entity(service.insert(dto)).build();
+        try{
+            LOG.info("Inserindo um usuario");
+            return Response.status(Status.CREATED).entity(service.insert(dto)).build();
+        } catch(Exception e){
+            LOG.info("Erro ao inserir o usuario");
+            e.printStackTrace();
+            Error error = new Error("400");
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
+        }
+
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response update(@PathParam("id") Long id, UserDTO dto){
-        service.update(id, dto);
-        return Response.noContent().build();
+
+        try{
+            LOG.infof("Update em usuario %s", dto.email());
+            service.update(id, dto);
+            return Response.noContent().build();
+        } catch(Exception e){
+            LOG.info("Update não concluido");
+            e.printStackTrace();
+            Error error = new Error("404");
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
     }
 
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response delete(@PathParam("id") Long id){
-        service.delete(id);
-        return Response.noContent().build();
+
+        try{
+            LOG.info("Deletando usuario");
+            service.delete(id);
+            return Response.noContent().build();
+        } catch(Exception e){
+            LOG.info("Deleção não concluido");
+            e.printStackTrace();
+            Error error = new Error("404");
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
     }
 
     @POST
     @Transactional
     @Path("/phone/insert/{id}")
+    @RolesAllowed({"Admin"})
     public Response insertPhone(@PathParam("id") Long id, PhoneDTO dto){
-        return Response.status(Status.CREATED).entity(service.insertPhone(id, dto)).build();
+        try{
+            LOG.infof("Inserindo telefone ao usuario de id %s", id);
+            return Response.status(Status.CREATED).entity(service.insertPhone(id, dto)).build();
+        } catch(Exception e) {
+            LOG.info("Inserção de telefone não concluida");
+            e.printStackTrace();
+            Error error = new Error("404");
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
     }
 
 
     @PUT
     @Transactional
     @Path("/phone/update/{id}")
+    @RolesAllowed({"Admin"})
     public Response updatePhone(@PathParam("id") Long id, PhoneDTO dto){
-        service.updatePhone(id, dto);
-        return Response.noContent().build();
+
+        try{
+            LOG.info("Update em telefone");
+            service.updatePhone(id, dto);
+            return Response.noContent().build();
+        } catch(Exception e) {
+            LOG.info("Update em telefone não concluido");
+            e.printStackTrace();
+            Error error = new Error("404");
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
     }
 
     @DELETE
     @Transactional
     @Path("/phone/delete/{id}")
+    @RolesAllowed({"Admin"})
     public Response deletePhone(@PathParam("id") Long id){
-        service.deletePhone(id);
-        return Response.noContent().build();
+        try{
+            LOG.infof("Deletando telefone de id %s", id);
+            service.deletePhone(id);
+            return Response.noContent().build();
+        } catch(Exception e) {
+            LOG.info("Deleção de telefone não concluida");
+            e.printStackTrace();
+            Error error = new Error("404");
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
+        
     }
 
     @GET
     @Path("/phone")
+    @RolesAllowed({"Admin"})
     public Response findAllPhones(){
-        return Response.ok(service.findAllPhones()).build();
+        try{
+            LOG.info("Buscando todos os telefones");
+            return Response.ok(service.findAllPhones()).build();
+        } catch(Exception e) {
+            LOG.info("Telefones não encontrados");
+            e.printStackTrace();
+            Error error = new Error("400");
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
     }
 
     @GET
     @Path("/phone/{id}")
+    @RolesAllowed({"Admin"})
     public Response findPhoneByUserId(@PathParam("id") Long id){
-        return Response.ok(service.findPhoneByUserId(id)).build();
+        try{
+            LOG.infof("Buscando telefone de id %s", id);
+            return Response.ok(service.findPhoneByUserId(id)).build();   
+        } catch(Exception e) {
+            LOG.info("Telefone não encontrado");
+            e.printStackTrace();
+            Error error = new Error("404");
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
     }
 
     @GET
+    @RolesAllowed({"Admin"})
     public Response findAll(){
-        return Response.ok(service.findAll()).build();
+        try{
+            LOG.info("Buscando todos os usuarios");
+            return Response.ok(service.findAll()).build();
+        } catch(Exception e) {
+            LOG.info("Usuarios não encontrados");
+            e.printStackTrace();
+            Error error = new Error("400");
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
     }
 
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id){
-        return Response.ok(service.findById(id)).build();
+        try{
+            LOG.infof("Buscando usuario de id %s", id);
+            return Response.ok(service.findById(id)).build();
+        } catch(Exception e) {
+            LOG.info("Usuarios não encontrados");
+            e.printStackTrace();
+            Error error = new Error("404");
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
     }
 
     @GET
+    @RolesAllowed({"Admin"})
     @Path("/search/name/{username}")
     public Response findByUsername(@PathParam("username") String username){
-        return Response.ok(service.findByUsername(username)).build();
+        try{
+            LOG.infof("Buscando %s", username);
+            return Response.ok(service.findByUsername(username)).build();
+        } catch(Exception e) {
+            LOG.info("Usuario não encontrado");
+            e.printStackTrace();
+            Error error = new Error("404");
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
     }
     
 }
