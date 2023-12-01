@@ -25,6 +25,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
@@ -35,6 +36,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Response.Status;
+
+import br.unitins.topicos1.application.Error;
 
 @Path("/loggedUser")
 @Produces(MediaType.APPLICATION_JSON)
@@ -117,7 +120,7 @@ public class LoggedUserResource {
         try{
             List<PhoneResponseDTO> phoneDTO = userService.findPhoneByUserId(id);
             return Response.ok(phoneDTO).build();
-        } catch (Exception e){
+        } catch (NotFoundException e){
             e.printStackTrace();
             Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
@@ -154,10 +157,10 @@ public class LoggedUserResource {
         try{
             PhoneResponseDTO phoneDTO = userService.updatePhone(id, phone);
             return Response.noContent().build();
-        } catch(Exception e){
+        } catch(NotFoundException e){
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
-            return Response.status(Status.BAD_REQUEST).entity(error).build();
+            return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -168,7 +171,7 @@ public class LoggedUserResource {
         try{
             userService.deletePhone(id);
             return Response.noContent().build();
-        } catch(Exception e){
+        } catch(NotFoundException e){
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
