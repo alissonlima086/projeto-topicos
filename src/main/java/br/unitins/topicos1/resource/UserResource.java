@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -20,6 +21,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+
+import br.unitins.topicos1.application.Error;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -39,9 +42,9 @@ public class UserResource {
             LOG.info("Inserindo um usuario");
             return Response.status(Status.CREATED).entity(service.insert(dto)).build();
         } catch(Exception e){
-            LOG.info("Erro ao inserir o usuario");
+            LOG.error("Erro ao inserir o usuario");
             e.printStackTrace();
-            Error error = new Error("400");
+            Error error = new Error("400", "Esso ao inserir usuario");
             return Response.status(Status.BAD_REQUEST).entity(error).build();
         }
 
@@ -57,10 +60,10 @@ public class UserResource {
             LOG.infof("Update em usuario %s", dto.email());
             service.update(id, dto);
             return Response.noContent().build();
-        } catch(Exception e){
-            LOG.info("Update não concluido");
+        } catch(NotFoundException e){
+            LOG.error("Update não concluido");
             e.printStackTrace();
-            Error error = new Error("404");
+            Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
@@ -75,10 +78,10 @@ public class UserResource {
             LOG.info("Deletando usuario");
             service.delete(id);
             return Response.noContent().build();
-        } catch(Exception e){
-            LOG.info("Deleção não concluido");
+        } catch(NotFoundException e){
+            LOG.error("Deleção não concluido");
             e.printStackTrace();
-            Error error = new Error("404");
+            Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
@@ -92,9 +95,9 @@ public class UserResource {
             LOG.infof("Inserindo telefone ao usuario de id %s", id);
             return Response.status(Status.CREATED).entity(service.insertPhone(id, dto)).build();
         } catch(Exception e) {
-            LOG.info("Inserção de telefone não concluida");
+            LOG.error("Inserção de telefone não concluida");
             e.printStackTrace();
-            Error error = new Error("404");
+            Error error = new Error("404", "Telefone não inserido");
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
@@ -110,10 +113,10 @@ public class UserResource {
             LOG.info("Update em telefone");
             service.updatePhone(id, dto);
             return Response.noContent().build();
-        } catch(Exception e) {
-            LOG.info("Update em telefone não concluido");
+        } catch(NotFoundException e) {
+            LOG.error("Update em telefone não concluido");
             e.printStackTrace();
-            Error error = new Error("404");
+            Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
@@ -127,10 +130,10 @@ public class UserResource {
             LOG.infof("Deletando telefone de id %s", id);
             service.deletePhone(id);
             return Response.noContent().build();
-        } catch(Exception e) {
-            LOG.info("Deleção de telefone não concluida");
+        } catch(NotFoundException e) {
+            LOG.error("Deleção de telefone não concluida");
             e.printStackTrace();
-            Error error = new Error("404");
+            Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
         
@@ -143,10 +146,10 @@ public class UserResource {
         try{
             LOG.info("Buscando todos os telefones");
             return Response.ok(service.findAllPhones()).build();
-        } catch(Exception e) {
-            LOG.info("Telefones não encontrados");
+        } catch(NotFoundException e) {
+            LOG.error("Telefones não encontrados");
             e.printStackTrace();
-            Error error = new Error("400");
+            Error error = new Error("400", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
@@ -158,11 +161,11 @@ public class UserResource {
         try{
             LOG.infof("Buscando telefone de id %s", id);
             return Response.ok(service.findPhoneByUserId(id)).build();   
-        } catch(Exception e) {
-            LOG.info("Telefone não encontrado");
+        } catch(NotFoundException e) {
+            LOG.error("Telefone não encontrado");
             e.printStackTrace();
-            Error error = new Error("400");
-            return Response.status(Status.BAD_REQUEST).entity(error).build();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -172,11 +175,11 @@ public class UserResource {
         try{
             LOG.info("Buscando todos os usuarios");
             return Response.ok(service.findAll()).build();
-        } catch(Exception e) {
-            LOG.info("Usuarios não encontrados");
+        } catch(NotFoundException e) {
+            LOG.error("Usuarios não encontrados");
             e.printStackTrace();
-            Error error = new Error("400");
-            return Response.status(Status.BAD_REQUEST).entity(error).build();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -187,10 +190,10 @@ public class UserResource {
         try{
             LOG.infof("Buscando usuario de id %s", id);
             return Response.ok(service.findById(id)).build();
-        } catch(Exception e) {
-            LOG.info("Usuarios não encontrados");
+        } catch(NotFoundException e) {
+            LOG.error("Usuario não encontrado");
             e.printStackTrace();
-            Error error = new Error("404");
+            Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
@@ -202,10 +205,10 @@ public class UserResource {
         try{
             LOG.infof("Buscando %s", username);
             return Response.ok(service.findByUsername(username)).build();
-        } catch(Exception e) {
-            LOG.info("Usuario não encontrado");
+        } catch(NotFoundException e) {
+            LOG.error("Usuario não encontrado");
             e.printStackTrace();
-            Error error = new Error("404");
+            Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }

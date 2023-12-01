@@ -48,6 +48,11 @@ public class ComicServiceImpl implements ComicService{
     @Override
     @Transactional
     public ComicResponseDTO update(Long id, ComicDTO dto) {
+
+        if(repository.findById(id) == null){
+            throw new NotFoundException("Produto não encontrado");
+        }
+
         Comic comic = repository.findById(id);
 
         comic.setName(dto.name());
@@ -68,23 +73,35 @@ public class ComicServiceImpl implements ComicService{
     @Transactional
     public void delete(Long id) {
         if(!repository.deleteById(id)){
-            throw new NotFoundException();
+            throw new NotFoundException("Produto não encontrado");
         }
     }
 
     @Override
     public List<ComicResponseDTO> findAll() {
+        if(repository.listAll().stream().map(e -> ComicResponseDTO.valueOf(e)).toList().isEmpty()){
+            throw new NotFoundException("Nenhum produto para ser encontrado");
+        }
+
         return repository.listAll().stream().map(e -> ComicResponseDTO.valueOf(e)).toList();
     }
 
     @Override
     public ComicResponseDTO findById(Long id) {
+        if (repository.findById(id) == null) {
+            throw new NotFoundException("Produto não encontrado");
+        }
+
         return ComicResponseDTO.valueOf(repository.findById(id));
     }
 
     @Override
     public List<ComicResponseDTO> findByName(String name) {
-        // TODO Auto-generated method stub
+
+        if(repository.findByName(name).stream().map(e -> ComicResponseDTO.valueOf(e)).toList().isEmpty()){
+            throw new NotFoundException("Nenhum produto encontrado");
+        }
+
         return repository.findByName(name).stream().map(e -> ComicResponseDTO.valueOf(e)).toList();
     }
 

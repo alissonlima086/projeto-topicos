@@ -77,6 +77,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDTO update(Long id, UserDTO dto) {
+        if(repository.findById(id) == null){
+            throw new NotFoundException("Usuario não encontrado");
+        }
+
         User user = repository.findById(id);
         user.setUsername(dto.username());
         user.setEmail(dto.email());
@@ -89,7 +93,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void delete(long id) {
         if(!repository.deleteById(id)){
-            throw new NotFoundException();
+            throw new NotFoundException("Usuario não encontrado");
         }
     }
 
@@ -126,6 +130,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public PhoneResponseDTO updatePhone(Long id, PhoneDTO dto){
 
+        if(repository.findById(id) == null){
+            throw new NotFoundException("Usuario não encontrado");
+        }
+
         LOG.info("Iniciando update de phone");
 
         Phone phone = phoneRepository.findById(id);
@@ -146,7 +154,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deletePhone(Long id){
         if(!phoneRepository.deleteById(id)){
-            throw new NotFoundException();
+            throw new NotFoundException("Telefone não encontrado");
         }
     }
 
@@ -281,21 +289,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<PhoneResponseDTO> findAllPhones() {
+        if(phoneRepository.listAll().stream().map(e -> PhoneResponseDTO.valueOf(e)).toList().isEmpty()){
+            throw new NotFoundException("Não há telefones");
+        }
         return phoneRepository.listAll().stream().map(e -> PhoneResponseDTO.valueOf(e)).toList();
     }
 
     @Override
     public UserResponseDTO findById(long id) {
+        if(repository.findById(id) == null) {
+            throw new NotFoundException("Usuario não encontrado");
+        }
         return UserResponseDTO.valueOf(repository.findById(id));
     }
 
     @Override
     public UserResponseDTO findByUsername(String username) {
+        if(repository.findByUsername(username) == null) {
+            throw new NotFoundException("Usuario não encontrado");
+        }
         return UserResponseDTO.valueOf(repository.findByUsername(username));
     }
 
     @Override
     public List<UserResponseDTO> findAll() {
+        if(repository.listAll().stream().map(e -> UserResponseDTO.valueOf(e)).toList().isEmpty()){
+            throw new NotFoundException("Não há usuarios");
+        }
         return repository.listAll().stream().map(e -> UserResponseDTO.valueOf(e)).toList();
     }
 
@@ -310,6 +330,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<PhoneResponseDTO> findPhoneByUserId(Long id) {
+        if(repository.findById(id) == null){
+            throw new NotFoundException("Usuario não encontrado");
+        } else if(phoneRepository.findPhoneByUserId(id).stream().map(e -> PhoneResponseDTO.valueOf(e)).toList().isEmpty()){
+            throw new NotFoundException("Não há telefones");
+        }
         return phoneRepository.findPhoneByUserId(id).stream().map(e -> PhoneResponseDTO.valueOf(e)).toList();
     }
 
