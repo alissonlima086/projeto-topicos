@@ -55,7 +55,7 @@ public class OrderResource {
 
     @GET
     @RolesAllowed({"Admin","User"})
-    @Path("/historicoforder")
+    @Path("/historicoOrder")
     public List<OrderResponseDTO> findAllUserOrders() {
         LOG.infof("Buscando todas as compras realizadas pelo usuario");
         String login = jwt.getSubject();
@@ -65,7 +65,7 @@ public class OrderResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/search/id/{id}")
     @RolesAllowed({"Admin","User"})
     public OrderResponseDTO findById(@PathParam("id") Long id) {
         LOG.infof("Buscando compra especifica");
@@ -116,7 +116,7 @@ public class OrderResource {
     }
 
     @POST
-    @Path("/additemincart")
+    @Path("/addItemToBuy")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"Admin","User"})
     public Response adicionandoItem(ItemOrderDTO itemDto) {
@@ -139,7 +139,7 @@ public class OrderResource {
     }
 
     @DELETE
-    @Path("/deleteitemcart/{idItemCarrinho}")
+    @Path("/delete/itemToBuy/{idItemCarrinho}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"Admin","User"})
     public Response deleteItem(@PathParam("idItemCart") Long idItemCart) {
