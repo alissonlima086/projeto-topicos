@@ -19,6 +19,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
+import br.unitins.topicos1.application.Error;
+
 @Path("/genres")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -37,9 +39,9 @@ public class GenreResource {
             LOG.infof("Inserindo genero %s", dto.name());
             return Response.status(Status.CREATED).entity(service.insert(dto)).build();
         } catch(Exception e){
-            LOG.info("Erro ao inserir o genero");
+            LOG.error("Erro ao inserir o genero");
             e.printStackTrace();
-            Error error = new Error("400");
+            Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
         }
     }
@@ -54,9 +56,9 @@ public class GenreResource {
             service.update(id, dto);
             return Response.noContent().build();
         } catch (Exception e){
-            LOG.info("Erro ao atualizar o genero");
+            LOG.error("Erro ao atualizar o genero");
             e.printStackTrace();
-            Error error = new Error("404");
+            Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
@@ -70,9 +72,9 @@ public class GenreResource {
             service.delete(id);
             return Response.noContent().build();
         } catch (Exception e){
-            LOG.info("Erro ao deletar o genero");
+            LOG.error("Erro ao deletar o genero");
             e.printStackTrace();
-            Error error = new Error("404");
+            Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
@@ -84,9 +86,9 @@ public class GenreResource {
             LOG.info("Buscando todos os generos");
             return Response.ok(service.findAll()).build();
         } catch (Exception e){
-            LOG.info("Erro ao buscar os generos");
+            LOG.error("Erro ao buscar os generos");
             e.printStackTrace();
-            Error error = new Error("400");
+            Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
         }
     }
@@ -99,9 +101,9 @@ public class GenreResource {
             LOG.infof("Buscando genero de id %s", id);
             return Response.ok(service.findById(id)).build();
         } catch(Exception e){
-            LOG.info("Erro ao encontrar o genero");
+            LOG.error("Erro ao encontrar o genero");
             e.printStackTrace();
-            Error error = new Error("400");
+            Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
         }
     }
@@ -114,9 +116,9 @@ public class GenreResource {
             LOG.infof("Buscando pelo genero %s", name);
             return Response.ok(service.findByName(name)).build();
         } catch(Exception e){
-            LOG.info("Erro ao encontrar o genero");
+            LOG.error("Erro ao encontrar o genero");
             e.printStackTrace();
-            Error error = new Error("400");
+            Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
         }
     }

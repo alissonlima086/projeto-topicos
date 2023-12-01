@@ -20,6 +20,7 @@ import br.unitins.topicos1.dto.CompleteUserDTO;
 import br.unitins.topicos1.dto.CompleteUserResponseDTO;
 import br.unitins.topicos1.dto.EmailDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
+import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
 import br.unitins.topicos1.dto.UserDTO;
 import br.unitins.topicos1.dto.UserResponseDTO;
@@ -136,10 +137,26 @@ public class LoggedUserResourceTest {
         UserDTO dto = new UserDTO("fulano", "fulano5@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
+        Long idUser = userService.findByEmail("fulano5@mail.com").id();
+
+        PhoneDTO phone = new PhoneDTO("44", "737373");
+
+        
+        PhoneResponseDTO phoneUser = userService.insertPhone(idUser, phone);
+
         String token = jwtService.generateJwt(userService.findByEmail("fulano5@mail.com"));
 
         given().header("Authorization", "Bearer " + token).get("/loggedUser/phone/").then().statusCode(200);
+    }
 
+    @Test
+    public void testGetPhoneEmpty(){
+        UserDTO dto = new UserDTO("fulan", "fulanophone@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        String token = jwtService.generateJwt(userService.findByEmail("fulanophone@mail.com"));
+
+        given().header("Authorization", "Bearer " + token).get("/loggedUser/phone/").then().statusCode(404);
     }
 
     @Test

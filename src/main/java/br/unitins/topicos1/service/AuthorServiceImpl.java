@@ -33,6 +33,10 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional
     public AuthorResponseDTO update(Long id, AuthorDTO dto) {
+        if(repository.findById(id) == null) {
+            throw new NotFoundException("Autor não encontrado");
+        }
+
         Author Author = repository.findById(id);
         Author.setName(dto.name());
         Author.setEmail(dto.email());
@@ -44,22 +48,31 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional
     public void delete(long id) {
         if(!repository.deleteById(id)){
-            throw new NotFoundException();
+            throw new NotFoundException("Autor não encontrado");
         }
     }
 
     @Override
     public AuthorResponseDTO findById(long id) {
+        if(repository.findById(id) == null){
+            throw new NotFoundException("Autor não encontrado");
+        }
         return AuthorResponseDTO.valueOf(repository.findById(id));
     }
 
     @Override
     public List<AuthorResponseDTO> findByName(String name) {
+        if(repository.findByName(name).stream().map(e -> AuthorResponseDTO.valueOf(e)).toList().isEmpty()){
+            throw new NotFoundException("Autor não encontrado");
+        }
         return repository.findByName(name).stream().map(e -> AuthorResponseDTO.valueOf(e)).toList();
     }
 
     @Override
     public List<AuthorResponseDTO> findAll() {
+        if(repository.listAll().stream().map(e -> AuthorResponseDTO.valueOf(e)).toList().isEmpty()){
+            throw new NotFoundException("Não há autores");
+        }
         return repository.listAll().stream().map(e -> AuthorResponseDTO.valueOf(e)).toList();
     }
     
