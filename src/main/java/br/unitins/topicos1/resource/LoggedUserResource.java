@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import br.unitins.topicos1.service.UserFileService;
@@ -24,6 +25,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.PATCH;
@@ -36,6 +38,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Response.Status;
+import br.unitins.topicos1.validation.ValidationException;
 
 import br.unitins.topicos1.application.Error;
 
@@ -55,6 +58,8 @@ public class LoggedUserResource {
 
     @Inject
     PhoneRepository phoneRepository;
+
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @GET
     @RolesAllowed({ "User", "Admin" })
@@ -142,7 +147,7 @@ public class LoggedUserResource {
         try{
             PhoneResponseDTO phoneDTO = userService.insertPhone(id, phone);
             return Response.ok(phoneDTO).build();
-        } catch(Exception e){
+        } catch(ValidationException e){
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
@@ -155,9 +160,16 @@ public class LoggedUserResource {
     public Response updatePhone(@PathParam("id") Long id, PhoneDTO phone){
 
         try{
+            LOG.info("Inserindo phone");
             PhoneResponseDTO phoneDTO = userService.updatePhone(id, phone);
             return Response.noContent().build();
         } catch(NotFoundException e){
+            LOG.error("Update não concluido");
+            e.printStackTrace();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        } catch(ValidationException e){
+            LOG.error("Erro de validação");
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
@@ -169,9 +181,11 @@ public class LoggedUserResource {
     @RolesAllowed({"User", "Admin"})
     public Response deletePhone(@PathParam("id") Long id, PhoneDTO phone){
         try{
+            LOG.info("Deletando phone");
             userService.deletePhone(id);
             return Response.noContent().build();
         } catch(NotFoundException e){
+            LOG.error("Phone não encontrado");
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
@@ -200,9 +214,16 @@ public class LoggedUserResource {
         Long id = user.id();
 
         try{
+            LOG.info("Completando usuario");
             UsernameDTO username = userService.insertUsername(id, usernameDTO);
             return Response.ok(usernameDTO).build();
-        } catch(Exception e){
+        } catch(ValidationException e){
+            LOG.error("Erro de validação");;
+            e.printStackTrace();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
+        } catch(IllegalArgumentException e){
+            LOG.error("Valor invalido");
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
@@ -241,9 +262,11 @@ public class LoggedUserResource {
         String login = jwt.getSubject();
 
         try{
+            LOG.info("Alterando o email");
             UserResponseDTO userDTO = userService.updateEmail(login, newEmail);
             return Response.noContent().build();
-        } catch(Exception e){
+        } catch(ValidationException e){
+            LOG.error("Valor invalido");
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
@@ -258,9 +281,11 @@ public class LoggedUserResource {
         String login = jwt.getSubject();
 
         try{
+            LOG.info("Alterando o username");
             UserResponseDTO userDTO = userService.updateUsername(login, newUsername);
             return Response.noContent().build();
-        } catch(Exception e){
+        } catch(ValidationException e){
+            LOG.error("Valor invalido");
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
@@ -275,12 +300,19 @@ public class LoggedUserResource {
         String login = jwt.getSubject();
 
         try{
+            LOG.info("Alterando a senha");
             UserResponseDTO userDTO = userService.updatePassword(login, updatePassword);
             return Response.noContent().build();
-        } catch(Exception e){
+        } catch(ValidationException e){
+            LOG.info("Valor invalido");
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
+        } catch(ForbiddenException e){
+            LOG.info("Acesso negado");
+            e.printStackTrace();
+            Error error = new Error("403", e.getMessage());
+            return Response.status(Status.FORBIDDEN).entity(error).build();
         }
     }
 

@@ -5,8 +5,7 @@ import jakarta.validation.constraints.Size;
 
 public record AuthorDTO (
 
-    @NotBlank
-    @Size(min = 2, max = 30, message = "Name must between 2 and 30 characters") 
+    @NotBlank(message = "O nome do autor não pode ser nulo")
     String name,
     String email
 ){

@@ -21,6 +21,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+import br.unitins.topicos1.validation.ValidationException;
 
 import br.unitins.topicos1.application.Error;
 
@@ -41,10 +42,10 @@ public class UserResource {
         try{
             LOG.info("Inserindo um usuario");
             return Response.status(Status.CREATED).entity(service.insert(dto)).build();
-        } catch(Exception e){
+        } catch(ValidationException e){
             LOG.error("Erro ao inserir o usuario");
             e.printStackTrace();
-            Error error = new Error("400", "Esso ao inserir usuario");
+            Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
         }
 
@@ -94,10 +95,10 @@ public class UserResource {
         try{
             LOG.infof("Inserindo telefone ao usuario de id %s", id);
             return Response.status(Status.CREATED).entity(service.insertPhone(id, dto)).build();
-        } catch(Exception e) {
+        } catch(ValidationException e) {
             LOG.error("Inserção de telefone não concluida");
             e.printStackTrace();
-            Error error = new Error("404", "Telefone não inserido");
+            Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }
@@ -117,6 +118,11 @@ public class UserResource {
             LOG.error("Update em telefone não concluido");
             e.printStackTrace();
             Error error = new Error("404", e.getMessage());
+            return Response.status(Status.NOT_FOUND).entity(error).build();
+        } catch(ValidationException e){
+            LOG.error("Erro de validação");
+            e.printStackTrace();
+            Error error = new Error("400", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
         }
     }

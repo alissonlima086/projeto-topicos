@@ -25,11 +25,14 @@ import br.unitins.topicos1.repository.PhoneRepository;
 import br.unitins.topicos1.repository.PhysicalPersonRepository;
 import br.unitins.topicos1.repository.UserRepository;
 import br.unitins.topicos1.resource.AuthResource;
-import br.unitins.topicos1.validation.ValidationException;
+//import br.unitins.topicos1.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
+
+import br.unitins.topicos1.validation.ValidationException;
+import io.quarkus.security.ForbiddenException;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
@@ -60,6 +63,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDTO insert(UserDTO dto) {
+
+        if(dto.email() == null || dto.password() == null){
+            throw new ValidationException("400", "Email e senha não podem estar em branco");
+        }
+
+        if(Profile.valueOf(dto.profile()) == null){
+            throw new ValidationException("400", "O tipo de perfil não pode ser nulo");
+        }
+
         User newUser = new User();
 
         newUser.setUsername(dto.username());
@@ -103,6 +115,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public PhoneResponseDTO insertPhone(Long id, PhoneDTO dto){
 
+        if(dto.areaCode() == null || dto.number() == null){
+            throw new ValidationException("400", "O codigo de area e o número devem possuir um valor");
+        }
+
         LOG.info("Inserindo Phone");
 
         Phone phone = new Phone();
@@ -133,6 +149,11 @@ public class UserServiceImpl implements UserService {
         if(repository.findById(id) == null){
             throw new NotFoundException("Usuario não encontrado");
         }
+
+        if(dto.areaCode() == null || dto.number() == null){
+            throw new ValidationException("400", "O codigo de area e o número devem possuir um valor");
+        }
+
 
         LOG.info("Iniciando update de phone");
 
@@ -168,6 +189,10 @@ public class UserServiceImpl implements UserService {
 
         if(user.getUsername() != null){
             throw new IllegalArgumentException("O usuário já possui um nome, tente alterar o nome.");
+        }
+
+        if(usernameDTO.username() == null){
+            throw new ValidationException("400", "O valor fornecido é invalido");
         }
 
         user.setUsername(usernameDTO.username());
@@ -223,6 +248,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponseDTO updateUsername(String login, UsernameDTO newUsername) {
 
+        if(newUsername.username() == null){
+            throw new ValidationException("400", "O valor fornecido é invalido");
+        }
+
         LOG.info("Iniciando update do username");
 
         User user = repository.findByEmail(login);
@@ -242,6 +271,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDTO updateEmail(String login, EmailDTO newEmail) {
+
+        if(newEmail.email() == null){
+            throw new ValidationException("400", "O valor fornecido é invalido");
+        }
         
         LOG.info("Iniciando update do email");
 
@@ -263,9 +296,17 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponseDTO updatePassword(String login, UpdatePasswordDTO updatePassword) {
 
+        if(updatePassword.newPassword() == null){
+            throw new ValidationException("400", "O valor fornecido é invalido");
+        }
+
         LOG.info("Iniciando update password");
 
         User user = repository.findByEmail(login);
+
+        if(!hashService.getHashPassword(updatePassword.currentPassword()).equals(user.getPassword())){
+            throw new ForbiddenException("Acesso negado. A senha informada é incorreta");
+        }
 
         if(user != null) {
             LOG.info("Usuario encontrado");

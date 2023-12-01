@@ -12,12 +12,19 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "user_table")
 public class User extends DefaultEntity {
     private String username;
+
+    @NotBlank(message = "O e-mail não pode estar em branco")
     private String email;
+
+    @NotBlank(message = "A senha não pode estar em branco")
+    //@Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres")
     private String password;
 
     private Profile profile;
