@@ -9,7 +9,13 @@ import org.junit.jupiter.api.Test;
 
 import br.unitins.topicos1.dto.PublisherDTO;
 import br.unitins.topicos1.dto.PublisherResponseDTO;
+import br.unitins.topicos1.dto.UserDTO;
+import br.unitins.topicos1.dto.UserResponseDTO;
+import br.unitins.topicos1.repository.UserRepository;
+import br.unitins.topicos1.service.HashService;
+import br.unitins.topicos1.service.JwtService;
 import br.unitins.topicos1.service.PublisherService;
+import br.unitins.topicos1.service.UserService;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -21,6 +27,18 @@ public class PublisherResourceTest {
     @Inject
     PublisherService service;
 
+    @Inject
+    UserService userService;
+
+    @Inject
+    UserRepository userRepository;
+
+    @Inject
+    HashService hashService;
+
+    @Inject
+    JwtService jwtService;
+
     @Test
     public void testFindAll(){
         given().when().get("/publishers").then().statusCode(200);
@@ -28,41 +46,61 @@ public class PublisherResourceTest {
 
     @Test
     public void testFindById(){
-        PublisherDTO dto = new PublisherDTO("Marvel");
+        UserDTO dto = new UserDTO("alisa", "alisa@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        PublisherResponseDTO publisherTest = service.insert(dto);
+        String token = jwtService.generateJwt(userService.findByEmail("alisa@mail.com"));
+
+        PublisherDTO dtoPublisher = new PublisherDTO("Marvel");
+
+        PublisherResponseDTO publisherTest = service.insert(dtoPublisher);
         Long id = publisherTest.id();
 
-        given().when().get("/publishers/"+id).then().statusCode(200);
+        given().header("Authorization", "Bearer " + token).when().get("/publishers/search/id/"+id).then().statusCode(200);
     }
 
     @Test
     public void testFindByNome(){
-        PublisherDTO dto = new PublisherDTO("DC");
+        UserDTO dto = new UserDTO("kazuya", "kazuya@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        PublisherResponseDTO publisherTest = service.insert(dto);
+        String token = jwtService.generateJwt(userService.findByEmail("kazuya@mail.com"));
+
+        PublisherDTO dtoPublisher = new PublisherDTO("DC");
+
+        PublisherResponseDTO publisherTest = service.insert(dtoPublisher);
         String name = publisherTest.name();
 
-        given().when().get("/publishers/search/nome/"+name).then().statusCode(200);
+        given().header("Authorization", "Bearer " + token).when().get("/publishers/search/name/"+name).then().statusCode(200);
     }
 
     @Test
     public void testInsert(){
-        PublisherDTO dto = new PublisherDTO("Square Enix");
+        UserDTO dto = new UserDTO("jin", "jin@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        given().contentType(ContentType.JSON).body(dto).when().post("/publishers").then().statusCode(201);
+        String token = jwtService.generateJwt(userService.findByEmail("jin@mail.com"));
+
+        PublisherDTO dtoPublisher = new PublisherDTO("Panini");
+
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoPublisher).when().post("/publishers/insert/").then().statusCode(201);
     }
 
     @Test
     public void testUpdate(){
-        PublisherDTO dto = new PublisherDTO("Futabasha");
+        UserDTO dto = new UserDTO("xiaoyu", "xiaoyu@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        PublisherResponseDTO publisherTest = service.insert(dto);
+        String token = jwtService.generateJwt(userService.findByEmail("xiaoyu@mail.com"));
+
+        PublisherDTO dtoPublisher = new PublisherDTO("Futabasha");
+
+        PublisherResponseDTO publisherTest = service.insert(dtoPublisher);
         Long id = publisherTest.id();
 
         PublisherDTO dtoUpdate = new PublisherDTO("Ohta Publishing");
 
-        given().contentType(ContentType.JSON).body(dtoUpdate).when().put("/publishers/"+id).then().statusCode(204);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoUpdate).when().put("/publishers/update/"+id).then().statusCode(204);
 
         PublisherResponseDTO gen = service.findById(id);
         assertThat(gen.name(), is("Ohta Publishing"));
@@ -70,12 +108,17 @@ public class PublisherResourceTest {
 
     @Test
     public void testDelete(){
-        PublisherDTO dto = new PublisherDTO("Shōnen Gahōsha");
+        UserDTO dto = new UserDTO("kazumi", "kazumi@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
 
-        PublisherResponseDTO publisherTest = service.insert(dto);
+        String token = jwtService.generateJwt(userService.findByEmail("kazumi@mail.com"));
+
+        PublisherDTO dtoPublisher = new PublisherDTO("Shōnen Gahōsha");
+
+        PublisherResponseDTO publisherTest = service.insert(dtoPublisher);
         Long id = publisherTest.id();
 
-        RestAssured.given().when().delete("/publishers/"+id).then().statusCode(204);
+        RestAssured.given().header("Authorization", "Bearer " + token).when().delete("/publishers/delete/"+id).then().statusCode(204);
 
     }
 }

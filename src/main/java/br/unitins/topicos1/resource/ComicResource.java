@@ -40,7 +40,7 @@ public class ComicResource {
             LOG.info("Inserindo produto");
             return Response.status(Status.CREATED).entity(service.insert(dto)).build();
         } catch(Exception e){
-            LOG.error("Error ao inserir o produto");
+            LOG.error("Erro ao inserir o produto");
             e.printStackTrace();
             Error error = new Error("400", "Não foi possivel concluir a ação");
             return Response.status(Status.BAD_REQUEST).entity(error).build();

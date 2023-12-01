@@ -32,6 +32,10 @@ public class PublisherServiceImpl implements PublisherService{
     @Override
     @Transactional
     public PublisherResponseDTO update(Long id, PublisherDTO dto) {
+        if(repository.findById(id) == null){
+            throw new NotFoundException("Publisher não encontrada");
+        }
+
         Publisher Publisher = repository.findById(id);
 
         Publisher.setName(dto.name());
@@ -43,22 +47,32 @@ public class PublisherServiceImpl implements PublisherService{
     @Transactional
     public void delete(Long id) {
         if(!repository.deleteById(id)){
-            throw new NotFoundException();
+            throw new NotFoundException("Publisher não encontrada");
         }
     }
 
     @Override
     public PublisherResponseDTO findById(Long id) {
+        if(repository.findById(id) == null){
+            throw new NotFoundException("Publisher não encontrada");
+        }
         return PublisherResponseDTO.valueOf(repository.findById(id));
     }
 
     @Override
     public List<PublisherResponseDTO> findByName(String name) {
+        if(repository.findByName(name).stream().map(e -> PublisherResponseDTO.valueOf(e)).toList().isEmpty()){
+            throw new NotFoundException("Publisher não encontrada");
+        }
         return repository.findByName(name).stream().map(e -> PublisherResponseDTO.valueOf(e)).toList();
     }
 
     @Override
     public List<PublisherResponseDTO> findAll() {
+
+        if(repository.listAll().stream().map(e -> PublisherResponseDTO.valueOf(e)).toList().isEmpty()) {
+            throw new NotFoundException("Publisher não encontrada");
+        }
         return repository.listAll().stream().map(e -> PublisherResponseDTO.valueOf(e)).toList();
     }
     
