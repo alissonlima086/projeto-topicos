@@ -98,8 +98,8 @@ public class UserResource {
         } catch(ValidationException e) {
             LOG.error("Inserção de telefone não concluida");
             e.printStackTrace();
-            Error error = new Error("404", e.getMessage());
-            return Response.status(Status.NOT_FOUND).entity(error).build();
+            Error error = new Error("400", e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(error).build();
         }
     }
 

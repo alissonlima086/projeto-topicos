@@ -65,6 +65,29 @@ public class UserResourceTest {
         given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoInsert).when().post("/users/insert/user/").then().statusCode(201);
     }
 
+    @Test
+    public void testInsertValidationEmail(){
+        UserDTO dto = new UserDTO("saki", "saki@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        UserDTO dtoInsert = new UserDTO("jey", null, hashService.getHashPassword("12345"), 2);
+
+        String token = jwtService.generateJwt(userService.findByEmail("saki@mail.com"));
+
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoInsert).when().post("/users/insert/user/").then().statusCode(400);
+    }
+
+    @Test
+    public void testInsertValidationPassword(){
+        UserDTO dto = new UserDTO("seth", "seth@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        UserDTO dtoInsert = new UserDTO("jey", "jey@mail.com", null, 2);
+
+        String token = jwtService.generateJwt(userService.findByEmail("seth@mail.com"));
+
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoInsert).when().post("/users/insert/user/").then().statusCode(400);
+    }
     
     @Test
     public void testUpdate(){
@@ -117,8 +140,27 @@ public class UserResourceTest {
         String token = jwtService.generateJwt(userService.findById(idUser));
 
         given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(phone).when().post("/users/phone/insert/"+ idUser).then().statusCode(201);
-
     }
+
+    @Test
+    public void testInsertPhoneNullValue(){
+        //Inserindo novo usuario
+        UserDTO dto = new UserDTO("triz", "triz@mail.com", hashService.getHashPassword("12345"), 2);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        //pegando Id do usuario
+        Long idUser = userService.findByEmail("triz@mail.com").id();
+
+        //Passando o novo phone
+        PhoneDTO phone = new PhoneDTO(null, "777777777");
+
+        //gerando token para autorização
+        String token = jwtService.generateJwt(userService.findById(idUser));
+
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(phone).when().post("/users/phone/insert/"+ idUser).then().statusCode(400);
+    }
+
+
     
 
     @Test
@@ -187,6 +229,18 @@ public class UserResourceTest {
 
 
     // --------------- Não logados --------------
+
+    @Test
+    public void testInsertLoggedAsUser(){
+        UserDTO dto = new UserDTO("mia", "mia@mail.com", hashService.getHashPassword("12345"), 1);
+        UserResponseDTO userTest = userService.insert(dto);
+
+        UserDTO dtoInsert = new UserDTO("fulano 2", "fulano2@mail.com", hashService.getHashPassword("12345"), 2);
+
+        String token = jwtService.generateJwt(userService.findByEmail("mia@mail.com"));
+
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoInsert).when().post("/users/insert/user/").then().statusCode(403);
+    }
 
     @Test
     public void testInsertNotLogged(){
