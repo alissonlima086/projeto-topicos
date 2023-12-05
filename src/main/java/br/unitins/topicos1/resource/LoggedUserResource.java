@@ -60,9 +60,6 @@ public class LoggedUserResource {
     @Inject
     PhoneRepository phoneRepository;
 
-    @Inject
-    AddressService addressService;
-
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @GET
@@ -111,93 +108,6 @@ public class LoggedUserResource {
         ResponseBuilder response = Response.ok(fileService.getFile(imageName));
         response.header("Content-Disposition", "attachment;filename="+imageName);
         return response.build();
-    }
-
-    // ---------- phones ----------
-
-    @GET
-    @Path("/phone/")
-    @RolesAllowed({"User", "Admin"})
-    public Response getPhone(){
-
-        String login = jwt.getSubject();
-
-        UserResponseDTO user = userService.findByEmail(login);
-
-        Long id = user.id();
-
-        try{
-            LOG.info("Buscando telefones");
-            List<PhoneResponseDTO> phoneDTO = userService.findPhoneByUserId(id);
-            return Response.ok(phoneDTO).build();
-        } catch (NotFoundException e){
-            LOG.error("Telefones não encontrados");
-            e.printStackTrace();
-            Error error = new Error("404", e.getMessage());
-            return Response.status(Status.NOT_FOUND).entity(error).build();
-        }
-
-    }
-
-    @POST
-    @Path("/insert/phone/")
-    @RolesAllowed({"User", "Admin"})
-    public Response insertPhone(PhoneDTO phone){
-
-        String login = jwt.getSubject();
-
-        UserResponseDTO user = userService.findByEmail(login);
-
-        Long id = user.id();
-
-        try{
-            LOG.info("Inserindo telefone");
-            PhoneResponseDTO phoneDTO = userService.insertPhone(id, phone);
-            return Response.ok(phoneDTO).build();
-        } catch(ValidationException e){
-            LOG.error("Telefone não inserido");
-            e.printStackTrace();
-            Error error = new Error("400", e.getMessage());
-            return Response.status(Status.BAD_REQUEST).entity(error).build();
-        }
-    }
-
-    @PUT
-    @Path("/update/phone/{id}")
-    @RolesAllowed({"User", "Admin"})
-    public Response updatePhone(@PathParam("id") Long id, PhoneDTO phone){
-
-        try{
-            LOG.infof("IUpdate em telefone de id %s", id);
-            PhoneResponseDTO phoneDTO = userService.updatePhone(id, phone);
-            return Response.noContent().build();
-        } catch(NotFoundException e){
-            LOG.error("Update não concluido");
-            e.printStackTrace();
-            Error error = new Error("400", e.getMessage());
-            return Response.status(Status.NOT_FOUND).entity(error).build();
-        } catch(ValidationException e){
-            LOG.error("Erro de validação");
-            e.printStackTrace();
-            Error error = new Error("400", e.getMessage());
-            return Response.status(Status.NOT_FOUND).entity(error).build();
-        }
-    }
-
-    @DELETE
-    @Path("/delete/phone/{id}")
-    @RolesAllowed({"User", "Admin"})
-    public Response deletePhone(@PathParam("id") Long id, PhoneDTO phone){
-        try{
-            LOG.info("Deletando phone");
-            userService.deletePhone(id);
-            return Response.noContent().build();
-        } catch(NotFoundException e){
-            LOG.error("Phone não encontrado");
-            e.printStackTrace();
-            Error error = new Error("400", e.getMessage());
-            return Response.status(Status.BAD_REQUEST).entity(error).build();
-        }
     }
 
     // ---------- dados completos ----------
@@ -325,9 +235,5 @@ public class LoggedUserResource {
             return Response.status(Status.FORBIDDEN).entity(error).build();
         }
     }
-
-    // ---------- Address ----------
-
-    
 
 }
