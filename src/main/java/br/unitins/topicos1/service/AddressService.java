@@ -7,14 +7,14 @@ import br.unitins.topicos1.dto.AddressResponseDTO;
 
 public interface AddressService {
 
-    public AddressResponseDTO insert(AddressDTO dto);
+    public AddressResponseDTO insert(Long id, AddressDTO dto);
 
-    public AddressResponseDTO update(Long id, AddressDTO dto);
+    public AddressResponseDTO update(Long idAddress, Long idUser, AddressDTO dto);
 
-    public void delete(Long id);
+    public void delete(Long idAddress, Long idUser);
 
-    public List<AddressResponseDTO> findAll();
+    public List<AddressResponseDTO> findAll(Long id);
 
-    public List<AddressResponseDTO> findByCity(Long city);
+    public List<AddressResponseDTO> findByUserAndCity(Long user, Long city);
     
 }

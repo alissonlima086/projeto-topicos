@@ -7,6 +7,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
+import br.unitins.topicos1.service.AddressService;
 import br.unitins.topicos1.service.UserFileService;
 import br.unitins.topicos1.service.UserService;
 import br.unitins.topicos1.application.Error;
@@ -58,6 +59,9 @@ public class LoggedUserResource {
 
     @Inject
     PhoneRepository phoneRepository;
+
+    @Inject
+    AddressService addressService;
 
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
@@ -123,9 +127,11 @@ public class LoggedUserResource {
         Long id = user.id();
 
         try{
+            LOG.info("Buscando telefones");
             List<PhoneResponseDTO> phoneDTO = userService.findPhoneByUserId(id);
             return Response.ok(phoneDTO).build();
         } catch (NotFoundException e){
+            LOG.error("Telefones não encontrados");
             e.printStackTrace();
             Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
@@ -145,9 +151,11 @@ public class LoggedUserResource {
         Long id = user.id();
 
         try{
+            LOG.info("Inserindo telefone");
             PhoneResponseDTO phoneDTO = userService.insertPhone(id, phone);
             return Response.ok(phoneDTO).build();
         } catch(ValidationException e){
+            LOG.error("Telefone não inserido");
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
@@ -160,7 +168,7 @@ public class LoggedUserResource {
     public Response updatePhone(@PathParam("id") Long id, PhoneDTO phone){
 
         try{
-            LOG.info("Inserindo phone");
+            LOG.infof("IUpdate em telefone de id %s", id);
             PhoneResponseDTO phoneDTO = userService.updatePhone(id, phone);
             return Response.noContent().build();
         } catch(NotFoundException e){
@@ -202,7 +210,7 @@ public class LoggedUserResource {
         return Response.ok(userService.findCompleteUserByEmail(login)).build();
     }
 
-    @PUT
+    @PATCH
     @Path("/complete/username/")
     @RolesAllowed({"User", "Admin"})
     public Response insertUsername(UsernameDTO usernameDTO){
@@ -231,7 +239,7 @@ public class LoggedUserResource {
 
     }
 
-    @PUT
+    @PATCH
     @Path("/complete/register/")
     @RolesAllowed({"User", "Admin"})
     public Response completeUser(CompleteUserDTO dto){
@@ -243,9 +251,11 @@ public class LoggedUserResource {
         Long id = user.id();
 
         try{
+            LOG.info("Completando informações de usuario");
             CompleteUserResponseDTO completeUserDTO = userService.completeUser(id, dto);
             return Response.noContent().build();
         } catch(Exception e){
+            LOG.error("Erro ao conpletar as informações");
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
@@ -254,7 +264,7 @@ public class LoggedUserResource {
 
     // ---------- Updates ----------
 
-    @PUT
+    @PATCH
     @Path("/update/email/")
     @RolesAllowed({"User", "Admin"})
     public Response updateEmail(EmailDTO newEmail){
@@ -273,7 +283,7 @@ public class LoggedUserResource {
         }
     }
 
-    @PUT
+    @PATCH
     @Path("/update/username/")
     @RolesAllowed({"User", "Admin"})
     public Response updateUsername(UsernameDTO newUsername){
@@ -292,7 +302,7 @@ public class LoggedUserResource {
         }
     }
 
-    @PUT
+    @PATCH
     @Path("/update/password/")
     @RolesAllowed({"User", "Admin"})
     public Response updatePassword(UpdatePasswordDTO updatePassword){
@@ -315,5 +325,9 @@ public class LoggedUserResource {
             return Response.status(Status.FORBIDDEN).entity(error).build();
         }
     }
+
+    // ---------- Address ----------
+
+    
 
 }

@@ -1,10 +1,14 @@
 package br.unitins.topicos1.resource;
 
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
 import br.unitins.topicos1.dto.AddressDTO;
+import br.unitins.topicos1.dto.UserResponseDTO;
 import br.unitins.topicos1.repository.AddressRepository;
 import br.unitins.topicos1.service.AddressService;
+import br.unitins.topicos1.service.UserService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -33,13 +37,28 @@ public class AddressResource {
     @Inject
     AddressRepository repository;
 
+    @Inject
+    UserService userService;
+
+    @Inject
+    JsonWebToken jwt;
+
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @POST
+    @Path("/insert/")
+    @RolesAllowed({"Admin", "User"})
     public Response insert(AddressDTO dto){
+
+        String login = jwt.getSubject();
+
+        UserResponseDTO user = userService.findByEmail(login);
+
+        Long id = user.id();
+
         try{
             LOG.info("Inserindo endereço");
-            return Response.status(Status.CREATED).entity(service.insert(dto)).build();
+            return Response.status(Status.CREATED).entity(service.insert(id, dto)).build();
         } catch(ValidationException e){
             LOG.error("endereço não inserido");
             e.printStackTrace();
@@ -50,11 +69,20 @@ public class AddressResource {
 
     @PUT
     @Transactional
-    @Path("/update/{id}")
-    public Response update(@PathParam("id") Long id, AddressDTO dto){
+    @Path("/update/{idAddress}")
+    @RolesAllowed({"Admin", "User"})
+    public Response update(@PathParam("idAddress") Long idAddress, AddressDTO dto){
+
+        String login = jwt.getSubject();
+
+        UserResponseDTO user = userService.findByEmail(login);
+
+        Long id = user.id();
+
+
         try{
             LOG.infof("Update em endereço de id %s", id);
-            service.update(id, dto);
+            service.update(idAddress, id, dto);
             return Response.noContent().build();
         } catch(NotFoundException e){
             LOG .error("Endereço não encontrado");
@@ -72,10 +100,19 @@ public class AddressResource {
     @DELETE
     @Transactional
     @Path("/delete/{id}")
-    public Response delete(@PathParam("id") Long id){
+    @RolesAllowed({"Admin"})
+    public Response delete(@PathParam("id") Long idAddress){
+
+        String login = jwt.getSubject();
+
+        UserResponseDTO user = userService.findByEmail(login);
+
+        Long id = user.id();
+
+
         try{
             LOG.infof("Deletando endereço de id %s", id);
-            service.delete(id);
+            service.delete(idAddress,id);
             return Response.noContent().build();
         } catch(NotFoundException e){
             LOG .error("Endereço não encontrado");
@@ -86,10 +123,18 @@ public class AddressResource {
     }
 
     @GET
+    @RolesAllowed({"Admin", "User"})
     public Response findAll(){
+
+        String login = jwt.getSubject();
+
+        UserResponseDTO user = userService.findByEmail(login);
+
+        Long id = user.id();
+
         try{
             LOG.info("Buscando todos os endereços");
-            return Response.ok(service.findAll()).build();
+            return Response.ok(service.findAll(id)).build();
         } catch(NotFoundException e){
             LOG .error("Endereços não encontrados");
             e.printStackTrace();
@@ -100,10 +145,18 @@ public class AddressResource {
 
     @GET
     @Path("/search/city/{cityId}")
+    @RolesAllowed({"Admin", "User"})
     public Response findByCity(@PathParam("cityId")Long cityId){
+
+        String login = jwt.getSubject();
+
+        UserResponseDTO user = userService.findByEmail(login);
+
+        Long id = user.id();
+
         try{
             LOG.infof("Buscando endereços da cidade de id %s", cityId);
-            return Response.ok(service.findByCity(cityId)).build();
+            return Response.ok(service.findByUserAndCity(id, cityId)).build();
         } catch(NotFoundException e){
             LOG .error("Endereços não encontrados");
             e.printStackTrace();

@@ -11,9 +11,7 @@ public record AddressDTO (
     String address,
     String complement,
     @NotBlank(message = "A cidade não pode ser nula")
-    Long city,
-    @NotBlank(message = "O usuario tem que ser informado")
-    Long user
+    Long city
 ){
 
     

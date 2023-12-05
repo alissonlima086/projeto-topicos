@@ -33,6 +33,9 @@ public class UserResource {
     @Inject
     UserService service;
 
+    @Inject
+    JsonWebToken jwt;
+
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @POST

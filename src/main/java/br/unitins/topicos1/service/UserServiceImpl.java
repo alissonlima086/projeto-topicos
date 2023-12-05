@@ -71,13 +71,11 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("400", "A senha não pode estar em branco");
         }
 
-        
         User newUser = new User();
 
         newUser.setEmail(dto.email());
 
         newUser.setPassword(hashService.getHashPassword(dto.password()));
-
 
         newUser.setProfile(Profile.valueOf(1));
 
