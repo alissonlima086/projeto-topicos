@@ -3,6 +3,7 @@ package br.unitins.topicos1.resource;
 import org.jboss.logging.Logger;
 
 import br.unitins.topicos1.dto.AddressDTO;
+import br.unitins.topicos1.repository.AddressRepository;
 import br.unitins.topicos1.service.AddressService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -25,6 +26,9 @@ public class AddressResource {
 
     @Inject
     AddressService service;
+
+    @Inject
+    AddressRepository repository;
 
     @POST
     public Response insert(AddressDTO dto){
@@ -51,4 +55,11 @@ public class AddressResource {
     public Response findAll(){
         return Response.ok(service.findAll()).build();
     }
+
+    @GET
+    @Path("/search/city/{cityId}")
+    public Response findByCity(@PathParam("cityId")Long cityId){
+        return Response.ok(service.findByCity(cityId)).build();
+    }
+    
 }

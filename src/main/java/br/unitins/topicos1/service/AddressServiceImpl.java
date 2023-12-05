@@ -28,6 +28,7 @@ public class AddressServiceImpl implements AddressService{
     @Override
     @Transactional
     public AddressResponseDTO insert(AddressDTO dto) {
+
         Address address = new Address();
         
 
@@ -71,5 +72,13 @@ public class AddressServiceImpl implements AddressService{
     @Override
     public List<AddressResponseDTO> findAll() {
         return repository.listAll().stream().map(e -> AddressResponseDTO.valueOf(e)).toList();
+    }
+
+    @Override
+    public List<AddressResponseDTO> findByCity(Long city) {
+        List<Address> addresses = repository.findByCity(city);
+
+        return addresses.stream().map(AddressResponseDTO::valueOf).toList();
+
     }
 }

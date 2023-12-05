@@ -14,5 +14,7 @@ public interface AddressService {
     public void delete(Long id);
 
     public List<AddressResponseDTO> findAll();
+
+    public List<AddressResponseDTO> findByCity(Long city);
     
 }

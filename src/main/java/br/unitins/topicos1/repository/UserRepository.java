@@ -21,7 +21,7 @@ public class UserRepository implements PanacheRepository<User>{
 
     public User findByEmail(String email){
         try{
-            return find("email = ?1", email).singleResult();
+            return find("UPPER(email) = UPPER(?1)", email).singleResult();
         } catch(NoResultException e){
             e.printStackTrace();
             return null;
@@ -30,7 +30,7 @@ public class UserRepository implements PanacheRepository<User>{
 
     public User findByEmailAndPassword(String email, String password) {
         try {
-            return find("email = ?1 AND password = ?2 ", email, password).singleResult();
+            return find("UPPER(email) = UPPER(?1) AND password = ?2 ", email, password).singleResult();
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;
