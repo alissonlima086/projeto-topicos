@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
@@ -100,7 +101,7 @@ public class AddressResource {
     @DELETE
     @Transactional
     @Path("/delete/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Admin", "User"})
     public Response delete(@PathParam("id") Long idAddress){
 
         String login = jwt.getSubject();
@@ -162,6 +163,11 @@ public class AddressResource {
             e.printStackTrace();
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
+        } catch(NotAuthorizedException e){
+            LOG .error("Não autorizado");
+            e.printStackTrace();
+            Error error = new Error("401", e.getMessage());
+            return Response.status(Status.UNAUTHORIZED).entity(error).build();
         }
     }
     

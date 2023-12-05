@@ -79,7 +79,7 @@ public class LoggedUserResourceTest {
         String token = jwtService.generateJwt(userService.findById(idUser));
 
         //Testando status code
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(usernameDTO).when().put("/loggedUser/update/username/").then().statusCode(204);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(usernameDTO).when().patch("/loggedUser/update/username/").then().statusCode(204);
 
         //verificando os dados
         UserResponseDTO user = userService.findById(idUser);
@@ -102,7 +102,7 @@ public class LoggedUserResourceTest {
         String token = jwtService.generateJwt(userService.findById(idUser));
 
         //Testando status code
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(usernameDTO).when().put("/loggedUser/update/username/").then().statusCode(400);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(usernameDTO).when().patch("/loggedUser/update/username/").then().statusCode(400);
 
         //verificando os dados
         UserResponseDTO user = userService.findById(idUser);
@@ -125,7 +125,7 @@ public class LoggedUserResourceTest {
         String token = jwtService.generateJwt(userService.findById(idUser));
 
         //Testando status code
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(emailDTO).when().put("/loggedUser/update/email/").then().statusCode(204);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(emailDTO).when().patch("/loggedUser/update/email/").then().statusCode(204);
 
         //verificando os dados
         UserResponseDTO user = userService.findById(idUser);
@@ -147,7 +147,7 @@ public class LoggedUserResourceTest {
         String token = jwtService.generateJwt(userService.findById(idUser));
 
         //Testando status code
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(emailDTO).when().put("/loggedUser/update/email/").then().statusCode(400);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(emailDTO).when().patch("/loggedUser/update/email/").then().statusCode(400);
 
         //verificando os dados
         UserResponseDTO user = userService.findById(idUser);
@@ -170,7 +170,7 @@ public class LoggedUserResourceTest {
         String token = jwtService.generateJwt(userService.findById(idUser));
 
         //Testando status code
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(passwordDTO).when().put("/loggedUser/update/password/").then().statusCode(204);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(passwordDTO).when().patch("/loggedUser/update/password/").then().statusCode(204);
 
         //verificando os dados
         UserResponseDTO user = userService.findById(idUser);
@@ -194,7 +194,7 @@ public class LoggedUserResourceTest {
         String token = jwtService.generateJwt(userService.findById(idUser));
 
         //Testando status code
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(passwordDTO).when().put("/loggedUser/update/password/").then().statusCode(403);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(passwordDTO).when().patch("/loggedUser/update/password/").then().statusCode(403);
 
         //verificando os dados
         UserResponseDTO user = userService.findById(idUser);
@@ -218,7 +218,7 @@ public class LoggedUserResourceTest {
         String token = jwtService.generateJwt(userService.findById(idUser));
 
         //Testando status code
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(passwordDTO).when().put("/loggedUser/update/password/").then().statusCode(400);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(passwordDTO).when().patch("/loggedUser/update/password/").then().statusCode(400);
 
         //verificando os dados
         UserResponseDTO user = userService.findById(idUser);
@@ -241,7 +241,7 @@ public class LoggedUserResourceTest {
         //gerando token para autorização
         String token = jwtService.generateJwt(userService.findById(idUser));
 
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(username).when().put("/loggedUser/complete/username/").then().statusCode(200);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(username).when().patch("/loggedUser/complete/username/").then().statusCode(200);
     }
 
     @Test
@@ -259,7 +259,7 @@ public class LoggedUserResourceTest {
         //gerando token para autorização
         String token = jwtService.generateJwt(userService.findById(idUser));
 
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(username).when().put("/loggedUser/complete/username/").then().statusCode(400);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(username).when().patch("/loggedUser/complete/username/").then().statusCode(400);
     }
 
     @Test
@@ -277,7 +277,7 @@ public class LoggedUserResourceTest {
         //gerando token para autorização
         String token = jwtService.generateJwt(userService.findById(idUser));
 
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(username).when().put("/loggedUser/complete/username/").then().statusCode(400);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(username).when().patch("/loggedUser/complete/username/").then().statusCode(400);
     }
 
     @Test
@@ -310,7 +310,7 @@ public class LoggedUserResourceTest {
         String token = jwtService.generateJwt(userService.findById(idUser));
 
         //Testando status code
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(userDTO).when().put("/loggedUser/complete/register/").then().statusCode(204);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(userDTO).when().patch("/loggedUser/complete/register/").then().statusCode(204);
     }
 
     @Test
@@ -328,7 +328,7 @@ public class LoggedUserResourceTest {
         String token = jwtService.generateJwt(userService.findById(idUser));
 
         //Testando status code
-        given().contentType(ContentType.JSON).body(userDTO).when().put("/loggedUser/complete/register/").then().statusCode(401);
+        given().contentType(ContentType.JSON).body(userDTO).when().patch("/loggedUser/complete/register/").then().statusCode(401);
     }
 
     @Test
@@ -350,7 +350,7 @@ public class LoggedUserResourceTest {
         String token = jwtService.generateJwt(userService.findById(idUser));
 
         //Testando status code
-        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(userDTO2).when().put("/loggedUser/complete/register/").then().statusCode(400);
+        given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(userDTO2).when().patch("/loggedUser/complete/register/").then().statusCode(400);
     }
 
     @Test
