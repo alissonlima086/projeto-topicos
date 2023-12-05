@@ -5,6 +5,8 @@ import java.util.List;
 import br.unitins.topicos1.dto.CompleteUserDTO;
 import br.unitins.topicos1.dto.CompleteUserResponseDTO;
 import br.unitins.topicos1.dto.EmailDTO;
+import br.unitins.topicos1.dto.LoginDTO;
+import br.unitins.topicos1.dto.LoginResponseDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.UpdatePasswordDTO;
@@ -15,6 +17,8 @@ import br.unitins.topicos1.dto.UsernameDTO;
 public interface UserService {
 
     //User
+    public LoginResponseDTO insertBasicUser(LoginDTO dto);
+
     public UserResponseDTO insert(UserDTO dto);
 
     public UserResponseDTO update(Long id, UserDTO dto);

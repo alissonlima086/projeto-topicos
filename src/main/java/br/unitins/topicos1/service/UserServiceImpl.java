@@ -7,6 +7,8 @@ import org.jboss.logging.Logger;
 import br.unitins.topicos1.dto.CompleteUserDTO;
 import br.unitins.topicos1.dto.CompleteUserResponseDTO;
 import br.unitins.topicos1.dto.EmailDTO;
+import br.unitins.topicos1.dto.LoginDTO;
+import br.unitins.topicos1.dto.LoginResponseDTO;
 import br.unitins.topicos1.dto.PhoneDTO;
 import br.unitins.topicos1.dto.PhoneResponseDTO;
 import br.unitins.topicos1.dto.PhysicalPersonDTO;
@@ -59,6 +61,30 @@ public class UserServiceImpl implements UserService {
     JwtService jwtService;
 
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
+
+    @Override
+    @Transactional
+    public LoginResponseDTO insertBasicUser(LoginDTO dto){
+        if(dto.email() == null){
+            throw new ValidationException("400", "O email não pode estar em branco");
+        } else if(dto.password() == null){
+            throw new ValidationException("400", "A senha não pode estar em branco");
+        }
+
+        
+        User newUser = new User();
+
+        newUser.setEmail(dto.email());
+
+        newUser.setPassword(hashService.getHashPassword(dto.password()));
+
+
+        newUser.setProfile(Profile.valueOf(1));
+
+        repository.persist(newUser);
+
+        return LoginResponseDTO.valueOf(newUser);
+    }
 
     @Override
     @Transactional
