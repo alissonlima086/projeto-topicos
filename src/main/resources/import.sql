@@ -62,9 +62,4 @@ insert into comic(`name`, price, inventory, numPages, `binding`, id_publisher, i
 insert into payment(`value`, confirmationPayment, dateConfimationPayment) values(0, true, '2023-05-22');
 insert into pix(id, `name`, cpf, dateExpirationTokenPix) values (1,'Joao', '5165561651', '2023-05-22');
 
-insert into order_table(totalOrder, id_address, id_user, id_payment) values(0, 1, 2, 1);
-
-insert into itemOrder(id_order, quantity, totalItem, idBuyed, id_user, id_product) values (1, 5, 12.50, true , 1, 1);
-insert into itemOrder(id_order, quantity, totalItem, idBuyed, id_user, id_product) values (1, 5, 12.50, false , 2, 2);
-
 

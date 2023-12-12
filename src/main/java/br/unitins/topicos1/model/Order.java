@@ -1,5 +1,6 @@
 package br.unitins.topicos1.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -13,12 +14,14 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "order_table")
 public class Order extends DefaultEntity {
-    
-    private double totalOrder = 0;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    private LocalDateTime dateHour;
+    
+    private double totalOrder;
+
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_order")
-    private List<ItemOrder> listOfItens;
+    private List<ItemOrder> itens;
 
     @ManyToOne
     @JoinColumn(name = "id_address")
@@ -40,12 +43,12 @@ public class Order extends DefaultEntity {
         this.totalOrder = totalOrder;
     }
 
-    public List<ItemOrder> getListOfItens() {
-        return listOfItens;
+    public List<ItemOrder> getItens() {
+        return itens;
     }
 
-    public void setListOfItens(List<ItemOrder> listOfItens) {
-        this.listOfItens = listOfItens;
+    public void setItens(List<ItemOrder> itens) {
+        this.itens = itens;
     }
 
     public User getUser() {
@@ -64,5 +67,20 @@ public class Order extends DefaultEntity {
         this.payment = payment;
     }
 
-    
+    public LocalDateTime getDateHour() {
+        return dateHour;
+    }
+
+    public void setDateHour(LocalDateTime dateHour) {
+        this.dateHour = dateHour;
+    }
+
+    public Address getAdress() {
+        return adress;
+    }
+
+    public void setAdress(Address adress) {
+        this.adress = adress;
+    }
+
 }

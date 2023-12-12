@@ -1,36 +1,25 @@
 package br.unitins.topicos1.dto;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import br.unitins.topicos1.model.ItemOrder;
 
 public record ItemOrderResponseDTO(
-    Long id,
-    int quantity,
-    double totalItem,
-    Map<String, Object> product,
-    Map<String, Object> user
-) {
-    public ItemOrderResponseDTO(ItemOrder item) {
-        this(item.getId(),item.getQuantity(),item.getTotalItem(),viewProduto(item.getProduct().getName()),viewUsuario(item.getUser().getEmail()));
+    Integer quantity,
+    Double price,
+    Long idProduct,
+    String name
+) { 
+    public static ItemOrderResponseDTO valueOf(ItemOrder item){
+        return new ItemOrderResponseDTO(
+            item.getQuantity(), 
+            item.getPrice(),
+            item.getProduct().getId(),
+            item.getProduct().getName());
     }
 
-    public static Map<String, Object> viewUsuario(String name) {
-
-        Map<String, Object> user = new HashMap<>();
-
-        user.put("loginUsu", name);
-
-        return user;
+    public static List<ItemOrderResponseDTO> valueOf(List<ItemOrder> item) {
+       return item.stream().map(i -> ItemOrderResponseDTO.valueOf(i)).toList();
     }
 
-    public static Map<String, Object> viewProduto(String name) {
-
-        Map<String, Object> product = new HashMap<>();
-
-        product.put("nome", name);
-
-        return product;
-    }
 }

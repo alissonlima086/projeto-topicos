@@ -65,11 +65,14 @@ public class UserFileService implements FileService {
             throw new IOException("File maior que 10mb.");
     }
 
+    
     private void verifyImageType(String fileName) throws IOException {
         String mimeType = Files.probeContentType(Paths.get(fileName));
-        if (!SUPPORTED_MIME_TYPES.contains(mimeType)) 
+        if (mimeType == null || !SUPPORTED_MIME_TYPES.contains(mimeType)) 
             throw new IOException("Tipo de imagem não suportada.");
   
     }
+
+
     
 }

@@ -8,8 +8,8 @@ import jakarta.persistence.ManyToOne;
 public class ItemOrder extends DefaultEntity {
     
     private int quantity;
-    private double totalItem;
-    private boolean idBuyed = false;
+    private double price;
+    private boolean isBuyed = false;
 
     @ManyToOne
     @JoinColumn(name = "id_user")
@@ -20,7 +20,7 @@ public class ItemOrder extends DefaultEntity {
     private Comic product;
 
     @ManyToOne
-    @JoinColumn(name = "id_Order")
+    @JoinColumn(name = "id_order")
     private Order order;
 
     public int getQuantity() {
@@ -29,11 +29,12 @@ public class ItemOrder extends DefaultEntity {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    public double getTotalItem() {
-        return totalItem;
+
+    public double getPrice() {
+        return price;
     }
-    public void setTotalItem(double totalItem) {
-        this.totalItem = totalItem;
+    public void setPrice(double price) {
+        this.price = price;
     }
     public User getUser() {
         return user;
@@ -48,10 +49,15 @@ public class ItemOrder extends DefaultEntity {
         this.product = product;
     }
     public boolean isIdBuyed() {
-        return idBuyed;
+        return isBuyed;
     }
     public void setIdBuyed(boolean idBuyed) {
-        this.idBuyed = idBuyed;
+        this.isBuyed = idBuyed;
     }
-    
+    public Order getOrder() {
+        return order;
+    }
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }
