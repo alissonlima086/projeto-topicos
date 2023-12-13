@@ -12,8 +12,6 @@ public class Comic extends Product {
 
     private Binding binding;
 
-    private List<String> imageComic;
-
     @ManyToOne
     @JoinColumn(name = "id_publisher")
     private Publisher publisher;
@@ -21,6 +19,8 @@ public class Comic extends Product {
     @ManyToOne
     @JoinColumn(name = "id_author")
     private Author author;
+
+    private String imageName;
 
     public Integer getNumPages() {
         return numPages;
@@ -54,12 +54,14 @@ public class Comic extends Product {
         this.author = author;
     }
 
-    public List<String> getImageComic() {
-        return imageComic;
+    public String getImageName() {
+        return imageName;
     }
 
-    public void setImageComic(List<String> imageComic) {
-        this.imageComic = imageComic;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
+    
+    
 }
