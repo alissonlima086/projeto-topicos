@@ -41,8 +41,7 @@ public class UserFileService implements FileService {
 
     private void saveFile(byte[] file, Path filePath) throws IOException {
         if (Files.exists(filePath)) {
-            // Adicione uma lógica aqui para lidar com arquivos existentes, se necessário
-            throw new IOException("Um arquivo com o mesmo nome já existe.");
+            int counter = 1;
         }
 
         try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
@@ -59,7 +58,15 @@ public class UserFileService implements FileService {
     private String generateUniqueFileName(String fileName) throws IOException {
         String mimeType = Files.probeContentType(Paths.get(fileName));
         String extension = mimeType.substring(mimeType.lastIndexOf('/') + 1);
-        return UUID.randomUUID() + "." + extension;
+
+        int counter = 1;
+        String uniqueFileName = UUID.randomUUID() + "." + extension;
+
+        while (Files.exists(Paths.get(PATH_USER, uniqueFileName))) {
+            uniqueFileName = UUID.randomUUID() + "_" + counter++ + "." + extension;
+        }
+        
+        return uniqueFileName;
     }
 
     @Override
