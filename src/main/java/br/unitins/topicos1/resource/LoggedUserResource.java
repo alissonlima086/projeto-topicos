@@ -103,10 +103,15 @@ public class LoggedUserResource {
     }
 
     @GET
-    @Path("/download/imagem/{imageName}")
+    @Path("/download/imagem/")
     @RolesAllowed({ "User", "Admin" })
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response download(@PathParam("imageName") String imageName) {
+    public Response download() {
+        String login = jwt.getSubject();
+        
+        UserResponseDTO user = userService.findByEmail(login);
+        String imageName = user.imageName();
+        
         ResponseBuilder response = Response.ok(fileService.getFile(imageName));
         response.header("Content-Disposition", "attachment;filename="+imageName);
         return response.build();
