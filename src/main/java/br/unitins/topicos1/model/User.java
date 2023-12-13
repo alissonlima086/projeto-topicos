@@ -44,6 +44,7 @@ public class User extends DefaultEntity {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "id_person")
     private PhysicalPerson physicalPerson;
 
     public String getUsername() {

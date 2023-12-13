@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderResponseDTO insert(OrderDTO dto, String login) {
 
-        if(dto.itens().isEmpty() || dto.itens().size() == 0 || dto.itens() == null){
+        if(dto.itens().isEmpty() || dto == null || dto.itens() == null){
             throw new ValidationException("400", "Não há produtos na compra");
         }
         User user = userRepository.findByEmail(login);
