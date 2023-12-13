@@ -71,6 +71,10 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("400", "A senha não pode estar em branco");
         }
 
+        if(repository.existsByEmail(dto.email())){
+            throw new ValidationException("400", "O email já existe");
+        }
+
         User newUser = new User();
 
         newUser.setEmail(dto.email());
@@ -227,6 +231,10 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("400", "O valor fornecido é invalido");
         }
 
+        if(repository.existsByUsername(usernameDTO.username())){
+            throw new ValidationException("400", "O nome de usuario já existe");
+        }
+
         user.setUsername(usernameDTO.username());
 
         return UsernameDTO.valueOf(user);
@@ -284,6 +292,10 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("400", "O valor fornecido é invalido");
         }
 
+        if(repository.existsByUsername(newUsername.username())){
+            throw new ValidationException("400", "O nome de usuario já existe");
+        }
+
         LOG.info("Iniciando update do username");
 
         User user = repository.findByEmail(login);
@@ -306,6 +318,10 @@ public class UserServiceImpl implements UserService {
 
         if(newEmail.email() == null|| newEmail.email().isEmpty()){
             throw new ValidationException("400", "O valor fornecido é invalido");
+        }
+
+        if(repository.existsByEmail(login)){
+            throw new ValidationException("400", "O email já existe");
         }
         
         LOG.info("Iniciando update do email");

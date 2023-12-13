@@ -7,6 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -18,9 +19,12 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "user_table")
 public class User extends DefaultEntity {
+
+    @Column(unique = true)
     private String username;
 
     @NotBlank(message = "O e-mail não pode estar em branco")
+    @Column(unique = true)
     private String email;
 
     @NotBlank(message = "A senha não pode estar em branco")

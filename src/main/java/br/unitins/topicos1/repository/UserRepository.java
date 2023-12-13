@@ -36,4 +36,12 @@ public class UserRepository implements PanacheRepository<User>{
             return null;
         }
     }
+
+    public boolean existsByEmail(String email) {
+        return find("email", email).count() > 0;
+    }
+
+    public boolean existsByUsername(String username){
+        return find("username", username).count() > 0;
+    }
 }

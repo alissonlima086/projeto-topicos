@@ -10,12 +10,15 @@ import br.unitins.topicos1.dto.OrderResponseDTO;
 import br.unitins.topicos1.model.Comic;
 import br.unitins.topicos1.model.ItemOrder;
 import br.unitins.topicos1.model.Order;
+import br.unitins.topicos1.model.User;
 import br.unitins.topicos1.repository.ComicRepository;
 import br.unitins.topicos1.repository.OrderRepository;
 import br.unitins.topicos1.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+
+import br.unitins.topicos1.validation.ValidationException;
 
 @ApplicationScoped
 public class OrderServiceImpl implements OrderService {
@@ -32,6 +35,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderResponseDTO insert(OrderDTO dto, String login) {
+
+        if(dto.itens().isEmpty() || dto.itens().size() == 0 || dto.itens() == null){
+            throw new ValidationException("400", "Não há produtos na compra");
+        }
+        User user = userRepository.findByEmail(login);
+
+        if(user.getPhysicalPerson() == null || user.getPhysicalPerson().getCpf() == null || user.getPhysicalPerson().getName() == null){
+            throw new ValidationException("400", "Seu perfil de usuario não está completo");
+        }
+
         Order pedido = new Order();
         pedido.setDateHour(LocalDateTime.now());
 
