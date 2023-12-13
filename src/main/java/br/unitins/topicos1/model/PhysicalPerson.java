@@ -1,5 +1,6 @@
 package br.unitins.topicos1.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -9,6 +10,7 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 public class PhysicalPerson extends DefaultEntity {
     private String name;
 
+    @Column(unique = true)
     private String cpf;
 
     @OneToOne

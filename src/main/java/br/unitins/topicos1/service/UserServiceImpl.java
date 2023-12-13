@@ -255,6 +255,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public CompleteUserResponseDTO completeUser(Long id, CompleteUserDTO dto) {
 
+        if(personRepository.existsByCpf(dto.cpf())){
+            throw new ValidationException("400", "O cpf já está cadastrado");
+        }
+
         User user = repository.findById(id);
 
         if(user.getPhysicalPerson() != null){

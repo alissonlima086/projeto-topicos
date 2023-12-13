@@ -16,4 +16,8 @@ public class PhysicalPersonRepository implements PanacheRepository<PhysicalPerso
         return find("UPPER(name) LIKE ?1 ", "%" + name.toUpperCase() + "%").list();
     }
 
+    public boolean existsByCpf(String cpf){
+        return find("cpf", cpf).count() > 0;
+    }
+
 }
