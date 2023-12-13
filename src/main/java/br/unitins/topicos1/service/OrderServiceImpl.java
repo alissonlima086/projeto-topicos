@@ -27,6 +27,9 @@ public class OrderServiceImpl implements OrderService {
     ComicRepository comicRepository;
 
     @Inject
+    ComicService comicService;
+
+    @Inject
     UserRepository userRepository;
 
     @Inject
@@ -45,6 +48,8 @@ public class OrderServiceImpl implements OrderService {
             throw new ValidationException("400", "Seu perfil de usuario não está completo");
         }
 
+        
+
         Order pedido = new Order();
         pedido.setDateHour(LocalDateTime.now());
 
@@ -54,9 +59,13 @@ public class OrderServiceImpl implements OrderService {
             total += (comicRepository.findById(itemDto.idProduct()).getPrice() * itemDto.quantity());
         }
         pedido.setTotalOrder(total);
+        
 
         pedido.setItens(new ArrayList<ItemOrder>());
         for (ItemOrderDTO itemDto : dto.itens()) {
+            if(itemDto.quantity() > comicService.findById(itemDto.idProduct()).inventory()) {
+                throw new ValidationException("400", "Estoque insuficiente");
+            }
             ItemOrder item = new ItemOrder();
             item.setPrice(comicRepository.findById(itemDto.idProduct()).getPrice());
             item.setQuantity(itemDto.quantity());
