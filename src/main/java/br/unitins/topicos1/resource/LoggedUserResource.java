@@ -85,18 +85,20 @@ public class LoggedUserResource {
     public Response saveimage(@MultipartForm UserImageForm form){
         String imageName;
         try {
+            LOG.info("Inserindo imagem");
             imageName = fileService.save(form.getNomeImagem(), form.getImagem());
+            String login = jwt.getSubject();
+            LOG.info("Alterando imagem do usuario");
+            UserResponseDTO userDTO = userService.findByEmail(login);
+            userDTO = userService.updateImageName(userDTO.id(), imageName);
+            LOG.info("Imagem alterada");
+            return Response.ok(userDTO).build();
         } catch (IOException e) {
+            LOG.error("Erro ao inserir imagem");
             e.printStackTrace();
             Error error = new Error("409", e.getMessage());
             return Response.status(Status.CONFLICT).entity(error).build();
         }
-
-        String login = jwt.getSubject();
-        UserResponseDTO userDTO = userService.findByEmail(login);
-        userDTO = userService.updateImageName(userDTO.id(), imageName);
-
-        return Response.ok(userDTO).build();
 
     }
 

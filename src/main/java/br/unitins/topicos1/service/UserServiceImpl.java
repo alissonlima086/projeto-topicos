@@ -282,6 +282,7 @@ public class UserServiceImpl implements UserService {
      // ---------- UPDATE ----------
 
     @Override
+    @Transactional
     public UserResponseDTO updateImageName(Long id, String imageName) {
         User user = repository.findById(id);
         user.setImageName(imageName);

@@ -28,32 +28,38 @@ public class UserFileService implements FileService {
     @Override
     public String save(String fileName, byte[] file) throws IOException {
         verifyImageSize(file);
-
         verifyImageType(fileName);
 
-        // criar diretorio caso nao exista
-        Path diretorio = Paths.get(PATH_USER);
-        Files.createDirectories(diretorio);
+        Path directory = createDirectoryIfNotExists(PATH_USER);
+        String newFileName = generateUniqueFileName(fileName);
 
-        // criando o nome do file randomico
-        String mimeType = Files.probeContentType(Paths.get(fileName));
-        String extensao = mimeType.substring(mimeType.lastIndexOf('/') + 1);
-        String novoFileName = UUID.randomUUID() + "." + extensao;
+        Path filePath = directory.resolve(newFileName);
+        saveFile(file, filePath);
 
-        // defindo o caminho completo do file
-        Path filePath = diretorio.resolve(novoFileName);
+        return filePath.toFile().getName();
+    }
 
-        if (filePath.toFile().exists()) 
-            throw new IOException("Nome de file ja existe. Os alunos vão buscar uma melhor solucao.");
+    private void saveFile(byte[] file, Path filePath) throws IOException {
+        if (Files.exists(filePath)) {
+            // Adicione uma lógica aqui para lidar com arquivos existentes, se necessário
+            throw new IOException("Um arquivo com o mesmo nome já existe.");
+        }
 
-        // salvar file
         try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
             fos.write(file);
         }
+    }
 
-        
+    private Path createDirectoryIfNotExists(String path) throws IOException {
+        Path directory = Paths.get(path);
+        Files.createDirectories(directory);
+        return directory;
+    }
 
-        return filePath.toFile().getName();
+    private String generateUniqueFileName(String fileName) throws IOException {
+        String mimeType = Files.probeContentType(Paths.get(fileName));
+        String extension = mimeType.substring(mimeType.lastIndexOf('/') + 1);
+        return UUID.randomUUID() + "." + extension;
     }
 
     @Override
@@ -72,9 +78,5 @@ public class UserFileService implements FileService {
         String mimeType = Files.probeContentType(Paths.get(fileName));
         if (mimeType == null || !SUPPORTED_MIME_TYPES.contains(mimeType)) 
             throw new IOException("Tipo de imagem não suportada.");
-  
-    }
-
-
-    
+    }    
 }
