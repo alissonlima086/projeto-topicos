@@ -31,17 +31,17 @@ public class PhoneResourceTest {
 
     @Test
     public void testGetPhone(){
-        UserDTO dto = new UserDTO("fulano", "fulano5@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulano123", "fulano123@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
-        Long idUser = userService.findByEmail("fulano5@mail.com").id();
+        Long idUser = userService.findByEmail("fulano123@mail.com").id();
 
         PhoneDTO phone = new PhoneDTO("44", "737373");
 
         
         PhoneResponseDTO phoneUser = userService.insertPhone(idUser, phone);
 
-        String token = jwtService.generateJwt(userService.findByEmail("fulano5@mail.com"));
+        String token = jwtService.generateJwt(userService.findByEmail("fulano123@mail.com"));
 
         given().header("Authorization", "Bearer " + token).get("/phones/phone/").then().statusCode(200);
     }
@@ -59,11 +59,11 @@ public class PhoneResourceTest {
     @Test
     public void testInsertPhone(){
         //Inserindo novo usuario
-        UserDTO dto = new UserDTO("fulano", "fulano6@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulano123456", "fulano123456@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         //pegando Id do usuario
-        Long idUser = userService.findByEmail("fulano6@mail.com").id();
+        Long idUser = userService.findByEmail("fulano123456@mail.com").id();
 
         //Passando o novo phone
         PhoneDTO phone = new PhoneDTO("63", "777777777");

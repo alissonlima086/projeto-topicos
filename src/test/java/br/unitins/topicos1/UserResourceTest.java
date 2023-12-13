@@ -40,7 +40,7 @@ public class UserResourceTest {
 
     @Test
     public void testFindAll(){
-        UserDTO dto = new UserDTO("fulano", "fulano@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanox", "fulano@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         String token = jwtService.generateJwt(userService.findByEmail("fulano@mail.com"));
@@ -55,7 +55,7 @@ public class UserResourceTest {
 
     @Test
     public void testInsert(){
-        UserDTO dto = new UserDTO("fulano", "jason@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanoy", "jason@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         UserDTO dtoInsert = new UserDTO("fulano 2", "fulano2@mail.com", hashService.getHashPassword("12345"), 2);
@@ -91,10 +91,10 @@ public class UserResourceTest {
     
     @Test
     public void testUpdate(){
-        UserDTO dto = new UserDTO("fulano", "may@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanoz", "may@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
-        UserDTO dtoInsert = new UserDTO("fulano 2", "junior@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dtoInsert = new UserDTO("fulanok", "junior@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userInsert = userService.insert(dtoInsert);
 
         //pegando Id do usuario
@@ -165,7 +165,7 @@ public class UserResourceTest {
 
     @Test
     public void testUpdatePhone(){
-        UserDTO dto = new UserDTO("fulano", "jota@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanow", "jota@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         //pegando Id do usuario
@@ -198,10 +198,10 @@ public class UserResourceTest {
 
     @Test
     public void testFindByUsername(){
-        UserDTO dto = new UserDTO("fulano", "sol@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanoa", "sol@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
-        UserDTO dtoInsert = new UserDTO("lisbela", "maria@mail.com", hashService.getHashPassword("12345"), 1);
+        UserDTO dtoInsert = new UserDTO("lisbela", "marialis@mail.com", hashService.getHashPassword("12345"), 1);
         UserResponseDTO userInsert = userService.insert(dtoInsert);
 
         String name = "lisbela";
@@ -213,7 +213,7 @@ public class UserResourceTest {
 
     @Test
     public void testFindById(){
-        UserDTO dto = new UserDTO("fulano", "midas@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanob", "midas@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         UserDTO dtoInsert = new UserDTO("Maria", "maria@mail.com", hashService.getHashPassword("12345"), 1);

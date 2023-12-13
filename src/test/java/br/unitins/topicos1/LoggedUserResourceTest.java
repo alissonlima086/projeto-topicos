@@ -55,7 +55,7 @@ public class LoggedUserResourceTest {
 
     @Test
     public void testGetUser(){
-        UserDTO dto = new UserDTO("fulano", "fulano1@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanozx", "fulano1@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         String token = jwtService.generateJwt(userService.findByEmail("fulano1@mail.com"));
@@ -66,7 +66,7 @@ public class LoggedUserResourceTest {
     @Test
     public void testUpdateUsername(){
         //Inserindo novo usuario
-        UserDTO dto = new UserDTO("fulano", "fulano2@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanocb", "fulano2@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         //Inserindo o novo username
@@ -113,13 +113,13 @@ public class LoggedUserResourceTest {
     @Test
     public void testUpdateEmail(){
         //Inserindo novo usuario
-        UserDTO dto = new UserDTO("fulano", "fulano3@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanobn", "fulanoabc@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         //Inserindo o novo email
-        EmailDTO emailDTO = new EmailDTO("novo@mail.com");
+        EmailDTO emailDTO = new EmailDTO("novofulanoabc@mail.com");
         
-        Long idUser = userService.findByEmail("fulano3@mail.com").id();
+        Long idUser = userService.findByEmail("fulanoabc@mail.com").id();
 
         //gerando token para autorização
         String token = jwtService.generateJwt(userService.findById(idUser));
@@ -157,7 +157,7 @@ public class LoggedUserResourceTest {
     @Test
     public void testUpdatePassword(){
         //Inserindo novo usuario
-        UserDTO dto = new UserDTO("fulano", "fulano4@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanonm", "fulano4@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         //Inserindo a senha atual e a nova senha
@@ -265,14 +265,14 @@ public class LoggedUserResourceTest {
     @Test
     public void testInsertUsernameAlreadyExistent(){
         //Inserindo novo usuario
-        UserDTO dto = new UserDTO("fulano", "fulano8@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanoas", "fulano8@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         //pegando Id do usuario
         Long idUser = userService.findByEmail("fulano8@mail.com").id();
 
         //Passando o username
-        UsernameDTO username = new UsernameDTO("marcio");
+        UsernameDTO username = new UsernameDTO("marciano");
         
         //gerando token para autorização
         String token = jwtService.generateJwt(userService.findById(idUser));
@@ -287,7 +287,7 @@ public class LoggedUserResourceTest {
 
     @Test
     public void testGetCompleteuserByEmail(){
-        UserDTO dto = new UserDTO("fulano", "fulano9@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("fulanosd", "fulano9@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         String token = jwtService.generateJwt(userService.findByEmail("fulano9@mail.com"));
@@ -316,7 +316,7 @@ public class LoggedUserResourceTest {
     @Test
     public void testCompleteUserNotLogged(){
         //Inserindo novo usuario
-        UserDTO dto = new UserDTO("ciclano", "ciclano1@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("ciclanodf", "ciclano1@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         //Completando Dados
@@ -334,11 +334,11 @@ public class LoggedUserResourceTest {
     @Test
     public void testCompleteUserAlreadyRegistered(){
         //Inserindo novo usuario
-        UserDTO dto = new UserDTO("ciclano", "ciclano2@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("ciclanofg", "ciclano2@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         //Completando Dados
-        CompleteUserDTO userDTO = new CompleteUserDTO("Nome Aleatorio", "5555433432", 1);
+        CompleteUserDTO userDTO = new CompleteUserDTO("Nome Aleatorio", "555543543432", 1);
         CompleteUserDTO userDTO2 = new CompleteUserDTO("Nome Aleatorio 2", "55554df33432", 1);
         
         //pegando o id
@@ -356,12 +356,12 @@ public class LoggedUserResourceTest {
     @Test
     public void testGetCompleteuserByEmailAfterRegister(){
         //Inserindo novo usuario
-        UserDTO dto = new UserDTO("ciclano", "ciclano3@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("ciclanogh", "ciclano3@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
         //Completando Dados
-        CompleteUserDTO userDTO = new CompleteUserDTO("Nome Aleatorio", "5555433432", 1);
-        CompleteUserDTO userDTO2 = new CompleteUserDTO("Nome Aleatorio 2", "55554df33432", 1);
+        CompleteUserDTO userDTO = new CompleteUserDTO("Nome Aleatorio", "5555767676433432", 1);
+        CompleteUserDTO userDTO2 = new CompleteUserDTO("Nome Aleatorio 2", "555545df33432", 1);
         
         //pegando o id
         Long idUser = userService.findByEmail("ciclano3@mail.com").id();

@@ -324,7 +324,7 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("400", "O valor fornecido é invalido");
         }
 
-        if(repository.existsByEmail(login)){
+        if(repository.existsByEmail(newEmail.email())){
             throw new ValidationException("400", "O email já existe");
         }
         
