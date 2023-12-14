@@ -13,10 +13,11 @@ public record ComicResponseDTO (
     Integer numPages,
     Binding binding,
     Publisher publisher,
-    Author author
+    Author author,
+    String imageName
 ){
     public static ComicResponseDTO valueOf(Comic comic){
-        return new ComicResponseDTO(comic.getId(), comic.getName(), comic.getPrice(), comic.getInventory(), comic.getNumPages(), comic.getBinding(), comic.getPublisher(), comic.getAuthor());
+        return new ComicResponseDTO(comic.getId(), comic.getName(), comic.getPrice(), comic.getInventory(), comic.getNumPages(), comic.getBinding(), comic.getPublisher(), comic.getAuthor(), comic.getImageName());
     }
     
 }

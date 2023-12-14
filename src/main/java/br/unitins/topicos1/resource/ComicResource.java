@@ -1,8 +1,16 @@
 package br.unitins.topicos1.resource;
 
+import java.io.IOException;
+
 import org.jboss.logging.Logger;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import br.unitins.topicos1.dto.ComicDTO;
+import br.unitins.topicos1.dto.ComicResponseDTO;
+import br.unitins.topicos1.form.ComicImageForm;
+import br.unitins.topicos1.model.Comic;
+import br.unitins.topicos1.repository.ComicRepository;
+import br.unitins.topicos1.service.ComicFileService;
 import br.unitins.topicos1.service.ComicService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -11,6 +19,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -29,6 +38,12 @@ public class ComicResource {
 
     @Inject
     ComicService service;
+
+    @Inject
+    ComicRepository repository;
+
+    @Inject
+    ComicFileService fileService;
 
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
@@ -61,6 +76,26 @@ public class ComicResource {
             e.printStackTrace();
             Error error = new Error("404", e.getMessage());
             return Response.status(Status.NOT_FOUND).entity(error).build();
+        }
+    }
+
+    @PATCH
+    @Path("/upload/image/")
+    @RolesAllowed({"Admin"})
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response insertImage(@MultipartForm ComicImageForm form){
+        String imageName;
+        try{
+            LOG.infof("Inserindo imagem ao produto de id %s", form.getId());
+            ComicResponseDTO comic = service.findById(form.getId());
+            imageName = fileService.save(form.getNomeImagem(), form.getImagem());
+            comic = service.insertImage(form.getId(), imageName);
+            return Response.noContent().build();
+        } catch(IOException e){
+            LOG.error("Erro ao inserir imagem");
+            e.printStackTrace();
+            Error error = new Error("409", e.getMessage());
+            return Response.status(Status.CONFLICT).entity(error).build();
         }
     }
 

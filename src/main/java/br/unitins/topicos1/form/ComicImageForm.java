@@ -1,11 +1,14 @@
 package br.unitins.topicos1.form;
 
-import org.jboss.resteasy.annotations.Form;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.PathParam;
 
-public class UserImageForm {
+public class ComicImageForm {
+
+    @FormParam("idComic")
+    private Long id;
 
     @FormParam("nomeImagem")
     private String nomeImagem;
@@ -29,5 +32,14 @@ public class UserImageForm {
     public void setImagem(byte[] imagem) {
         this.imagem = imagem;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     
 }

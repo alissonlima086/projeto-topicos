@@ -1,11 +1,14 @@
 package br.unitins.topicos1.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import br.unitins.topicos1.dto.ComicDTO;
 import br.unitins.topicos1.dto.ComicResponseDTO;
+import br.unitins.topicos1.form.ComicImageForm;
 import br.unitins.topicos1.model.Binding;
 import br.unitins.topicos1.model.Comic;
+import br.unitins.topicos1.model.User;
 import br.unitins.topicos1.repository.ComicRepository;
 import br.unitins.topicos1.repository.PublisherRepository;
 import br.unitins.topicos1.repository.AuthorRepository;
@@ -25,6 +28,9 @@ public class ComicServiceImpl implements ComicService{
 
     @Inject
     AuthorRepository authorRepository;
+
+    @Inject
+    ComicFileService fileService;
 
     @Override
     @Transactional
@@ -65,6 +71,19 @@ public class ComicServiceImpl implements ComicService{
         comic.setPublisher(publisherRepository.findById(dto.publisher()));
 
         comic.setAuthor(authorRepository.findById(dto.author()));
+
+        return ComicResponseDTO.valueOf(comic);
+    }
+
+    @Override
+    @Transactional
+    public ComicResponseDTO insertImage(Long id, String name){
+        if(repository.findById(id) == null){
+            throw new NotFoundException("Produto não encontrado");
+        }
+
+        Comic comic = repository.findById(id);
+        comic.setImageName(name);
 
         return ComicResponseDTO.valueOf(comic);
     }
