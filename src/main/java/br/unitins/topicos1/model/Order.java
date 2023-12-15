@@ -35,6 +35,8 @@ public class Order extends DefaultEntity {
     @JoinColumn(name = "id_payment", unique = true)
     private Payment payment;
 
+    private Boolean ifFinished = false;
+
     public double getTotalOrder() {
         return totalOrder;
     }
@@ -83,4 +85,11 @@ public class Order extends DefaultEntity {
         this.adress = adress;
     }
 
+    public Boolean getIfFinished() {
+        return ifFinished;
+    }
+
+    public void setIfFinished(Boolean ifFinished) {
+        this.ifFinished = ifFinished;
+    }
 }

@@ -22,7 +22,7 @@ public abstract class Payment extends DefaultEntity {
     public Payment(Double value) {
 
         this.value = value;
-        this.confirmationPayment = true;
+        this.confirmationPayment = false;
         this.dateConfimationPayment = LocalDate.now();
     }
 
@@ -31,11 +31,11 @@ public abstract class Payment extends DefaultEntity {
         this.confirmationPayment = false;
     }
 
-    public Boolean getConfirmacaoPagamento() {
+    public Boolean getConfirmationPayment() {
         return confirmationPayment;
     }
 
-    public void setConfirmacaoPagamento(Boolean confirmationPayment) {
+    public void setConfirmationPayment(Boolean confirmationPayment) {
         this.confirmationPayment = confirmationPayment;
     }
 

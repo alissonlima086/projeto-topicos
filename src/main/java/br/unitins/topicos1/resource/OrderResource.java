@@ -3,6 +3,7 @@ package br.unitins.topicos1.resource;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
+import br.unitins.topicos1.dto.CreditCardDTO;
 import br.unitins.topicos1.dto.OrderDTO;
 import br.unitins.topicos1.dto.OrderResponseDTO;
 import br.unitins.topicos1.service.OrderService;
@@ -11,6 +12,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -30,6 +32,9 @@ public class OrderResource {
 
     @Inject
     UserService userService;
+
+    @Inject
+    OrderService orderService;
 
     @Inject
     JsonWebToken jwt;
@@ -52,6 +57,49 @@ public class OrderResource {
             LOG.error("Erro ao registrar a compra");
             Error error = new Error("400", e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(error).build();
+        }
+    }
+
+    @PATCH
+    @Path("/pay-pix")
+    @RolesAllowed({"User", "Admin"})
+    public Response payUsingPix() {
+        Error result = null;
+
+        try {
+
+            String login = jwt.getSubject();
+
+            orderService.payUsingPix(login);
+
+            LOG.info("Pagamento com pix efetuado com sucesso.");
+            return Response.status(Status.ACCEPTED).build();
+        } catch (NullPointerException e) {
+            LOG.error("Erro ao efetuar o pagamento com pix.", e);
+            result = new Error(e.getMessage(), false);
+
+            return Response.status(Status.NOT_FOUND).entity(result).build();
+        }
+    }
+
+    @PATCH
+    @Path("/pay-credit-card")
+    @RolesAllowed({"User", "Admin"})
+    public Response payUsingCreditCard(CreditCardDTO cartaoCreditoDTO) {
+        Error result = null;
+
+        try {
+            String login = jwt.getSubject();
+
+            orderService.payUsingCreditCard(login, cartaoCreditoDTO);
+
+            LOG.info("Pagamento com cartão de crédito efetuado com sucesso.");
+            return Response.status(Status.ACCEPTED).build();
+        } catch (NullPointerException e) {
+            LOG.error("Erro ao efetuar o pagamento com cartão de crédito.", e);
+            result = new Error(e.getMessage(), false);
+
+            return Response.status(Status.NOT_FOUND).entity(result).build();
         }
     }
 
