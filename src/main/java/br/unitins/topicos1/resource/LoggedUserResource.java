@@ -109,6 +109,7 @@ public class LoggedUserResource {
     public Response download() {
         String login = jwt.getSubject();
         
+        LOG.info("Buscando imagem do usuario");
         UserResponseDTO user = userService.findByEmail(login);
         String imageName = user.imageName();
         

@@ -27,6 +27,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Response.Status;
 
 import br.unitins.topicos1.application.Error;
@@ -83,13 +84,14 @@ public class ComicResource {
     @Path("/upload/image/")
     @RolesAllowed({"Admin"})
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_PLAIN)
     public Response insertImage(@MultipartForm ComicImageForm form){
-        String imageName;
+        //String imageName;
+        Long id = form.getId();
         try{
-            LOG.infof("Inserindo imagem ao produto de id %s", form.getId());
-            ComicResponseDTO comic = service.findById(form.getId());
-            imageName = fileService.save(form.getNomeImagem(), form.getImagem());
-            comic = service.insertImage(form.getId(), imageName);
+            LOG.infof("Inserindo imagem ao produto de id %s", id);
+            String imageName = fileService.save(form.getNomeImagem(), form.getImagem());
+            service.insertImage(id, imageName);
             return Response.noContent().build();
         } catch(IOException e){
             LOG.error("Erro ao inserir imagem");
@@ -97,6 +99,20 @@ public class ComicResource {
             Error error = new Error("409", e.getMessage());
             return Response.status(Status.CONFLICT).entity(error).build();
         }
+    }
+
+    @GET
+    @Path("/download/image/{id}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response downloadImage(@PathParam("id")Long id){
+
+        LOG.infof("Buscando imagem do usuario de id %s", id);
+        ComicResponseDTO comic = service.findById(id);
+        String imageName = comic.imageName();
+
+        ResponseBuilder response = Response.ok(fileService.getFile(imageName));
+        response.header("Content-Disposition", "attachment;filename="+imageName);
+        return response.build();
     }
 
     @DELETE
