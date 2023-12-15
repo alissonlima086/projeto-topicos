@@ -42,6 +42,7 @@ public class OrderResource {
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @POST
+    @Path("/buy/")
     @RolesAllowed({"User", "Admin"})
     public Response insert(OrderDTO dto) {
 

@@ -55,12 +55,12 @@ public class UserResourceTest {
 
     @Test
     public void testInsert(){
-        UserDTO dto = new UserDTO("fulanoy", "jason@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dto = new UserDTO("jsonm", "jason1@mail.com", hashService.getHashPassword("12345"), 2);
         UserResponseDTO userTest = userService.insert(dto);
 
-        UserDTO dtoInsert = new UserDTO("fulano 2", "fulano2@mail.com", hashService.getHashPassword("12345"), 2);
+        UserDTO dtoInsert = new UserDTO("fulano2u", "fulano2u@mail.com", hashService.getHashPassword("12345"), 2);
 
-        String token = jwtService.generateJwt(userService.findByEmail("jason@mail.com"));
+        String token = jwtService.generateJwt(userService.findByEmail("jason1@mail.com"));
 
         given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(dtoInsert).when().post("/users/insert/user/").then().statusCode(201);
     }
