@@ -9,7 +9,7 @@ import jakarta.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Payment extends DefaultEntity {
+public class Payment extends DefaultEntity {
 
     @Column(nullable = false)
     private Double value;

@@ -13,6 +13,7 @@ import br.unitins.topicos1.model.Comic;
 import br.unitins.topicos1.model.CreditCard;
 import br.unitins.topicos1.model.ItemOrder;
 import br.unitins.topicos1.model.Order;
+import br.unitins.topicos1.model.Payment;
 import br.unitins.topicos1.model.Pix;
 import br.unitins.topicos1.model.User;
 import br.unitins.topicos1.repository.ComicRepository;
@@ -69,7 +70,6 @@ public class OrderServiceImpl implements OrderService {
             total += (comicRepository.findById(itemDto.idProduct()).getPrice() * itemDto.quantity());
         }
         pedido.setTotalOrder(total);
-        
 
         pedido.setItens(new ArrayList<ItemOrder>());
         for (ItemOrderDTO itemDto : dto.itens()) {
@@ -88,6 +88,7 @@ public class OrderServiceImpl implements OrderService {
             pedido.getItens().add(item);
         }
 
+        //pedido.setPayment(new Payment(total));
 
         pedido.setUser(userRepository.findByEmail(login));
 

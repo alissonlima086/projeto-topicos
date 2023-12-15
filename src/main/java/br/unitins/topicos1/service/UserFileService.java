@@ -41,7 +41,6 @@ public class UserFileService implements FileService {
 
     private void saveFile(byte[] file, Path filePath) throws IOException {
         if (Files.exists(filePath)) {
-            int counter = 1;
         }
 
         try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
